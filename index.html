@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alexandre Kolinka — Light & Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Helvetica+Neue:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --off-white: #f0ece4;
+    --gold: #b8960c;
+    --gold-light: #d4ac3a;
+    --gray: #888;
+    --gray-light: #444;
+    --text: #d8d4cc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid rgba(184,150,12,0.4);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 80px 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.85) contrast(1.1);
+    transition: transform 8s ease;
+  }
+
+  .hero:hover .hero-img {
+    transform: scale(1.03);
+  }
+
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, var(--black) 0%, transparent 40%);
+  }
+
+  .hero-tag {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--off-white);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.4s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-tagline {
+    margin-top: 32px;
+    font-size: 13px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--gray);
+    line-height: 1.8;
+    max-width: 380px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+
+  .hero-line {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 32px 0;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+
+  .hero-phrase {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--off-white);
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+    line-height: 1.7;
+    max-width: 400px;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gray);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.4s forwards;
+  }
+
+  .scroll-hint::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--gray-light);
+    animation: expandLine 2s ease 2s infinite;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 28px 60px;
+    mix-blend-mode: normal;
+  }
+
+  nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.9) 0%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    color: var(--off-white);
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav-links a {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 120px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 60px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.4;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: start;
+  }
+
+  .about-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--off-white);
+    letter-spacing: -0.01em;
+  }
+
+  .about-heading em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .about-text {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--gray);
+    margin-bottom: 24px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 48px;
+    padding-top: 48px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-top: 8px;
+  }
+
+  /* ── WORK ── */
+  .work-section {
+    background: #0d0d0d;
+    max-width: 100%;
+    padding: 120px 0;
+  }
+
+  .work-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+  }
+
+  .work-item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    background: #111;
+  }
+
+  .work-item.wide {
+    grid-column: span 2;
+    aspect-ratio: 8/5;
+  }
+
+  .work-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s ease;
+    filter: brightness(0.7) saturate(0.9);
+  }
+
+  .work-item:hover img {
+    transform: scale(1.06);
+    filter: brightness(0.85) saturate(1.1);
+  }
+
+  .work-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .work-item:hover .work-overlay { opacity: 1; }
+
+  .work-project {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--off-white);
+    margin-bottom: 4px;
+  }
+
+  .work-meta {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── CROOZIN ── */
+  .croozin-section {
+    padding: 140px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+  }
+
+  .croozin-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .croozin-img-main {
+    grid-column: span 2;
+    position: relative;
+    overflow: hidden;
+    height: 360px;
+  }
+
+  .croozin-img-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.9);
+  }
+
+  .croozin-img-sm {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .croozin-img-sm img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.85);
+    transition: transform 0.6s ease;
+  }
+
+  .croozin-img-sm:hover img { transform: scale(1.05); }
+
+  .croozin-content {}
+
+  .croozin-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 5vw, 68px);
+    font-weight: 300;
+    color: var(--off-white);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .croozin-subtitle {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 40px;
+  }
+
+  .croozin-text {
+    font-size: 14px;
+    line-height: 2;
+    color: var(--gray);
+    margin-bottom: 20px;
+  }
+
+  .croozin-specs {
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 12px;
+  }
+
+  .spec-key {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    font-size: 10px;
+  }
+
+  .spec-val {
+    color: var(--off-white);
+    text-align: right;
+  }
+
+  /* ── CLIENTS ── */
+  .clients-section {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 80px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .clients-scroll {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 40px;
+    margin-top: 48px;
+    align-items: center;
+  }
+
+  .client-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.15);
+    transition: color 0.3s ease;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .client-name:hover { color: var(--off-white); }
+
+  .client-sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.3;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 60px;
+    background: #050505;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-section::before {
+    content: '';
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,150,12,0.05) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .contact-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(48px, 7vw, 100px);
+    font-weight: 300;
+    color: var(--off-white);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-heading em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .contact-sub {
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--gray);
+    margin-bottom: 56px;
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    line-height: 1.8;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-link {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gray);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .contact-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+
+  .contact-link:hover { color: var(--off-white); }
+  .contact-link:hover::after { width: 100%; }
+
+  .contact-email {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--gold-light);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .contact-email:hover { opacity: 0.7; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px 60px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes expandLine {
+    0%, 100% { width: 40px; opacity: 0.4; }
+    50% { width: 70px; opacity: 0.8; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { position: absolute; inset: 0; z-index: 0; }
+    .hero-left { z-index: 1; min-height: 100vh; background: linear-gradient(to right, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.6) 100%); padding: 100px 32px 80px; }
+    .about-grid, .croozin-section { grid-template-columns: 1fr; gap: 60px; }
+    .work-grid { grid-template-columns: 1fr; }
+    .work-item.wide { grid-column: span 1; aspect-ratio: 4/3; }
+    section, .clients-section, .contact-section, footer { padding-left: 32px; padding-right: 32px; }
+    nav { padding: 24px 32px; }
+    .nav-links { display: none; }
+    .croozin-section { padding: 80px 32px; }
+    .work-inner { padding: 0 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">A · K</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#objects">Objects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Senior Lighting Designer · Paris</div>
+    <h1 class="hero-name">Alexandre<br><em>Kolinka</em></h1>
+    <p class="hero-tagline">Architectural light · Parametric sculpture · Bespoke luminaires<br>15 years · Europe · Middle East · Central Asia</p>
+    <div class="hero-line"></div>
+    <p class="hero-phrase">"Structures that begin where architecture ends —<br>designed to host light, time, and living things."</p>
+    <div class="scroll-hint">Scroll to explore</div>
+  </div>
+  <div class="hero-right">
+    <!-- Hero image: crOOZin illuminated warm white -->
+    <img class="hero-img"
+      src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80&auto=format"
+      alt="Light sculpture"
+      onerror="this.style.background='#111'; this.src=''">
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Profile</div>
+  <div class="about-grid">
+    <div class="reveal">
+      <h2 class="about-heading">Where light<br>becomes <em>matter</em></h2>
+      <div class="about-stats">
+        <div>
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Years of practice</div>
+        </div>
+        <div>
+          <div class="stat-number">4</div>
+          <div class="stat-label">Continents</div>
+        </div>
+        <div>
+          <div class="stat-number">∞</div>
+          <div class="stat-label">Parametric forms</div>
+        </div>
+        <div>
+          <div class="stat-number">1</div>
+          <div class="stat-label">Obsession</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience across architectural lighting, media façades, and public realm installations. From stadium skins in Saudi Arabia to cultural venues in Kazakhstan, from luxury retail in Paris to parametric light objects born in a Paris studio.</p>
+      <p class="about-text">Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong> — an independent research studio working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the crOOZin series: biomorphic light objects grown from Grasshopper geometries and printed at 25 micron resolution.</p>
+      <p class="about-text">Fluent in Rhino · Grasshopper · DIALux · Madrix · LightAct · Cinema 4D · Arduino · DMX/ArtNet · Unreal Engine · V-Ray.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<div class="work-section" id="work">
+  <div class="work-inner">
+    <div class="section-label reveal">Selected Projects</div>
+    <div class="work-grid reveal">
+
+      <div class="work-item wide">
+        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1200&q=80&auto=format" alt="Dammam Aramco Stadium">
+        <div class="work-overlay">
+          <div class="work-project">Dammam Aramco Stadium</div>
+          <div class="work-meta">Saudi Arabia · Foster + Partners · Populous · LDC</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80&auto=format" alt="Astana Expo">
+        <div class="work-overlay">
+          <div class="work-project">Astana Expo HQ</div>
+          <div class="work-meta">Kazakhstan · A. Smith / G. Gill</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&auto=format" alt="Morland Mixite">
+        <div class="work-overlay">
+          <div class="work-project">Morland Mixité Capitale</div>
+          <div class="work-meta">Paris · David Chipperfield · O. Eliasson</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=800&q=80&auto=format" alt="Chanel Place Vendome">
+        <div class="work-overlay">
+          <div class="work-project">Chanel — Once Upon a Moon</div>
+          <div class="work-meta">Place Vendôme, Paris · Atelier Athem</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80&auto=format" alt="ForteBank HQ">
+        <div class="work-overlay">
+          <div class="work-project">ForteBank HQ</div>
+          <div class="work-meta">Astana, Kazakhstan · Saraiva & Associados</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80&auto=format" alt="Gulf Cup Opening">
+        <div class="work-overlay">
+          <div class="work-project">Gulf Cup Opening Ceremony</div>
+          <div class="work-meta">Kuwait · Auditoire · 500 light sabers</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80&auto=format" alt="Namsan Seoul">
+        <div class="work-overlay">
+          <div class="work-project">Namsan Electronic Fire</div>
+          <div class="work-meta">Seoul, South Korea · World record video mapping</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CROOZIN -->
+<div id="objects">
+  <div class="croozin-section">
+    <div class="croozin-images reveal">
+      <div class="croozin-img-main">
+        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&q=80&auto=format" alt="crOOZin warm white">
+      </div>
+      <div class="croozin-img-sm">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format" alt="crOOZin colour">
+      </div>
+      <div class="croozin-img-sm">
+        <img src="https://images.unsplash.com/photo-1507643179773-3e975d7ac515?w=600&q=80&auto=format" alt="crOOZin detail">
+      </div>
+    </div>
+
+    <div class="croozin-content reveal">
+      <div class="section-label">Studio Incandescence</div>
+      <h2 class="croozin-title">crOOZin</h2>
+      <div class="croozin-subtitle">Parametric light object · Limited series · Paris</div>
+      <p class="croozin-text">A biomorphic light sculpture born from Grasshopper-driven parametric design. Inspired by Art Nouveau fluidity and Zaha Hadid's structural logic, crOOZin is printed at 25 micron resolution in translucent resin — a form that comes alive only when light passes through it.</p>
+      <p class="croozin-text">Each piece is unique. Each form is a conversation between code, material, and light.</p>
+      <div class="croozin-specs">
+        <div class="spec-row">
+          <span class="spec-key">Dimensions</span>
+          <span class="spec-val">Ø 15 cm × 27 cm</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Material</span>
+          <span class="spec-val">3D-printed resin · 25 µm · Hand-turned wood base</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Light source</span>
+          <span class="spec-val">LED 2700K dimmable · Dichroic lens · USB-C</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Production</span>
+          <span class="spec-val">Conçu & fabriqué à Paris · Série numérotée</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Studio</span>
+          <span class="spec-val">Studio Incandescence · 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENTS -->
+<div class="clients-section reveal">
+  <div class="section-label">Collaborations</div>
+  <div class="clients-scroll">
+    <span class="client-name">Rolex</span><div class="client-sep"></div>
+    <span class="client-name">Chanel</span><div class="client-sep"></div>
+    <span class="client-name">Louis Vuitton</span><div class="client-sep"></div>
+    <span class="client-name">Burberry</span><div class="client-sep"></div>
+    <span class="client-name">Yves Saint Laurent</span><div class="client-sep"></div>
+    <span class="client-name">Samsung</span><div class="client-sep"></div>
+    <span class="client-name">Audi</span><div class="client-sep"></div>
+    <span class="client-name">BMW</span><div class="client-sep"></div>
+    <span class="client-name">Renault</span><div class="client-sep"></div>
+    <span class="client-name">Foster + Partners</span><div class="client-sep"></div>
+    <span class="client-name">OMA</span><div class="client-sep"></div>
+    <span class="client-name">David Chipperfield</span><div class="client-sep"></div>
+    <span class="client-name">Olafur Eliasson</span><div class="client-sep"></div>
+    <span class="client-name">Kengo Kuma</span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-section" id="contact">
+  <h2 class="contact-heading reveal">Let's build<br><em>something</em></h2>
+  <p class="contact-sub reveal">Available for architectural lighting commissions, parametric sculpture projects, and artistic collaborations worldwide.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:lightsonic@gmail.com" class="contact-email">lightsonic@gmail.com</a>
+    <div class="client-sep"></div>
+    <a href="https://instagram.com/alexandre_kolinka" class="contact-link" target="_blank">Instagram</a>
+    <a href="https://instagram.com/croozin_lamp" class="contact-link" target="_blank">crOOZin</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Alexandre Kolinka · Studio Incandescence</span>
+  <span>Paris · International</span>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+      cursor.style.opacity = '0.5';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '8px';
+      cursor.style.height = '8px';
+      cursor.style.opacity = '1';
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, 100);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
