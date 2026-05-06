@@ -658,6 +658,162 @@
     transform: translateY(0);
   }
 
+  /* ── REGIONS BAR ── */
+  .regions-bar {
+    margin-top: 32px;
+    max-width: 420px;
+  }
+
+  .region-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .region-tab {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gray);
+    background: none;
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+
+  .region-tab:hover { color: var(--off-white); border-color: rgba(255,255,255,0.3); }
+
+  .region-tab.active {
+    color: var(--black);
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .region-panel {
+    display: none;
+    font-size: 11px;
+    line-height: 1.8;
+    color: var(--gray);
+    padding: 12px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    animation: fadeUp 0.4s ease forwards;
+  }
+
+  .region-panel.active { display: block; }
+
+  .region-icon {
+    color: var(--gold);
+    margin-right: 6px;
+    font-size: 8px;
+  }
+
+  /* ── VILLA SEDRATI ── */
+  .sedrati-section {
+    padding: 120px 60px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .sedrati-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+
+  .sedrati-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .sedrati-main {
+    grid-column: span 2;
+    height: 300px;
+    overflow: hidden;
+  }
+
+  .sedrati-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.85);
+    transition: transform 0.6s ease;
+  }
+
+  .sedrati-main:hover img { transform: scale(1.03); }
+
+  .sedrati-sm {
+    height: 160px;
+    overflow: hidden;
+  }
+
+  .sedrati-sm img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+    transition: transform 0.6s ease;
+  }
+
+  .sedrati-sm:hover img { transform: scale(1.05); }
+
+  .sedrati-content {}
+
+  .sedrati-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 38px;
+    font-weight: 300;
+    color: var(--off-white);
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .sedrati-subtitle {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 32px;
+  }
+
+  .sedrati-text {
+    font-size: 13px;
+    line-height: 2;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+
+  .sedrati-meta {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .sedrati-meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 11px;
+  }
+
+  .sedrati-meta-key {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    font-size: 9px;
+  }
+
+  .sedrati-meta-val {
+    color: var(--off-white);
+    text-align: right;
+  }
+
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; }
@@ -694,9 +850,38 @@
   <div class="hero-left">
     <div class="hero-tag">Senior Lighting Designer · Paris</div>
     <h1 class="hero-name">Alexandre<br><em>Kolinka</em></h1>
-    <p class="hero-tagline">Architectural light · Parametric sculpture · Bespoke luminaires<br>15 years · Europe · Middle East · Central Asia</p>
+    <p class="hero-tagline">Architectural light · Parametric sculpture · Bespoke luminaires<br>15 years · 5 continents</p>
     <div class="hero-line"></div>
     <p class="hero-phrase">"Structures that begin where architecture ends —<br>designed to host light, time, and living things."</p>
+
+    <!-- INTERACTIVE REGIONS BAR -->
+    <div class="regions-bar">
+      <div class="region-tabs">
+        <button class="region-tab active" data-region="europe">Europe</button>
+        <button class="region-tab" data-region="middleeast">Middle East</button>
+        <button class="region-tab" data-region="centralasia">Central Asia</button>
+        <button class="region-tab" data-region="africa">North Africa</button>
+        <button class="region-tab" data-region="asia">Asia</button>
+      </div>
+      <div class="region-content">
+        <div class="region-panel active" id="region-europe">
+          <span class="region-icon">●</span> Chanel — Once Upon a Moon, Place Vendôme · Burberry, Faubourg St-Honoré · Morland Mixité Capitale with Olafur Eliasson, Paris · crOOZin parametric luminaires, Studio Incandescence
+        </div>
+        <div class="region-panel" id="region-middleeast">
+          <span class="region-icon">●</span> Dammam Aramco Stadium, Saudi Arabia — Foster + Partners / Populous · Gulf Cup Opening Ceremony, Kuwait — 500 synchronized light sabers
+        </div>
+        <div class="region-panel" id="region-centralasia">
+          <span class="region-icon">●</span> ForteBank Headquarters, Astana — bespoke façade lighting · Astana Expo HQ — A. Smith / G. Gill Architects · Kolinka Lighting Bureau, founded 2013
+        </div>
+        <div class="region-panel" id="region-africa">
+          <span class="region-icon">●</span> Villa Sedrati, Rabat — residential lighting concept · CFG Bank HQ, Casablanca — layered façade lighting · University, Marrakech — dark-sky G3 compliant scheme
+        </div>
+        <div class="region-panel" id="region-asia">
+          <span class="region-icon">●</span> Yves Saint Laurent, Shanghai — light installation · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo Digital Gallery, South Korea · Circle of Light, Red Square Moscow
+        </div>
+      </div>
+    </div>
+
     <div class="scroll-hint">Scroll to explore</div>
   </div>
   <div class="hero-right">
@@ -922,6 +1107,62 @@
   </div>
 </div>
 
+<!-- VILLA SEDRATI -->
+<div class="sedrati-section reveal">
+  <div class="section-label">Architectural Lighting — Residential</div>
+  <div class="sedrati-grid">
+    <div class="sedrati-images">
+      <div class="sedrati-main">
+        <img src="sedrati.jpg" alt="Villa Sedrati Rabat">
+      </div>
+      <div class="sedrati-sm">
+        <img src="sedrati1.jpg" alt="Villa Sedrati detail">
+      </div>
+      <div class="sedrati-sm">
+        <img src="sedrati2.jpg" alt="Villa Sedrati living">
+      </div>
+      <div class="sedrati-sm">
+        <img src="sedrati3.jpg" alt="Villa Sedrati cinema">
+      </div>
+      <div class="sedrati-sm">
+        <img src="sedrati4.jpg" alt="Villa Sedrati exterior">
+      </div>
+    </div>
+    <div class="sedrati-content">
+      <h2 class="sedrati-title">Villa Sedrati</h2>
+      <div class="sedrati-subtitle">Residential · Rabat, Morocco · 2025</div>
+      <p class="sedrati-text">A refined residential lighting scheme balancing high-end comfort with cost efficiency. The design integrates layered lighting: discreet DALI-controlled downlights for general illumination, continuous LED coves for ambient architectural highlights, and focused accents using rail-mounted spots and minimalist pendants to enhance artworks and spatial depth.</p>
+      <p class="sedrati-text">Premium fixtures by Arkoslight were selected for key living areas, while Hofflights and Luxio products ensured budget-conscious consistency in secondary spaces and the home cinema. The result is a custom, responsive lighting environment tailored to the villa's elegance and functionality.</p>
+      <div class="sedrati-meta">
+        <div class="sedrati-meta-row">
+          <span class="sedrati-meta-key">Location</span>
+          <span class="sedrati-meta-val">Rabat, Morocco</span>
+        </div>
+        <div class="sedrati-meta-row">
+          <span class="sedrati-meta-key">Sector</span>
+          <span class="sedrati-meta-val">Residential · High-end</span>
+        </div>
+        <div class="sedrati-meta-row">
+          <span class="sedrati-meta-key">Client</span>
+          <span class="sedrati-meta-val">Luxio Lighting</span>
+        </div>
+        <div class="sedrati-meta-row">
+          <span class="sedrati-meta-key">Stage</span>
+          <span class="sedrati-meta-val">Consulting · DIALux</span>
+        </div>
+        <div class="sedrati-meta-row">
+          <span class="sedrati-meta-key">Date</span>
+          <span class="sedrati-meta-val">June 2025</span>
+        </div>
+        <div class="sedrati-meta-row">
+          <span class="sedrati-meta-key">Fixtures</span>
+          <span class="sedrati-meta-val">Arkoslight · Hofflights · Luxio</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- CONTACT -->
 <div class="contact-section" id="contact">
   <h2 class="contact-heading reveal">Let's build<br><em>something</em></h2>
@@ -971,6 +1212,16 @@
       cursor.style.width = '8px';
       cursor.style.height = '8px';
       cursor.style.opacity = '1';
+    });
+  });
+
+  // Regions bar interaction
+  document.querySelectorAll('.region-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.region-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('region-' + tab.dataset.region).classList.add('active');
     });
   });
 
