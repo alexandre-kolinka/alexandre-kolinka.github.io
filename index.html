@@ -814,19 +814,102 @@
     text-align: right;
   }
 
-  /* ── RESPONSIVE ── */
+  /* ── RESPONSIVE TABLET ── */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; }
     .hero-right { position: absolute; inset: 0; z-index: 0; }
     .hero-left { z-index: 1; min-height: 100vh; background: linear-gradient(to right, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.6) 100%); padding: 100px 32px 80px; }
-    .about-grid, .croozin-section { grid-template-columns: 1fr; gap: 60px; }
-    .work-grid { grid-template-columns: 1fr; }
-    .work-item.wide { grid-column: span 1; aspect-ratio: 4/3; }
+    .about-grid, .croozin-section, .sedrati-grid { grid-template-columns: 1fr; gap: 60px; }
+    .work-grid { grid-template-columns: 1fr 1fr; }
+    .work-item.wide { grid-column: span 2; aspect-ratio: 16/9; }
     section, .clients-section, .contact-section, footer { padding-left: 32px; padding-right: 32px; }
     nav { padding: 24px 32px; }
     .nav-links { display: none; }
-    .croozin-section { padding: 80px 32px; }
+    .croozin-section, .sedrati-section { padding: 80px 32px; }
     .work-inner { padding: 0 32px; }
+    .regions-bar { max-width: 100%; }
+  }
+
+  /* ── RESPONSIVE MOBILE ── */
+  @media (max-width: 600px) {
+
+    /* Nav */
+    nav { padding: 20px 20px; }
+    .nav-links { display: none; }
+    .nav-logo { font-size: 16px; }
+
+    /* Hero */
+    .hero { grid-template-columns: 1fr; min-height: 100vh; }
+    .hero-right { position: absolute; inset: 0; z-index: 0; }
+    .hero-left {
+      z-index: 1;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.85) 0%, rgba(8,8,8,0.7) 60%, rgba(8,8,8,0.95) 100%);
+      padding: 90px 24px 60px;
+      justify-content: center;
+    }
+    .hero-name { font-size: 52px; }
+    .hero-tagline { font-size: 12px; max-width: 100%; }
+    .hero-phrase { font-size: 13px; max-width: 100%; }
+    .scroll-hint { left: 24px; bottom: 24px; }
+
+    /* Regions bar */
+    .regions-bar { max-width: 100%; margin-top: 24px; }
+    .region-tabs { gap: 5px; }
+    .region-tab { font-size: 8px; padding: 5px 8px; }
+    .region-panel { font-size: 10px; }
+
+    /* About */
+    section { padding: 60px 24px; }
+    .about-grid { grid-template-columns: 1fr; gap: 40px; }
+    .about-heading { font-size: 32px; }
+    .about-stats { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .stat-number { font-size: 36px; }
+    .about-text { font-size: 13px; }
+
+    /* Work grid */
+    .work-section { padding: 60px 0; }
+    .work-inner { padding: 0 24px; }
+    .work-grid { grid-template-columns: 1fr; gap: 2px; }
+    .work-item { aspect-ratio: 4/3; }
+    .work-item.wide { grid-column: span 1; aspect-ratio: 16/9; }
+    .work-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); }
+    .work-project { font-size: 16px; }
+    .work-meta { font-size: 9px; }
+
+    /* crOOZin */
+    .croozin-section { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
+    .croozin-images { grid-template-columns: 1fr 1fr; }
+    .croozin-img-main { height: 260px; }
+    .croozin-img-sm { height: 140px; }
+    .croozin-title { font-size: 48px; }
+    .croozin-text { font-size: 13px; }
+
+    /* Sedrati */
+    .sedrati-section { padding: 60px 24px; }
+    .sedrati-grid { grid-template-columns: 1fr; gap: 40px; }
+    .sedrati-images { grid-template-columns: 1fr 1fr; }
+    .sedrati-main { height: 220px; }
+    .sedrati-sm { height: 120px; }
+    .sedrati-title { font-size: 30px; }
+    .sedrati-text { font-size: 13px; }
+
+    /* Clients */
+    .clients-section { padding: 60px 24px; }
+    .clients-scroll { gap: 12px 24px; }
+    .client-name { font-size: 18px; }
+
+    /* Contact */
+    .contact-section { padding: 80px 24px; min-height: 50vh; }
+    .contact-heading { font-size: 48px; }
+    .contact-links { flex-direction: column; gap: 20px; align-items: center; }
+    .contact-email { font-size: 18px; }
+
+    /* Footer */
+    footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+
+    /* Cursor — désactivé sur mobile */
+    .cursor, .cursor-ring { display: none; }
   }
 </style>
 </head>
