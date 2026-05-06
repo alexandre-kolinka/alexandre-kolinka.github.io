@@ -334,7 +334,7 @@
   .work-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
+    gap: 16px;
     margin-top: 60px;
   }
 
@@ -514,9 +514,44 @@
     transition: color 0.3s ease;
     letter-spacing: 0.05em;
     white-space: nowrap;
+    position: relative;
   }
 
   .client-name:hover { color: var(--off-white); }
+
+  .client-name[title]:not(.kw) {
+    cursor: default;
+  }
+
+  .client-name[title]:not(.kw):hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20,20,20,0.96);
+    color: var(--gray);
+    font-size: 10px;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+    padding: 6px 12px;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.08);
+    pointer-events: none;
+    z-index: 200;
+    opacity: 1;
+  }
+
+  .client-name.kw {
+    cursor: pointer;
+    border-bottom: 1px solid rgba(212,172,58,0.2);
+  }
+
+  .client-name.kw:hover {
+    color: var(--gold-light);
+    border-color: var(--gold);
+  }
 
   .client-sep {
     width: 4px;
@@ -1129,7 +1164,7 @@
         </div>
       </div>
 
-      <div class="work-item">
+      <div class="work-item" id="work-ysl">
         <img src="YSL.jpg" alt="Yves Saint Laurent Shanghai">
         <div class="work-overlay">
           <div class="work-project">Yves Saint Laurent</div>
@@ -1224,20 +1259,22 @@
 <div class="clients-section reveal">
   <div class="section-label">Collaborations</div>
   <div class="clients-scroll">
-    <span class="client-name">Rolex</span><div class="client-sep"></div>
-    <span class="client-name">Chanel</span><div class="client-sep"></div>
-    <span class="client-name">Louis Vuitton</span><div class="client-sep"></div>
-    <span class="client-name">Burberry</span><div class="client-sep"></div>
-    <span class="client-name">Yves Saint Laurent</span><div class="client-sep"></div>
-    <span class="client-name">Samsung</span><div class="client-sep"></div>
-    <span class="client-name">Audi</span><div class="client-sep"></div>
-    <span class="client-name">BMW</span><div class="client-sep"></div>
-    <span class="client-name">Renault</span><div class="client-sep"></div>
-    <span class="client-name">Foster + Partners</span><div class="client-sep"></div>
-    <span class="client-name">OMA</span><div class="client-sep"></div>
-    <span class="client-name">David Chipperfield</span><div class="client-sep"></div>
-    <span class="client-name">Olafur Eliasson</span><div class="client-sep"></div>
-    <span class="client-name">Kengo Kuma</span>
+    <span class="client-name kw" data-target="work-chanel" title="Chanel — Once Upon a Moon, Paris">Chanel</span><div class="client-sep"></div>
+    <span class="client-name kw" data-target="work-chanel" title="Burberry — Faubourg St-Honoré, Paris">Burberry</span><div class="client-sep"></div>
+    <span class="client-name kw" data-target="work-ysl" title="Yves Saint Laurent — Shanghai">Yves Saint Laurent</span><div class="client-sep"></div>
+    <span class="client-name" title="Rolex — Into the Realm of Rolex, Beijing 2009">Rolex</span><div class="client-sep"></div>
+    <span class="client-name" title="Louis Vuitton — Iconic Trunk, Champs-Élysées">Louis Vuitton</span><div class="client-sep"></div>
+    <span class="client-name kw" data-target="work-dammam" title="Foster + Partners — Dammam Aramco Stadium">Foster + Partners</span><div class="client-sep"></div>
+    <span class="client-name kw" data-target="work-dammam" title="Dammam Aramco Stadium, Saudi Arabia">Populous</span><div class="client-sep"></div>
+    <span class="client-name kw" data-target="work-fortebank" title="ForteBank HQ — Astana, Kazakhstan">Saraiva & Associados</span><div class="client-sep"></div>
+    <span class="client-name" title="David Chipperfield — Morland Mixité Capitale, Paris">David Chipperfield</span><div class="client-sep"></div>
+    <span class="client-name" title="Olafur Eliasson — Morland Mixité Capitale, Paris">Olafur Eliasson</span><div class="client-sep"></div>
+    <span class="client-name" title="OMA — The Perigon, Miami Beach">OMA</span><div class="client-sep"></div>
+    <span class="client-name" title="Kengo Kuma — Aman Miami Beach">Kengo Kuma</span><div class="client-sep"></div>
+    <span class="client-name" title="Samsung — Yeosu Expo Digital Gallery, South Korea">Samsung</span><div class="client-sep"></div>
+    <span class="client-name" title="Audi — Event scenography, Europe">Audi</span><div class="client-sep"></div>
+    <span class="client-name" title="BMW — Event scenography, Europe">BMW</span><div class="client-sep"></div>
+    <span class="client-name" title="Renault — Event scenography, Europe">Renault</span>
   </div>
 </div>
 
