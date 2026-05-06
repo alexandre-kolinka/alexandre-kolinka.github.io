@@ -849,6 +849,52 @@
     text-align: right;
   }
 
+  /* ── CATEGORY SECTIONS ── */
+  .cat-section {
+    padding: 100px 0 80px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .cat-section:first-of-type { border-top: none; }
+
+  .cat-header {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 60px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 60px;
+    align-items: start;
+    margin-bottom: 60px;
+  }
+
+  .cat-number {
+    font-size: 80px;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    color: rgba(184,150,12,0.15);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .cat-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 300;
+    color: var(--off-white);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .cat-title em { font-style: italic; color: var(--gold-light); }
+
+  .cat-intro {
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--gray);
+    max-width: 560px;
+  }
+
   /* ── PARAMETRIC DOSSIER ── */
   .parametric-dossier { padding: 120px 0; background: #0a0a0a; }
 
@@ -1136,6 +1182,9 @@
     .contact-links { flex-direction: column; gap: 20px; align-items: center; }
     .contact-email { font-size: 18px; }
 
+    .cat-header { grid-template-columns: 1fr; gap: 20px; padding: 0 24px; margin-bottom: 40px; }
+    .cat-number { font-size: 48px; }
+    .cat-title { font-size: 28px; }
     .parametric-dossier { padding: 60px 0; }
     .parametric-intro { grid-template-columns: 1fr; gap: 32px; margin-bottom: 40px; }
     .parametric-heading { font-size: 36px; }
@@ -1162,8 +1211,12 @@
 <nav>
   <a href="#" class="nav-logo">A · K</a>
   <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#objects">Objects</a></li>
+    <li><a href="#section-architectural">Architectural</a></li>
+    <li><a href="#section-retail">Retail</a></li>
+    <li><a href="#section-events">Events</a></li>
+    <li><a href="#section-art">Art & Light</a></li>
+    <li><a href="#section-parametric">Parametric</a></li>
+    <li><a href="#section-objects">Objects</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -1248,10 +1301,18 @@
   </div>
 </section>
 
-<!-- WORK -->
-<div class="work-section" id="work">
+<!-- ═══════════════════════════════════════════
+     SECTION 1 — ARCHITECTURAL LIGHTING
+═══════════════════════════════════════════ -->
+<div class="cat-section" id="section-architectural">
+  <div class="cat-header reveal">
+    <div class="cat-number">01</div>
+    <div>
+      <h2 class="cat-title">Architectural <em>Lighting</em></h2>
+      <p class="cat-intro">Large-scale lighting strategies for buildings, façades and public realm. From stadium skins to corporate headquarters, from cultural institutions to residential schemes — light as an architectural material, integrated from concept through to commissioning.</p>
+    </div>
+  </div>
   <div class="work-inner">
-    <div class="section-label reveal">Selected Projects</div>
     <div class="work-grid reveal">
 
       <div class="work-item wide" id="work-dammam">
@@ -1263,7 +1324,7 @@
       </div>
 
       <div class="work-item">
-        <img src="satdium-1.jpg" alt="Dammam Stadium detail">
+        <img src="satdium-1.jpg" alt="Dammam Stadium facade">
         <div class="work-overlay">
           <div class="work-project">Dammam Stadium — Façade</div>
           <div class="work-meta">Saudi Arabia · Media façade · LED mapping</div>
@@ -1310,22 +1371,6 @@
         </div>
       </div>
 
-      <div class="work-item" id="work-chanel">
-        <img src="moon.jpg" alt="Chanel Once Upon a Moon">
-        <div class="work-overlay">
-          <div class="work-project">Chanel — Once Upon a Moon</div>
-          <div class="work-meta">Place Vendôme, Paris · Atelier Athem</div>
-        </div>
-      </div>
-
-      <div class="work-item" id="work-ysl">
-        <img src="YSL.jpg" alt="Yves Saint Laurent Shanghai">
-        <div class="work-overlay">
-          <div class="work-project">Yves Saint Laurent</div>
-          <div class="work-meta">Shanghai, China · Ligeo · Light installation</div>
-        </div>
-      </div>
-
       <div class="work-item" id="work-fortebank">
         <img src="fortebank001.jpeg" alt="ForteBank HQ">
         <div class="work-overlay">
@@ -1342,7 +1387,67 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2 — LUXURY RETAIL & SCENOGRAPHY
+═══════════════════════════════════════════ -->
+<div class="cat-section" id="section-retail">
+  <div class="cat-header reveal">
+    <div class="cat-number">02</div>
+    <div>
+      <h2 class="cat-title">Luxury Retail<br><em>& Scenography</em></h2>
+      <p class="cat-intro">Light as brand identity. Bespoke lighting concepts and installations for the world's most demanding luxury houses — Chanel, Burberry, Yves Saint Laurent, Louis Vuitton, Rolex. Blurring the line between scenography, architecture and art.</p>
+    </div>
+  </div>
+  <div class="work-inner">
+    <div class="work-grid reveal">
+
+      <div class="work-item wide" id="work-chanel">
+        <img src="moon.jpg" alt="Chanel Once Upon a Moon">
+        <div class="work-overlay">
+          <div class="work-project">Chanel — Once Upon a Moon</div>
+          <div class="work-meta">Place Vendôme, Paris · Atelier Athem · Light installation</div>
+        </div>
+      </div>
+
+      <div class="work-item" id="work-ysl">
+        <img src="YSL.jpg" alt="Yves Saint Laurent Shanghai">
+        <div class="work-overlay">
+          <div class="work-project">Yves Saint Laurent</div>
+          <div class="work-meta">Shanghai, China · Ligeo · Light installation</div>
+        </div>
+      </div>
+
       <div class="work-item">
+        <img src="ripples.jpeg" alt="Retail scenography">
+        <div class="work-overlay">
+          <div class="work-project">Architectural Scenography</div>
+          <div class="work-meta">Luxury retail · Light & space</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3 — EVENT & LIVE PERFORMANCE
+═══════════════════════════════════════════ -->
+<div class="cat-section" id="section-events">
+  <div class="cat-header reveal">
+    <div class="cat-number">03</div>
+    <div>
+      <h2 class="cat-title">Event & Live<br><em>Performance</em></h2>
+      <p class="cat-intro">Turning city skylines into theatrical shows. From world-record video mapping in Seoul to 500 synchronized light sabers in Kuwait — live light design at the scale of spectacle, for brands, institutions and public celebrations.</p>
+    </div>
+  </div>
+  <div class="work-inner">
+    <div class="work-grid reveal">
+
+      <div class="work-item wide">
         <img src="festival-1.png" alt="Event scenography">
         <div class="work-overlay">
           <div class="work-project">Event Scenography</div>
@@ -1351,10 +1456,18 @@
       </div>
 
       <div class="work-item">
-        <img src="drone-aqua.png" alt="Autonomous Light Swarm">
+        <img src="satdium-4.jpg" alt="Gulf Cup Kuwait">
         <div class="work-overlay">
-          <div class="work-project">Autonomous Luminous Sea Swarm</div>
-          <div class="work-meta">Concept · Floating light drones · Phyllotaxis</div>
+          <div class="work-project">Gulf Cup Opening Ceremony</div>
+          <div class="work-meta">Kuwait · Auditoire · 500 synchronized light sabers</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="klb-Fortebank-10.jpg" alt="Namsan Electronic Fire Seoul">
+        <div class="work-overlay">
+          <div class="work-project">Namsan Electronic Fire</div>
+          <div class="work-meta">Seoul, South Korea · World record video mapping</div>
         </div>
       </div>
 
@@ -1362,8 +1475,60 @@
   </div>
 </div>
 
-<!-- CROOZIN -->
-<div id="objects">
+<!-- ═══════════════════════════════════════════
+     SECTION 4 — ART & LIGHT INSTALLATIONS
+═══════════════════════════════════════════ -->
+<div class="cat-section" id="section-art">
+  <div class="cat-header reveal">
+    <div class="cat-number">04</div>
+    <div>
+      <h2 class="cat-title">Art & Light<br><em>Installations</em></h2>
+      <p class="cat-intro">Site-specific works at the intersection of light, form and environment. Biomorphic structures, aquatic light systems, immersive environments — designed to transform space into experience and let light become a living presence.</p>
+    </div>
+  </div>
+  <div class="work-inner">
+    <div class="work-grid reveal">
+
+      <div class="work-item wide">
+        <img src="drone-aqua.png" alt="Autonomous Luminous Sea Swarm">
+        <div class="work-overlay">
+          <div class="work-project">Autonomous Luminous Sea Swarm</div>
+          <div class="work-meta">Concept · Floating light drones · Phyllotaxis distribution</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="croozinluna2.jpg" alt="crOOZin light sculpture">
+        <div class="work-overlay">
+          <div class="work-project">crOOZin — Light Sculpture</div>
+          <div class="work-meta">Studio Incandescence · Paris · 2026</div>
+        </div>
+      </div>
+
+      <div class="work-item">
+        <img src="crOOzin-pink.jpeg" alt="crOOZin pink">
+        <div class="work-overlay">
+          <div class="work-project">crOOZin — Colour Series</div>
+          <div class="work-meta">Biomorphic · 3D printed · Dichroic lens</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6 — OBJECTS & LUMINAIRES
+═══════════════════════════════════════════ -->
+<div id="section-objects">
+  <div class="cat-header reveal" style="max-width:1400px; margin:0 auto; padding:80px 60px 0;">
+    <div class="cat-number">06</div>
+    <div>
+      <h2 class="cat-title">Objects &<br><em>Luminaires</em></h2>
+      <p class="cat-intro">Bespoke light objects born from parametric geometry and artisan fabrication. Limited series, conceived and made in Paris — where code, material and light meet in a single form.</p>
+    </div>
+  </div>
+  <div id="objects">
   <div class="croozin-section">
     <div class="croozin-images reveal">
       <div class="croozin-img-main">
@@ -1409,12 +1574,20 @@
   </div>
 </div>
 
-<!-- GRASSHOPPER / PARAMETRIC DOSSIER -->
-<div class="work-section parametric-dossier" id="work-parametric">
+<!-- ═══════════════════════════════════════════
+     SECTION 5 — PARAMETRIC DESIGN & RESEARCH
+═══════════════════════════════════════════ -->
+<div class="work-section parametric-dossier" id="section-parametric">
   <div class="work-inner">
 
     <!-- SECTION HEADER -->
-    <div class="section-label reveal">Parametric Design — Research & Tools</div>
+    <div class="cat-header reveal" style="padding:0; margin-bottom:0;">
+      <div class="cat-number">05</div>
+      <div>
+        <h2 class="cat-title">Parametric Design<br><em>& Research</em></h2>
+        <p class="cat-intro">Where the hand gets lost, the code continues. Algorithmic tools for light distribution, generative form and fabrication logic — building environments where aesthetic intention and technical deployment are resolved in the same gesture.</p>
+      </div>
+    </div>
 
     <!-- INTRO BLOCK -->
     <div class="parametric-intro reveal">
@@ -1460,6 +1633,7 @@
           <div class="ligeo-meta-row"><span class="ligeo-key">Control</span><span class="ligeo-val">ArtNet · sACN · Madrix · unique IP per bar</span></div>
           <div class="ligeo-meta-row"><span class="ligeo-key">Output</span><span class="ligeo-val">3D distribution + hanging point schedule</span></div>
           <div class="ligeo-meta-row"><span class="ligeo-key">Client</span><span class="ligeo-val">Ligeo Lighting · February 2021</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Ecosystem</span><span class="ligeo-val"><a href="https://sub.digital" target="_blank" style="color:var(--gold-light); text-decoration:none; border-bottom:1px solid rgba(212,172,58,0.3); transition:border-color 0.3s ease;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(212,172,58,0.3)'">sub.digital</a> · Grasshopper / Rhino community</span></div>
         </div>
       </div>
 
@@ -1474,6 +1648,9 @@
   </div>
 </div>
 
+
+  </div>
+</div>
 
 <!-- CLIENTS -->
 <div class="clients-section reveal">
