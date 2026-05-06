@@ -849,6 +849,151 @@
     text-align: right;
   }
 
+  /* ── PARAMETRIC DOSSIER ── */
+  .parametric-dossier { padding: 120px 0; background: #0a0a0a; }
+
+  .parametric-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+    margin-bottom: 60px;
+  }
+
+  .parametric-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    color: var(--off-white);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .parametric-heading em { font-style: italic; color: var(--gold-light); }
+
+  .parametric-intro-text {
+    font-size: 13px;
+    line-height: 2;
+    color: var(--gray);
+    margin-bottom: 18px;
+  }
+
+  .parametric-divider {
+    height: 1px;
+    background: linear-gradient(to right, var(--gold) 0%, rgba(184,150,12,0.1) 60%, transparent 100%);
+    margin: 60px 0;
+    opacity: 0.4;
+  }
+
+  .parametric-project-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+
+  /* ── LIGEO SECTION ── */
+  .ligeo-section { padding: 120px 0; }
+
+  .ligeo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 60px;
+  }
+
+  .ligeo-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    color: var(--off-white);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .ligeo-title em { font-style: italic; color: var(--gold-light); }
+
+  .ligeo-subtitle {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 36px;
+  }
+
+  .ligeo-text {
+    font-size: 13px;
+    line-height: 2;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+
+  .ligeo-meta {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 32px;
+    margin-top: 20px;
+  }
+
+  .ligeo-meta-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 11px;
+  }
+
+  .ligeo-key {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--gray);
+    font-size: 9px;
+  }
+
+  .ligeo-val { color: var(--off-white); text-align: right; }
+
+  .ligeo-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+  }
+
+  .ligeo-img-main {
+    grid-column: span 2;
+    height: 320px;
+    overflow: hidden;
+  }
+  .ligeo-img-main img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.85);
+    transition: transform 0.6s ease;
+  }
+  .ligeo-img-main:hover img { transform: scale(1.03); }
+
+  .ligeo-img-sm { height: 180px; overflow: hidden; }
+  .ligeo-img-sm img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+    transition: transform 0.6s ease;
+  }
+  .ligeo-img-sm:hover img { transform: scale(1.05); }
+
+  .ligeo-img-wide {
+    grid-column: span 2;
+    height: 180px;
+    overflow: hidden;
+  }
+  .ligeo-img-wide img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+    transition: transform 0.6s ease;
+  }
+  .ligeo-img-wide:hover img { transform: scale(1.03); }
+
   /* ── KEYWORDS & TOOLTIPS ── */
   .kw {
     color: var(--gold-light);
@@ -991,6 +1136,15 @@
     .contact-links { flex-direction: column; gap: 20px; align-items: center; }
     .contact-email { font-size: 18px; }
 
+    .parametric-dossier { padding: 60px 0; }
+    .parametric-intro { grid-template-columns: 1fr; gap: 32px; margin-bottom: 40px; }
+    .parametric-heading { font-size: 36px; }
+    .ligeo-section { padding: 60px 0; }
+    .ligeo-grid { grid-template-columns: 1fr; gap: 40px; }
+    .ligeo-img-main { height: 220px; }
+    .ligeo-img-sm { height: 130px; }
+    .ligeo-img-wide { height: 130px; }
+
     /* Footer */
     footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
 
@@ -1089,7 +1243,7 @@
     <div class="reveal">
       <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience across architectural lighting, media façades, and public realm installations. From <span class="kw" data-target="work-dammam">stadium skins in Saudi Arabia</span> to cultural venues in <span class="kw" data-target="work-fortebank">Kazakhstan</span>, from <span class="kw" data-target="work-chanel">luxury retail in Paris</span> to <span class="kw" data-target="objects">parametric light objects</span> born in a Paris studio.</p>
       <p class="about-text">Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong> — an independent research studio working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the <span class="kw" data-target="objects">crOOZin series</span>: biomorphic light objects grown from <span class="kw-tool" data-tip="Parametric 3D modelling + visual scripting for generative design">Grasshopper</span> geometries and printed at 25 micron resolution.</p>
-      <p class="about-text">Fluent in <span class="kw-tool" data-tip="3D modelling — primary design tool">Rhino</span> · <span class="kw-tool" data-tip="Parametric visual scripting for generative design">Grasshopper</span> · <span class="kw" data-target="work-sedrati" data-tip="Professional lighting simulation software">DIALux</span> · <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server for architectural lighting">LightAct</span> · <span class="kw-tool" data-tip="3D motion graphics & rendering">Cinema 4D</span> · <span class="kw-tool" data-tip="Microcontroller programming for custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Professional lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D visualisation engine">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span>.</p>
+      <p class="about-text">Fluent in <span class="kw-tool" data-tip="3D modelling — primary design tool">Rhino</span> · <span class="kw" data-target="work-ligeo" data-tip="Parametric visual scripting for generative design">Grasshopper</span> · <span class="kw" data-target="work-sedrati" data-tip="Professional lighting simulation software">DIALux</span> · <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server for architectural lighting">LightAct</span> · <span class="kw-tool" data-tip="3D motion graphics & rendering">Cinema 4D</span> · <span class="kw-tool" data-tip="Microcontroller programming for custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Professional lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D visualisation engine">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span>.</p>
     </div>
   </div>
 </section>
@@ -1255,67 +1409,71 @@
   </div>
 </div>
 
-<!-- LIGEO PARAMETRIC -->
-<div class="work-section" id="work-ligeo" style="padding: 120px 0;">
+<!-- GRASSHOPPER / PARAMETRIC DOSSIER -->
+<div class="work-section parametric-dossier" id="work-parametric">
   <div class="work-inner">
-    <div class="section-label reveal">Parametric Research — Light Programming</div>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; margin-top:60px;" class="reveal">
+    <!-- SECTION HEADER -->
+    <div class="section-label reveal">Parametric Design — Research & Tools</div>
 
-      <div>
-        <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px); font-weight:300; color:var(--off-white); line-height:1.1; margin-bottom:12px;">Ligeo Spatial<br><em style="color:var(--gold-light);">Distribution</em></h2>
-        <div style="font-size:10px; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:36px;">Grasshopper · ArtNet · sACN · Real-time RGB · 2021</div>
+    <!-- INTRO BLOCK -->
+    <div class="parametric-intro reveal">
+      <div class="parametric-intro-left">
+        <h2 class="parametric-heading">Where the hand<br>gets <em>lost</em></h2>
+      </div>
+      <div class="parametric-intro-right">
+        <p class="parametric-intro-text">Parametric design is not a style — it is an extension of the hand, precisely where the hand gets lost. Where the pencil hesitates, the code continues. Using <span class="kw" data-target="work-ligeo">Rhino</span> and <span class="kw" data-target="work-ligeo">Grasshopper</span>, I build algorithms that generate form from rules: structural logic, light distribution, material behaviour, fabrication constraints.</p>
+        <p class="parametric-intro-text">But beyond form itself, parametric design is memory. Every iteration is recorded, every decision traceable. The form does not appear — it reveals itself progressively, through time and space, as a sequence of states each carrying the trace of the one before.</p>
+        <p class="parametric-intro-text">The crOOZin luminaires, the Dammam Stadium façade strategy, the Ligeo spatial distribution tool — all emerge from the same dialogue between intention and code, between the limits of the hand and the infinity of the rule.</p>
+      </div>
+    </div>
 
-        <p style="font-size:13px; line-height:2; color:var(--gray); margin-bottom:16px;">A parametric tool developed to solve a specific design problem: how to distribute a series of LED bars in three-dimensional space with controlled randomness. Built in Grasshopper with Perlin Noise as the generative engine, the app allows real-time control of bar density, angular amplitude, length variation and spatial recursion.</p>
+    <!-- DIVIDER -->
+    <div class="parametric-divider reveal"></div>
 
-        <p style="font-size:13px; line-height:2; color:var(--gray); margin-bottom:36px;">Colour output is simultaneously simulated via ArtNet/sACN for Madrix and compatible light software. Each bar carries a unique IP address auto-generated by the tool. The result: a design environment where aesthetic intention and technical deployment are resolved in the same gesture.</p>
+    <!-- LIGEO PROJECT -->
+    <div class="ligeo-grid reveal" id="work-ligeo">
 
-        <div style="border-top:1px solid rgba(255,255,255,0.06); padding-top:32px;">
-          <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px;">
-            <span style="text-transform:uppercase; letter-spacing:0.15em; color:var(--gray); font-size:9px;">Tool</span>
-            <span style="color:var(--off-white);">Grasshopper / Rhino</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px;">
-            <span style="text-transform:uppercase; letter-spacing:0.15em; color:var(--gray); font-size:9px;">Distribution</span>
-            <span style="color:var(--off-white);">Perlin Noise — smooth random</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px;">
-            <span style="text-transform:uppercase; letter-spacing:0.15em; color:var(--gray); font-size:9px;">Bar lengths</span>
-            <span style="color:var(--off-white);">30 · 60 · 90 · 120 · 150 cm</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px;">
-            <span style="text-transform:uppercase; letter-spacing:0.15em; color:var(--gray); font-size:9px;">Angular range</span>
-            <span style="color:var(--off-white);">20° – 160° · shift -45° / +45°</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:11px;">
-            <span style="text-transform:uppercase; letter-spacing:0.15em; color:var(--gray); font-size:9px;">Control</span>
-            <span style="color:var(--off-white);">ArtNet · sACN · Madrix · IP per bar</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; padding:10px 0; font-size:11px;">
-            <span style="text-transform:uppercase; letter-spacing:0.15em; color:var(--gray); font-size:9px;">Client</span>
-            <span style="color:var(--off-white);">Ligeo Lighting</span>
-          </div>
+      <div class="ligeo-content">
+        <div class="parametric-project-label">Project 01 · 2021</div>
+        <h2 class="ligeo-title">Ligeo Spatial<br><em>Distribution</em></h2>
+        <div class="ligeo-subtitle">
+          <span class="kw-tool" data-tip="Parametric visual scripting — generative design plugin for Rhino">Grasshopper</span> · 
+          <span class="kw-tool" data-tip="Smooth organic random generation — avoids mechanical regularity">Perlin Noise</span> · 
+          <span class="kw-tool" data-tip="Professional lighting control protocol">ArtNet</span> · 
+          <span class="kw-tool" data-tip="Streaming ACN — lighting control over IP">sACN</span> · 
+          <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span>
+        </div>
+
+        <p class="ligeo-text">A parametric tool developed in February 2021 for Ligeo Lighting, designed to solve a precise spatial problem: how to distribute a series of LED bars in three-dimensional space with controlled randomness. The algorithm uses <span class="kw-tool" data-tip="Smooth organic random generation algorithm — avoids mechanical regularity">Perlin Noise</span> — a smooth, organic generative model — to avoid mechanical regularity while maintaining full designer control over density, angular amplitude, bar length and spatial recursion within a defined volume.</p>
+
+        <p class="ligeo-text">Unlike discrete assembly approaches such as Wave Function Collapse — which fill a volume with pre-defined modules following connectivity rules — this tool generates a continuous, analogue distribution governed by physical constraints: bars ranging from 30 to 150 cm, angular ranges from 20° to 160°, angular shift from -45° to +45°, and hub points supporting up to 5 recursive branches. Each bar is assigned a unique IP address, auto-generated by the tool, ready for <span class="kw-tool" data-tip="Professional lighting control protocol">ArtNet</span>/<span class="kw-tool" data-tip="Streaming ACN — lighting control over IP">sACN</span> deployment in <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span> and compatible light software.</p>
+
+        <p class="ligeo-text">The output also includes a hanging point schedule — coordinates and lengths — for on-site installation. A design environment where aesthetic intention, structural logic and technical deployment are resolved in the same gesture.</p>
+
+        <div class="ligeo-meta">
+          <div class="ligeo-meta-row"><span class="ligeo-key">Tool</span><span class="ligeo-val">Grasshopper / Rhino</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Generation</span><span class="ligeo-val">Perlin Noise — smooth controlled random</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Bar lengths</span><span class="ligeo-val">30 · 60 · 90 · 120 · 150 cm</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Angular range</span><span class="ligeo-val">20° – 160° · shift -45° / +45°</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Hub recursion</span><span class="ligeo-val">Up to 5 branches per hub</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Control</span><span class="ligeo-val">ArtNet · sACN · Madrix · unique IP per bar</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Output</span><span class="ligeo-val">3D distribution + hanging point schedule</span></div>
+          <div class="ligeo-meta-row"><span class="ligeo-key">Client</span><span class="ligeo-val">Ligeo Lighting · February 2021</span></div>
         </div>
       </div>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:3px;">
-        <div style="grid-column:span 2; height:320px; overflow:hidden; position:relative;">
-          <img src="ligeo-1.png" alt="Ligeo parametric distribution" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.85); transition:transform 0.6s ease;">
-        </div>
-        <div style="height:180px; overflow:hidden;">
-          <img src="ligeo-2.png" alt="Ligeo spatial recursion" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.8); transition:transform 0.6s ease;">
-        </div>
-        <div style="height:180px; overflow:hidden;">
-          <img src="ligeo-3.png" alt="Ligeo RGB simulation" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.8); transition:transform 0.6s ease;">
-        </div>
-        <div style="grid-column:span 2; height:180px; overflow:hidden;">
-          <img src="ligeo-4.png" alt="Ligeo Grasshopper interface" style="width:100%; height:100%; object-fit:cover; filter:brightness(0.8); transition:transform 0.6s ease;">
-        </div>
+      <div class="ligeo-images">
+        <div class="ligeo-img-main"><img src="ligeo-1.png" alt="Ligeo parametric distribution"></div>
+        <div class="ligeo-img-sm"><img src="ligeo-2.png" alt="Ligeo spatial recursion"></div>
+        <div class="ligeo-img-sm"><img src="ligeo-3.png" alt="Ligeo RGB simulation"></div>
+        <div class="ligeo-img-wide"><img src="ligeo-4.png" alt="Ligeo Grasshopper interface"></div>
       </div>
 
     </div>
   </div>
 </div>
+
 
 <!-- CLIENTS -->
 <div class="clients-section reveal">
