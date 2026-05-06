@@ -814,6 +814,57 @@
     text-align: right;
   }
 
+  /* ── KEYWORDS & TOOLTIPS ── */
+  .kw {
+    color: var(--gold-light);
+    cursor: pointer;
+    border-bottom: 1px solid rgba(212,172,58,0.3);
+    transition: color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+  }
+  .kw:hover { color: var(--off-white); border-color: var(--gold); }
+
+  .kw-tool {
+    color: var(--gray);
+    cursor: help;
+    border-bottom: 1px dotted rgba(136,136,136,0.4);
+    position: relative;
+    transition: color 0.2s ease;
+  }
+  .kw-tool:hover { color: var(--off-white); }
+
+  .kw-tool::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(20,20,20,0.96);
+    color: var(--off-white);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 7px 12px;
+    white-space: nowrap;
+    border: 1px solid rgba(184,150,12,0.3);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 200;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+  }
+  .kw-tool:hover::after { opacity: 1; }
+
+  /* Flash highlight on scroll target */
+  .highlight-flash {
+    animation: goldFlash 1.2s ease forwards;
+  }
+  @keyframes goldFlash {
+    0% { box-shadow: 0 0 0 0 rgba(184,150,12,0); outline: 2px solid transparent; }
+    30% { box-shadow: 0 0 0 4px rgba(184,150,12,0.5); outline: 2px solid rgba(184,150,12,0.6); }
+    100% { box-shadow: 0 0 0 0 rgba(184,150,12,0); outline: 2px solid transparent; }
+  }
+
   /* ── RESPONSIVE TABLET ── */
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; }
@@ -1001,9 +1052,9 @@
       </div>
     </div>
     <div class="reveal">
-      <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience across architectural lighting, media façades, and public realm installations. From stadium skins in Saudi Arabia to cultural venues in Kazakhstan, from luxury retail in Paris to parametric light objects born in a Paris studio.</p>
-      <p class="about-text">Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong> — an independent research studio working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the crOOZin series: biomorphic light objects grown from Grasshopper geometries and printed at 25 micron resolution.</p>
-      <p class="about-text">Fluent in Rhino · Grasshopper · DIALux · Madrix · LightAct · Cinema 4D · Arduino · DMX/ArtNet · Unreal Engine · V-Ray.</p>
+      <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience across architectural lighting, media façades, and public realm installations. From <span class="kw" data-target="work-dammam">stadium skins in Saudi Arabia</span> to cultural venues in <span class="kw" data-target="work-fortebank">Kazakhstan</span>, from <span class="kw" data-target="work-chanel">luxury retail in Paris</span> to <span class="kw" data-target="objects">parametric light objects</span> born in a Paris studio.</p>
+      <p class="about-text">Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong> — an independent research studio working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the <span class="kw" data-target="objects">crOOZin series</span>: biomorphic light objects grown from <span class="kw-tool" data-tip="Parametric 3D modelling + visual scripting for generative design">Grasshopper</span> geometries and printed at 25 micron resolution.</p>
+      <p class="about-text">Fluent in <span class="kw-tool" data-tip="3D modelling — primary design tool">Rhino</span> · <span class="kw-tool" data-tip="Parametric visual scripting for generative design">Grasshopper</span> · <span class="kw" data-target="work-sedrati" data-tip="Professional lighting simulation software">DIALux</span> · <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server for architectural lighting">LightAct</span> · <span class="kw-tool" data-tip="3D motion graphics & rendering">Cinema 4D</span> · <span class="kw-tool" data-tip="Microcontroller programming for custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Professional lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D visualisation engine">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span>.</p>
     </div>
   </div>
 </section>
@@ -1014,7 +1065,7 @@
     <div class="section-label reveal">Selected Projects</div>
     <div class="work-grid reveal">
 
-      <div class="work-item wide">
+      <div class="work-item wide" id="work-dammam">
         <img src="satdium.jpg" alt="Dammam Aramco Stadium">
         <div class="work-overlay">
           <div class="work-project">Dammam Aramco Stadium</div>
@@ -1070,7 +1121,7 @@
         </div>
       </div>
 
-      <div class="work-item">
+      <div class="work-item" id="work-chanel">
         <img src="moon.jpg" alt="Chanel Once Upon a Moon">
         <div class="work-overlay">
           <div class="work-project">Chanel — Once Upon a Moon</div>
@@ -1086,7 +1137,7 @@
         </div>
       </div>
 
-      <div class="work-item">
+      <div class="work-item" id="work-fortebank">
         <img src="fortebank001.jpeg" alt="ForteBank HQ">
         <div class="work-overlay">
           <div class="work-project">ForteBank HQ</div>
@@ -1191,7 +1242,7 @@
 </div>
 
 <!-- VILLA SEDRATI -->
-<div class="sedrati-section reveal">
+<div class="sedrati-section reveal" id="work-sedrati">
   <div class="section-label">Architectural Lighting — Residential</div>
   <div class="sedrati-grid">
     <div class="sedrati-images">
@@ -1295,6 +1346,22 @@
       cursor.style.width = '8px';
       cursor.style.height = '8px';
       cursor.style.opacity = '1';
+    });
+  });
+
+  // Interactive keywords — scroll + flash
+  document.querySelectorAll('.kw[data-target]').forEach(kw => {
+    kw.addEventListener('click', () => {
+      const targetId = kw.dataset.target;
+      const target = document.getElementById(targetId);
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        target.classList.remove('highlight-flash');
+        void target.offsetWidth; // reflow
+        target.classList.add('highlight-flash');
+        setTimeout(() => target.classList.remove('highlight-flash'), 1400);
+      }, 600);
     });
   });
 
