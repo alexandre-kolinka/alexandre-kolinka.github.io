@@ -2,2054 +2,622 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Alexandre Kolinka — Light & Form</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Helvetica+Neue:wght@200;300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --black: #080808;
-    --off-white: #f0ece4;
-    --gold: #b8960c;
-    --gold-light: #d4ac3a;
-    --gray: #888;
-    --gray-light: #444;
-    --text: #d8d4cc;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html {
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    height: 100%;
-  }
-
-  body {
-    background: var(--black);
-    color: var(--text);
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-    overflow-y: auto;
-    cursor: none;
-    min-height: 100%;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Custom cursor */
-  .cursor {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: var(--gold);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
-    mix-blend-mode: screen;
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 36px; height: 36px;
-    border: 1px solid rgba(184,150,12,0.4);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transform: translate(-50%, -50%);
-    transition: all 0.15s ease;
-  }
-
-  /* Grain overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 100;
-    opacity: 0.6;
-  }
-
-  /* ── HERO ── */
-  .hero {
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 80px 60px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-right {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    filter: brightness(0.85) contrast(1.1);
-    transition: transform 8s ease;
-  }
-
-  .hero:hover .hero-img {
-    transform: scale(1.03);
-  }
-
-  .hero-right::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to right, var(--black) 0%, transparent 40%);
-  }
-
-  .hero-tag {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 40px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.2s forwards;
-  }
-
-  .hero-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(52px, 7vw, 96px);
-    font-weight: 300;
-    line-height: 0.95;
-    letter-spacing: -0.02em;
-    color: var(--off-white);
-    opacity: 0;
-    animation: fadeUp 1s ease 0.4s forwards;
-  }
-
-  .hero-name em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .hero-tagline {
-    margin-top: 32px;
-    font-size: 13px;
-    font-weight: 300;
-    letter-spacing: 0.08em;
-    color: var(--gray);
-    line-height: 1.8;
-    max-width: 380px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.6s forwards;
-  }
-
-  .hero-line {
-    width: 40px;
-    height: 1px;
-    background: var(--gold);
-    margin: 32px 0;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.8s forwards;
-  }
-
-  .hero-phrase {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 15px;
-    font-style: italic;
-    color: var(--off-white);
-    opacity: 0;
-    animation: fadeUp 1s ease 1s forwards;
-    line-height: 1.7;
-    max-width: 400px;
-  }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 40px;
-    left: 60px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gray);
-    opacity: 0;
-    animation: fadeUp 1s ease 1.4s forwards;
-  }
-
-  .scroll-hint::before {
-    content: '';
-    width: 40px;
-    height: 1px;
-    background: var(--gray-light);
-    animation: expandLine 2s ease 2s infinite;
-  }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 50;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 28px 60px;
-    mix-blend-mode: normal;
-  }
-
-  nav::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(8,8,8,0.9) 0%, transparent 100%);
-    pointer-events: none;
-  }
-
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    letter-spacing: 0.15em;
-    color: var(--off-white);
-    text-decoration: none;
-    position: relative;
-    z-index: 1;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 40px;
-    list-style: none;
-    position: relative;
-    z-index: 1;
-  }
-
-  .nav-links a {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gray);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .nav-links a:hover { color: var(--gold); }
-
-  /* ── SECTIONS ── */
-  section {
-    padding: 120px 60px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .section-label {
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 60px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .section-label::after {
-    content: '';
-    flex: 1;
-    max-width: 60px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.4;
-  }
-
-  /* ── ABOUT ── */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
-    align-items: start;
-  }
-
-  .about-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 4vw, 56px);
-    font-weight: 300;
-    line-height: 1.15;
-    color: var(--off-white);
-    letter-spacing: -0.01em;
-  }
-
-  .about-heading em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .about-text { font-size: 15px; line-height: 2; color: var(--gray); margin-bottom: 24px; }
-  .stat-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-top: 8px; }
-  .section-label { font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--gold); margin-bottom: 60px; display: flex; align-items: center; gap: 20px; }
-  .cat-intro { font-size: 15px; line-height: 1.9; color: var(--gray); max-width: 560px; }
-  .work-meta { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
-  .work-project { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--off-white); margin-bottom: 4px; }
-  .croozin-text { font-size: 15px; line-height: 2; color: var(--gray); margin-bottom: 20px; }
-  .ligeo-text { font-size: 15px; line-height: 2; color: var(--gray); margin-bottom: 16px; }
-  .ligeo-key { text-transform: uppercase; letter-spacing: 0.15em; color: var(--gray); font-size: 11px; }
-  .ligeo-val { color: var(--off-white); text-align: right; font-size: 12px; }
-  .ligeo-meta-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
-  .sedrati-text { font-size: 15px; line-height: 2; color: var(--gray); margin-bottom: 16px; }
-  .sedrati-meta-key { text-transform: uppercase; letter-spacing: 0.15em; color: var(--gray); font-size: 11px; }
-  .sedrati-meta-val { color: var(--off-white); text-align: right; font-size: 12px; }
-  .sedrati-meta-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
-  .parametric-intro-text { font-size: 15px; line-height: 2; color: var(--gray); margin-bottom: 18px; }
-  .region-panel { font-size: 12px; line-height: 1.8; color: var(--gray); padding: 12px 0; border-top: 1px solid rgba(255,255,255,0.06); animation: fadeUp 0.4s ease forwards; }
-  .spec-key { text-transform: uppercase; letter-spacing: 0.15em; color: var(--gray); font-size: 11px; }
-  .spec-val { color: var(--off-white); text-align: right; font-size: 12px; }
-  .client-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 300; color: rgba(255,255,255,0.15); transition: color 0.3s ease; letter-spacing: 0.05em; white-space: nowrap; position: relative; }
-
-  .about-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    margin-top: 48px;
-    padding-top: 48px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .stat-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 48px;
-    font-weight: 300;
-    color: var(--gold);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gray);
-    margin-top: 8px;
-  }
-
-  /* ── WORK ── */
-  .work-section {
-    background: #0d0d0d;
-    max-width: 100%;
-    padding: 120px 0;
-  }
-
-  .work-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 60px;
-  }
-
-  .work-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 60px;
-  }
-
-  .work-item {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 4/5;
-    background: #111;
-  }
-
-  .work-item.wide {
-    grid-column: span 2;
-    aspect-ratio: 8/5;
-  }
-
-  .work-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.5s ease;
-    filter: brightness(0.7) saturate(0.9);
-  }
-
-  .work-item:hover img {
-    transform: scale(1.06);
-    filter: brightness(0.85) saturate(1.1);
-  }
-
-  .work-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 28px;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-  }
-
-  .work-item:hover .work-overlay { opacity: 1; }
-
-  .work-project {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    color: var(--off-white);
-    margin-bottom: 4px;
-  }
-
-  .work-meta {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-
-  /* ── CROOZIN ── */
-  .croozin-section {
-    padding: 140px 60px;
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 100px;
-    align-items: center;
-  }
-
-  .croozin-images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-  }
-
-  .croozin-img-main {
-    grid-column: span 2;
-    position: relative;
-    overflow: hidden;
-    height: 360px;
-  }
-
-  .croozin-img-main img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.9);
-  }
-
-  .croozin-img-sm {
-    position: relative;
-    overflow: hidden;
-    height: 200px;
-  }
-
-  .croozin-img-sm img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.85);
-    transition: transform 0.6s ease;
-  }
-
-  .croozin-img-sm:hover img { transform: scale(1.05); }
-
-  .croozin-content {}
-
-  .croozin-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(42px, 5vw, 68px);
-    font-weight: 300;
-    color: var(--off-white);
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-  }
-
-  .croozin-subtitle {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 40px;
-  }
-
-  .croozin-text {
-    font-size: 14px;
-    line-height: 2;
-    color: var(--gray);
-    margin-bottom: 20px;
-  }
-
-  .croozin-specs {
-    margin-top: 40px;
-    padding-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .spec-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 12px;
-  }
-
-  .spec-key {
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--gray);
-    font-size: 10px;
-  }
-
-  .spec-val {
-    color: var(--off-white);
-    text-align: right;
-  }
-
-  /* ── CLIENTS ── */
-  .clients-section {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 80px 60px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .clients-scroll {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 40px;
-    margin-top: 48px;
-    align-items: center;
-  }
-
-  .client-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 300;
-    color: rgba(255,255,255,0.15);
-    transition: color 0.3s ease;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-    position: relative;
-  }
-
-  .client-name:hover { color: var(--off-white); }
-
-  .client-name[title]:not(.kw) {
-    cursor: default;
-  }
-
-  .client-name[title]:not(.kw):hover::after {
-    content: attr(title);
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(20,20,20,0.96);
-    color: var(--gray);
-    font-size: 10px;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    padding: 6px 12px;
-    white-space: nowrap;
-    border: 1px solid rgba(255,255,255,0.08);
-    pointer-events: none;
-    z-index: 200;
-    opacity: 1;
-  }
-
-  .client-name.kw {
-    cursor: pointer;
-    border-bottom: 1px solid rgba(212,172,58,0.2);
-  }
-
-  .client-name.kw:hover {
-    color: var(--gold-light);
-    border-color: var(--gold);
-  }
-
-  .client-sep {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--gold);
-    opacity: 0.3;
-  }
-
-  /* ── CONTACT ── */
-  .contact-section {
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 120px 60px;
-    background: #050505;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .contact-section::before {
-    content: '';
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(184,150,12,0.05) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .contact-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(48px, 7vw, 100px);
-    font-weight: 300;
-    color: var(--off-white);
-    line-height: 1;
-    letter-spacing: -0.02em;
-    margin-bottom: 24px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .contact-heading em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-
-  .contact-sub {
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    color: var(--gray);
-    margin-bottom: 56px;
-    position: relative;
-    z-index: 1;
-    max-width: 500px;
-    line-height: 1.8;
-  }
-
-  .contact-links {
-    display: flex;
-    gap: 48px;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-  }
-
-  .contact-link {
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gray);
-    text-decoration: none;
-    transition: color 0.3s ease;
-    position: relative;
-  }
-
-  .contact-link::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background: var(--gold);
-    transition: width 0.3s ease;
-  }
-
-  .contact-link:hover { color: var(--off-white); }
-  .contact-link:hover::after { width: 100%; }
-
-  .contact-email {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-style: italic;
-    color: var(--gold-light);
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .contact-email:hover { opacity: 0.7; }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 32px 60px;
-    border-top: 1px solid rgba(255,255,255,0.04);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.2);
-  }
-
-  /* ── ANIMATIONS ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes expandLine {
-    0%, 100% { width: 40px; opacity: 0.4; }
-    50% { width: 70px; opacity: 0.8; }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ── REGIONS BAR ── */
-  .regions-bar {
-    margin-top: 32px;
-    max-width: 420px;
-  }
-
-  .region-tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
-
-  .region-tab {
-    font-size: 9px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--gray);
-    background: none;
-    border: 1px solid rgba(255,255,255,0.1);
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Helvetica Neue', sans-serif;
-  }
-
-  .region-tab:hover { color: var(--off-white); border-color: rgba(255,255,255,0.3); }
-
-  .region-tab.active {
-    color: var(--black);
-    background: var(--gold);
-    border-color: var(--gold);
-  }
-
-  .region-panel {
-    display: none;
-    font-size: 11px;
-    line-height: 1.8;
-    color: var(--gray);
-    padding: 12px 0;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    animation: fadeUp 0.4s ease forwards;
-  }
-
-  .region-panel.active { display: block; }
-
-  .region-icon {
-    color: var(--gold);
-    margin-right: 6px;
-    font-size: 8px;
-  }
-
-  /* ── VILLA SEDRATI ── */
-  .sedrati-section {
-    padding: 120px 60px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .sedrati-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-    margin-top: 60px;
-  }
-
-  .sedrati-images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-  }
-
-  .sedrati-main {
-    grid-column: span 2;
-    height: 300px;
-    overflow: hidden;
-  }
-
-  .sedrati-main img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.85);
-    transition: transform 0.6s ease;
-  }
-
-  .sedrati-main:hover img { transform: scale(1.03); }
-
-  .sedrati-sm {
-    height: 160px;
-    overflow: hidden;
-  }
-
-  .sedrati-sm img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.8);
-    transition: transform 0.6s ease;
-  }
-
-  .sedrati-sm:hover img { transform: scale(1.05); }
-
-  .sedrati-content {}
-
-  .sedrati-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 38px;
-    font-weight: 300;
-    color: var(--off-white);
-    margin-bottom: 8px;
-    line-height: 1.1;
-  }
-
-  .sedrati-subtitle {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 32px;
-  }
-
-  .sedrati-text {
-    font-size: 13px;
-    line-height: 2;
-    color: var(--gray);
-    margin-bottom: 16px;
-  }
-
-  .sedrati-meta {
-    margin-top: 32px;
-    padding-top: 32px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .sedrati-meta-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 11px;
-  }
-
-  .sedrati-meta-key {
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--gray);
-    font-size: 9px;
-  }
-
-  .sedrati-meta-val {
-    color: var(--off-white);
-    text-align: right;
-  }
-
-  /* ── CATEGORY SECTIONS ── */
-  .cat-section {
-    padding: 100px 0 80px;
-    border-top: 1px solid rgba(255,255,255,0.05);
-  }
-
-  .cat-section:first-of-type { border-top: none; }
-
-  .cat-header {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 60px;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 60px;
-    align-items: start;
-    margin-bottom: 60px;
-  }
-
-  .cat-number {
-    font-size: 80px;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 300;
-    color: rgba(184,150,12,0.15);
-    line-height: 1;
-    letter-spacing: -0.04em;
-  }
-
-  .cat-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(28px, 4vw, 48px);
-    font-weight: 300;
-    color: var(--off-white);
-    line-height: 1.1;
-    margin-bottom: 16px;
-  }
-
-  .cat-title em { font-style: italic; color: var(--gold-light); }
-
-  .cat-intro {
-    font-size: 13px;
-    line-height: 1.9;
-    color: var(--gray);
-    max-width: 560px;
-  }
-
-  /* ── PARAMETRIC DOSSIER ── */
-  .parametric-dossier { padding: 120px 0; background: #0a0a0a; }
-
-  .parametric-intro {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-    margin-top: 60px;
-    margin-bottom: 60px;
-  }
-
-  .parametric-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(36px, 5vw, 64px);
-    font-weight: 300;
-    color: var(--off-white);
-    line-height: 1.05;
-    letter-spacing: -0.01em;
-  }
-  .parametric-heading em { font-style: italic; color: var(--gold-light); }
-
-  .parametric-intro-text {
-    font-size: 13px;
-    line-height: 2;
-    color: var(--gray);
-    margin-bottom: 18px;
-  }
-
-  .parametric-divider {
-    height: 1px;
-    background: linear-gradient(to right, var(--gold) 0%, rgba(184,150,12,0.1) 60%, transparent 100%);
-    margin: 60px 0;
-    opacity: 0.4;
-  }
-
-  .parametric-project-label {
-    font-size: 9px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 16px;
-    opacity: 0.7;
-  }
-
-  /* ── LIGEO SECTION ── */
-  .ligeo-section { padding: 120px 0; }
-
-  .ligeo-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-    align-items: start;
-    margin-top: 60px;
-  }
-
-  .ligeo-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(32px, 4vw, 52px);
-    font-weight: 300;
-    color: var(--off-white);
-    line-height: 1.1;
-    margin-bottom: 12px;
-  }
-  .ligeo-title em { font-style: italic; color: var(--gold-light); }
-
-  .ligeo-subtitle {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 36px;
-  }
-
-  .ligeo-text {
-    font-size: 13px;
-    line-height: 2;
-    color: var(--gray);
-    margin-bottom: 16px;
-  }
-
-  .ligeo-meta {
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding-top: 32px;
-    margin-top: 20px;
-  }
-
-  .ligeo-meta-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-    font-size: 11px;
-  }
-
-  .ligeo-key {
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--gray);
-    font-size: 9px;
-  }
-
-  .ligeo-val { color: var(--off-white); text-align: right; }
-
-  .ligeo-images {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3px;
-  }
-
-  .ligeo-img-main {
-    grid-column: span 2;
-    height: 320px;
-    overflow: hidden;
-  }
-  .ligeo-img-main img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: brightness(0.85);
-    transition: transform 0.6s ease;
-  }
-  .ligeo-img-main:hover img { transform: scale(1.03); }
-
-  .ligeo-img-sm { height: 180px; overflow: hidden; }
-  .ligeo-img-sm img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: brightness(0.8);
-    transition: transform 0.6s ease;
-  }
-  .ligeo-img-sm:hover img { transform: scale(1.05); }
-
-  .ligeo-img-wide {
-    grid-column: span 2;
-    height: 180px;
-    overflow: hidden;
-  }
-  .ligeo-img-wide img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: brightness(0.8);
-    transition: transform 0.6s ease;
-  }
-  .ligeo-img-wide:hover img { transform: scale(1.03); }
-
-  /* ── KEYWORDS & TOOLTIPS ── */
-  .kw {
-    color: var(--gold-light);
-    cursor: pointer;
-    border-bottom: 1px solid rgba(212,172,58,0.3);
-    transition: color 0.2s ease, border-color 0.2s ease;
-    white-space: nowrap;
-  }
-  .kw:hover { color: var(--off-white); border-color: var(--gold); }
-
-  .kw-tool {
-    color: var(--gray);
-    cursor: help;
-    border-bottom: 1px dotted rgba(136,136,136,0.4);
-    position: relative;
-    transition: color 0.2s ease;
-  }
-  .kw-tool:hover { color: var(--off-white); }
-
-  .kw-tool::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(20,20,20,0.96);
-    color: var(--off-white);
-    font-size: 10px;
-    letter-spacing: 0.05em;
-    padding: 7px 12px;
-    white-space: nowrap;
-    border: 1px solid rgba(184,150,12,0.3);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-    z-index: 200;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-weight: 300;
-  }
-  .kw-tool:hover::after { opacity: 1; }
-
-  /* Flash highlight on scroll target */
-  .highlight-flash {
-    animation: goldFlash 1.2s ease forwards;
-  }
-  @keyframes goldFlash {
-    0% { box-shadow: 0 0 0 0 rgba(184,150,12,0); outline: 2px solid transparent; }
-    30% { box-shadow: 0 0 0 4px rgba(184,150,12,0.5); outline: 2px solid rgba(184,150,12,0.6); }
-    100% { box-shadow: 0 0 0 0 rgba(184,150,12,0); outline: 2px solid transparent; }
-  }
-
-  /* ── RESPONSIVE TABLET ── */
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; }
-    .hero-right { position: absolute; inset: 0; z-index: 0; }
-    .hero-left { z-index: 1; min-height: 100vh; background: linear-gradient(to right, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.6) 100%); padding: 100px 32px 80px; }
-    .about-grid, .croozin-section, .sedrati-grid { grid-template-columns: 1fr; gap: 60px; }
-    .work-grid { grid-template-columns: 1fr 1fr; }
-    .work-item.wide { grid-column: span 2; aspect-ratio: 16/9; }
-    section, .clients-section, .contact-section, footer { padding-left: 32px; padding-right: 32px; }
-    nav { padding: 24px 32px; }
-    .nav-links { display: none; }
-    .croozin-section, .sedrati-section { padding: 80px 32px; }
-    .work-inner { padding: 0 32px; }
-    .regions-bar { max-width: 100%; }
-  }
-
-  /* ── RESPONSIVE MOBILE ── */
-  @media (max-width: 600px) {
-    body { cursor: auto; }
-
-    /* Nav */
-    nav { padding: 20px 20px; }
-    .nav-links { display: none; }
-    .nav-logo { font-size: 16px; }
-
-    /* Hero */
-    .hero { grid-template-columns: 1fr; min-height: 100vh; min-height: 100dvh; }
-    .hero-right { position: absolute; inset: 0; z-index: 0; }
-    .hero-left {
-      z-index: 1;
-      min-height: 100vh;
-      min-height: 100dvh;
-      background: linear-gradient(to bottom, rgba(8,8,8,0.85) 0%, rgba(8,8,8,0.7) 60%, rgba(8,8,8,0.95) 100%);
-      padding: 90px 24px 60px;
-      justify-content: center;
-    }
-    .hero-name { font-size: 52px; }
-    .hero-tagline { font-size: 12px; max-width: 100%; }
-    .hero-phrase { font-size: 13px; max-width: 100%; }
-    .scroll-hint { left: 24px; bottom: 24px; }
-
-    /* Regions bar */
-    .regions-bar { max-width: 100%; margin-top: 24px; }
-    .region-tabs { gap: 5px; }
-    .region-tab { font-size: 8px; padding: 5px 8px; }
-    .region-panel { font-size: 10px; }
-
-    /* About */
-    section { padding: 60px 24px; }
-    .about-grid { grid-template-columns: 1fr; gap: 40px; }
-    .about-heading { font-size: 32px; }
-    .about-stats { grid-template-columns: 1fr 1fr; gap: 20px; }
-    .stat-number { font-size: 36px; }
-    .about-text { font-size: 13px; }
-
-    /* Work grid */
-    .work-section { padding: 60px 0; }
-    .work-inner { padding: 0 24px; }
-    .work-grid { grid-template-columns: 1fr; gap: 2px; }
-    .work-item { aspect-ratio: 4/3; }
-    .work-item.wide { grid-column: span 1; aspect-ratio: 16/9; }
-    .work-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); }
-    .work-project { font-size: 16px; }
-    .work-meta { font-size: 9px; }
-
-    /* crOOZin */
-    .croozin-section { grid-template-columns: 1fr; gap: 40px; padding: 60px 24px; }
-    .croozin-images { grid-template-columns: 1fr 1fr; }
-    .croozin-img-main { height: 260px; }
-    .croozin-img-sm { height: 140px; }
-    .croozin-title { font-size: 48px; }
-    .croozin-text { font-size: 13px; }
-
-    /* Sedrati */
-    .sedrati-section { padding: 60px 24px; }
-    .sedrati-grid { grid-template-columns: 1fr; gap: 40px; }
-    .sedrati-images { grid-template-columns: 1fr 1fr; }
-    .sedrati-main { height: 220px; }
-    .sedrati-sm { height: 120px; }
-    .sedrati-title { font-size: 30px; }
-    .sedrati-text { font-size: 13px; }
-
-    /* Clients */
-    .clients-section { padding: 60px 24px; }
-    .clients-scroll { gap: 12px 24px; }
-    .client-name { font-size: 18px; }
-
-    /* Contact */
-    .contact-section { padding: 80px 24px; min-height: 50vh; }
-    .contact-heading { font-size: 48px; }
-    .contact-links { flex-direction: column; gap: 20px; align-items: center; }
-    .contact-email { font-size: 18px; }
-
-    .cat-header { grid-template-columns: 1fr; gap: 20px; padding: 0 24px; margin-bottom: 40px; }
-    .cat-number { font-size: 48px; }
-    .cat-title { font-size: 28px; }
-    .parametric-dossier { padding: 60px 0; }
-    .parametric-intro { grid-template-columns: 1fr; gap: 32px; margin-bottom: 40px; }
-    .parametric-heading { font-size: 36px; }
-    .ligeo-section { padding: 60px 0; }
-    .ligeo-grid { grid-template-columns: 1fr; gap: 40px; }
-    .ligeo-img-main { height: 220px; }
-    .ligeo-img-sm { height: 130px; }
-    .ligeo-img-wide { height: 130px; }
-
-    /* Footer */
-    footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
-
-    /* Cursor — désactivé sur mobile */
-    .cursor, .cursor-ring { display: none; }
-  }
+:root {
+  --black: #080808;
+  --off-white: #f0ece4;
+  --gold: #b8960c;
+  --gold-light: #d4ac3a;
+  --gray: #888;
+  --gray-dark: #444;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; background:var(--black); color:var(--off-white); font-family:'Helvetica Neue',Helvetica,sans-serif; font-weight:300; overflow:hidden; -webkit-overflow-scrolling:touch; }
+
+/* CURSOR */
+.cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:screen; transition:width .3s,height .3s; }
+.cursor-ring { position:fixed; width:36px; height:36px; border:1px solid rgba(184,150,12,.4); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:all .15s ease; }
+@media(max-width:600px){ .cursor,.cursor-ring{display:none} body{cursor:auto} }
+
+/* NAV */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:24px 60px; background:linear-gradient(to bottom,rgba(8,8,8,.97) 0%,transparent 100%); }
+.nav-logo { font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:.15em; color:var(--off-white); text-decoration:none; cursor:pointer; }
+.nav-links { display:flex; gap:40px; list-style:none; align-items:center; }
+.nav-links a { font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:#888; text-decoration:none; transition:color .3s; cursor:pointer; }
+.nav-links a:hover, .nav-links a.active { color:var(--gold); }
+
+/* COLOR WHEEL */
+.color-wheel-wrap {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.color-wheel-canvas {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+  display: block;
+  border: 1px solid rgba(255,255,255,.15);
+  transition: transform .2s ease;
+}
+.color-wheel-canvas:active { cursor: grabbing; transform: scale(1.15); }
+.color-wheel-needle {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 2px; height: 13px;
+  background: white;
+  border-radius: 1px;
+  transform-origin: bottom center;
+  transform: translate(-50%, -100%) rotate(0deg);
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(0,0,0,.8);
+}
+.color-wheel-tip {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  white-space: nowrap;
+  pointer-events: none;
+  top: 38px;
+}
+
+@media(max-width:600px){
+  nav{padding:18px 24px}
+  .nav-links{gap:16px}
+  .nav-links a{font-size:9px;letter-spacing:.12em}
+  .color-wheel-wrap{width:36px;height:36px}
+  .color-wheel-canvas{width:36px;height:36px}
+  .color-wheel-needle{height:15px}
+}
+
+/* PAGES */
+.page { position:fixed; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch; opacity:0; pointer-events:none; transition:opacity .45s ease; }
+.page.active { opacity:1; pointer-events:all; }
+
+/* ══ HOME ══ */
+.home-hero { display:grid; grid-template-columns:1fr 1fr; min-height:100vh; }
+.home-right { position:relative; overflow:hidden; }
+.home-right img { width:100%; height:100%; object-fit:cover; filter:brightness(.7); transform:scale(1.04); transition:transform 10s ease; }
+.home-right::after { content:''; position:absolute; inset:0; background:linear-gradient(to right,var(--black) 0%,transparent 45%); }
+.home-left { display:flex; flex-direction:column; justify-content:center; padding:120px 60px 80px; z-index:2; }
+.home-tag { font-size:10px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:32px; opacity:0; animation:fu .8s ease .2s forwards; }
+.home-name { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,7vw,96px); font-weight:300; line-height:.95; color:var(--off-white); opacity:0; animation:fu .8s ease .4s forwards; }
+.home-name em { font-style:italic; color:var(--gold-light); }
+.home-line { width:40px; height:1px; background:var(--gold); margin:28px 0; opacity:0; animation:fu .8s ease .6s forwards; }
+.home-phrase { font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:var(--off-white); line-height:1.7; max-width:400px; opacity:0; animation:fu .8s ease .8s forwards; }
+
+/* REGIONS */
+.regions-bar { margin-top:36px; max-width:440px; opacity:0; animation:fu .8s ease 1s forwards; }
+.region-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+.region-tab { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:#888; background:none; border:1px solid rgba(255,255,255,.1); padding:5px 10px; cursor:pointer; transition:all .3s; font-family:'Helvetica Neue',sans-serif; }
+.region-tab:hover { color:var(--off-white); border-color:rgba(255,255,255,.3); }
+.region-tab.active { color:var(--black); background:var(--gold); border-color:var(--gold); }
+.region-panel { display:none; font-size:12px; line-height:1.8; color:#888; padding:10px 0; border-top:1px solid rgba(255,255,255,.06); }
+.region-panel.active { display:block; animation:fu .4s ease forwards; }
+
+/* ABOUT */
+.home-about { padding:100px 60px; display:grid; grid-template-columns:1fr 1fr; gap:100px; border-top:1px solid rgba(255,255,255,.05); }
+.about-heading { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px); font-weight:300; color:var(--off-white); line-height:1.1; }
+.about-heading em { font-style:italic; color:var(--gold-light); }
+.about-stats { display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:40px; padding-top:40px; border-top:1px solid rgba(255,255,255,.06); }
+.stat-num { font-family:'Cormorant Garamond',serif; font-size:44px; font-weight:300; color:var(--gold); }
+.stat-lbl { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#888; margin-top:6px; }
+.about-text { font-size:15px; line-height:2; color:#888; margin-bottom:18px; }
+.kw { color:var(--gold-light); cursor:pointer; border-bottom:1px solid rgba(212,172,58,.3); transition:color .2s; }
+.kw:hover { color:var(--off-white); border-color:var(--gold); }
+.kw-tool { color:#888; cursor:help; border-bottom:1px dotted rgba(136,136,136,.4); position:relative; }
+.kw-tool:hover { color:var(--off-white); }
+.kw-tool::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(16,16,16,.97); color:var(--off-white); font-size:10px; padding:6px 12px; white-space:nowrap; border:1px solid rgba(184,150,12,.25); opacity:0; pointer-events:none; z-index:200; transition:opacity .2s; }
+.kw-tool:hover::after { opacity:1; }
+
+/* CLIENTS */
+.clients-sec { padding:80px 60px; border-top:1px solid rgba(255,255,255,.05); }
+.sec-label { font-size:11px; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:40px; }
+.clients-row { display:flex; flex-wrap:wrap; gap:14px 36px; align-items:center; }
+.c-name { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; color:rgba(255,255,255,.13); transition:color .3s; white-space:nowrap; }
+.c-name:hover { color:var(--off-white); }
+.c-name.kw { cursor:pointer; border-bottom:1px solid rgba(212,172,58,.2); }
+.c-name.kw:hover { color:var(--gold-light); }
+.c-sep { width:4px; height:4px; border-radius:50%; background:var(--gold); opacity:.25; }
+
+footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:flex; justify-content:space-between; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.18); }
+@media(max-width:600px){ footer{padding:20px 24px;flex-direction:column;gap:6px;text-align:center} }
+
+/* ══ WORK PAGE ══ */
+#page-work { padding-top:72px; }
+.cat-tabs { position:sticky; top:72px; z-index:50; background:rgba(8,8,8,.97); border-bottom:1px solid rgba(255,255,255,.06); padding:0 60px; display:flex; gap:0; overflow-x:auto; scrollbar-width:none; }
+.cat-tabs::-webkit-scrollbar { display:none; }
+.cat-tab { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#888; background:none; border:none; border-bottom:2px solid transparent; padding:16px 22px; cursor:pointer; white-space:nowrap; transition:all .3s; font-family:'Helvetica Neue',sans-serif; }
+.cat-tab:hover { color:var(--off-white); }
+.cat-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+.cat-panel { display:none; padding:60px; min-height:calc(100vh - 146px); }
+.cat-panel.active { display:block; animation:fu .45s ease forwards; }
+.cat-hdr { display:grid; grid-template-columns:auto 1fr; gap:36px; align-items:start; margin-bottom:56px; }
+.cat-num { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:300; color:rgba(184,150,12,.1); line-height:1; }
+.cat-ttl { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,4vw,44px); font-weight:300; color:var(--off-white); line-height:1.1; margin-bottom:10px; }
+.cat-ttl em { font-style:italic; color:var(--gold-light); }
+.cat-intro { font-size:15px; line-height:1.9; color:#888; max-width:540px; }
+
+/* GRID */
+.work-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.wi { position:relative; overflow:hidden; aspect-ratio:4/5; background:#0f0f0f; cursor:pointer; }
+.wi.wide { grid-column:span 2; aspect-ratio:8/5; }
+.wi img { width:100%; height:100%; object-fit:cover; filter:brightness(.65) saturate(.85); transition:transform .8s cubic-bezier(.25,.46,.45,.94),filter .5s; }
+.wi:hover img { transform:scale(1.05); filter:brightness(.85) saturate(1.1); }
+.wo { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 55%); display:flex; flex-direction:column; justify-content:flex-end; padding:22px; opacity:0; transition:opacity .35s; }
+.wi:hover .wo { opacity:1; }
+.wp { font-family:'Cormorant Garamond',serif; font-size:19px; color:var(--off-white); margin-bottom:3px; }
+.wm { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
+.wh { font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-top:6px; }
+
+@media(max-width:900px){
+  .work-grid{grid-template-columns:1fr 1fr}
+  .wi.wide{grid-column:span 2;aspect-ratio:16/9}
+  .cat-panel{padding:40px 32px}
+  .cat-tabs{padding:0 24px}
+}
+@media(max-width:600px){
+  .work-grid{grid-template-columns:1fr}
+  .wi.wide{grid-column:span 1;aspect-ratio:4/3}
+  .cat-panel{padding:32px 20px}
+  .cat-tab{padding:14px 14px;font-size:9px}
+  .wo{opacity:1}
+}
+
+/* ══ PROJECT OVERLAY ══ */
+.proj-ov { position:fixed; inset:0; z-index:200; background:var(--black); overflow-y:auto; -webkit-overflow-scrolling:touch; opacity:0; pointer-events:none; transition:opacity .35s; }
+.proj-ov.open { opacity:1; pointer-events:all; }
+.proj-bar { position:sticky; top:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:20px 60px; background:rgba(8,8,8,.97); border-bottom:1px solid rgba(255,255,255,.06); }
+.proj-back { font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:#888; background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:10px; font-family:'Helvetica Neue',sans-serif; transition:color .3s; }
+.proj-back:hover { color:var(--off-white); }
+.proj-back::before { content:'←'; font-size:13px; }
+.proj-crumb { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.25); }
+.proj-body { max-width:1400px; margin:0 auto; padding:60px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+.p-lbl { font-size:9px; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; opacity:.7; }
+.p-ttl { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,5vw,60px); font-weight:300; color:var(--off-white); line-height:1.05; margin-bottom:10px; }
+.p-ttl em { font-style:italic; color:var(--gold-light); }
+.p-sub { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:32px; }
+.p-txt { font-size:15px; line-height:2; color:#888; margin-bottom:16px; }
+.p-txt.qt { font-style:italic; color:var(--off-white); font-size:17px; line-height:1.8; margin-bottom:24px; }
+.p-meta { border-top:1px solid rgba(255,255,255,.06); padding-top:28px; margin-top:28px; }
+.p-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:12px; }
+.p-key { text-transform:uppercase; letter-spacing:.12em; color:#888; font-size:10px; }
+.p-val { color:var(--off-white); text-align:right; max-width:60%; }
+.p-imgs { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
+.p-main { grid-column:span 2; height:360px; overflow:hidden; }
+.p-main img { width:100%; height:100%; object-fit:cover; filter:brightness(.85); }
+.p-sm { height:190px; overflow:hidden; }
+.p-sm img { width:100%; height:100%; object-fit:cover; filter:brightness(.8); }
+.p-wide { grid-column:span 2; height:190px; overflow:hidden; }
+.p-wide img { width:100%; height:100%; object-fit:cover; filter:brightness(.8); }
+
+@media(max-width:900px){ .proj-body{grid-template-columns:1fr;gap:48px;padding:40px 32px} .proj-bar{padding:18px 32px} }
+@media(max-width:600px){ .proj-body{padding:28px 20px} .proj-bar{padding:14px 20px} .p-main{height:240px} .p-sm{height:140px} }
+
+/* ══ CONTACT ══ */
+#page-contact { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:100px 60px; }
+#page-contact::before { content:''; position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(184,150,12,.05) 0%,transparent 70%); }
+.c-head { font-family:'Cormorant Garamond',serif; font-size:clamp(44px,7vw,90px); font-weight:300; color:var(--off-white); line-height:1; margin-bottom:20px; position:relative; z-index:1; }
+.c-head em { font-style:italic; color:var(--gold-light); }
+.c-sub { font-size:15px; color:#888; margin-bottom:48px; max-width:480px; line-height:1.8; position:relative; z-index:1; }
+.c-links { display:flex; gap:40px; align-items:center; flex-wrap:wrap; justify-content:center; position:relative; z-index:1; }
+.c-email { font-family:'Cormorant Garamond',serif; font-size:22px; font-style:italic; color:var(--gold-light); text-decoration:none; }
+.c-lnk { font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:#888; text-decoration:none; transition:color .3s; }
+.c-lnk:hover { color:var(--off-white); }
+@media(max-width:600px){ #page-contact{padding:80px 24px} .c-links{flex-direction:column;gap:20px} }
+
+/* HOME responsive */
+@media(max-width:900px){
+  .home-hero{grid-template-columns:1fr}
+  .home-right{display:none}
+  .home-left{padding:100px 32px 60px;justify-content:flex-end;min-height:100vh}
+  .home-about{grid-template-columns:1fr;gap:60px;padding:80px 32px}
+  .clients-sec{padding:60px 32px}
+}
+@media(max-width:600px){
+  .home-left{padding:90px 24px 60px}
+  .home-about{padding:60px 24px}
+  .clients-sec{padding:60px 24px}
+  .about-stats{grid-template-columns:1fr 1fr}
+}
+
+@keyframes fu { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 </style>
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="curR"></div>
 
-<!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">A · K</a>
+  <span class="nav-logo" onclick="go('home')">A · K</span>
   <ul class="nav-links">
-    <li><a href="#section-architectural">Architectural</a></li>
-    <li><a href="#section-retail">Retail</a></li>
-    <li><a href="#section-events">Events</a></li>
-    <li><a href="#section-art">Art & Light</a></li>
-    <li><a href="#section-parametric">Parametric</a></li>
-    <li><a href="#section-objects">Objects</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a id="n-home" class="active" onclick="go('home')">Home</a></li>
+    <li><a id="n-work" onclick="go('work')">Work</a></li>
+    <li><a id="n-contact" onclick="go('contact')">Contact</a></li>
+    <li>
+      <div class="color-wheel-wrap" title="Drag to change accent colour">
+        <canvas class="color-wheel-canvas" id="colorWheel" width="64" height="64"></canvas>
+        <div class="color-wheel-needle" id="colorNeedle"></div>
+      </div>
+    </li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-tag">Senior Lighting Designer · Paris</div>
-    <h1 class="hero-name">Alexandre<br><em>Kolinka</em></h1>
-    <p class="hero-tagline">Architectural light · Parametric sculpture · Bespoke luminaires<br>15 years · 5 continents</p>
-    <div class="hero-line"></div>
-    <p class="hero-phrase">"Structures that begin where architecture ends —<br>designed to host light, time, and living things."</p>
-
-    <!-- INTERACTIVE REGIONS BAR -->
-    <div class="regions-bar">
-      <div class="region-tabs">
-        <button class="region-tab active" data-region="europe">Europe</button>
-        <button class="region-tab" data-region="middleeast">Middle East</button>
-        <button class="region-tab" data-region="centralasia">Central Asia</button>
-        <button class="region-tab" data-region="africa">North Africa</button>
-        <button class="region-tab" data-region="asia">Asia</button>
-      </div>
-      <div class="region-content">
-        <div class="region-panel active" id="region-europe">
-          <span class="region-icon">●</span> Chanel — Once Upon a Moon, Place Vendôme · Burberry, Faubourg St-Honoré · Morland Mixité Capitale with Olafur Eliasson, Paris · crOOZin parametric luminaires, Studio Incandescence
+<!-- ══ HOME ══ -->
+<div class="page active" id="page-home">
+  <div class="home-hero">
+    <div class="home-left">
+      <div class="home-tag">Senior Lighting Designer · Paris · International</div>
+      <h1 class="home-name">Alexandre<br><em>Kolinka</em></h1>
+      <div class="home-line"></div>
+      <p class="home-phrase">"Structures that begin where architecture ends —<br>designed to host light, time, and living things."</p>
+      <div class="regions-bar">
+        <div class="region-tabs">
+          <button class="region-tab active" data-r="eu">Europe</button>
+          <button class="region-tab" data-r="me">Middle East</button>
+          <button class="region-tab" data-r="ca">Central Asia</button>
+          <button class="region-tab" data-r="af">North Africa</button>
+          <button class="region-tab" data-r="as">Asia</button>
         </div>
-        <div class="region-panel" id="region-middleeast">
-          <span class="region-icon">●</span> Dammam Aramco Stadium, Saudi Arabia — Foster + Partners / Populous · Gulf Cup Opening Ceremony, Kuwait — 500 synchronized light sabers
-        </div>
-        <div class="region-panel" id="region-centralasia">
-          <span class="region-icon">●</span> ForteBank Headquarters, Astana — bespoke façade lighting · Astana Expo HQ — A. Smith / G. Gill Architects · Kolinka Lighting Bureau, founded 2013
-        </div>
-        <div class="region-panel" id="region-africa">
-          <span class="region-icon">●</span> Villa Sedrati, Rabat — residential lighting concept · CFG Bank HQ, Casablanca — layered façade lighting · University, Marrakech — dark-sky G3 compliant scheme
-        </div>
-        <div class="region-panel" id="region-asia">
-          <span class="region-icon">●</span> Yves Saint Laurent, Shanghai — light installation · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo Digital Gallery, South Korea · Circle of Light, Red Square Moscow
-        </div>
+        <div class="region-panel active" id="r-eu">● Chanel — Once Upon a Moon, Paris · Burberry, Faubourg St-Honoré · Morland Mixité Capitale with Olafur Eliasson · crOOZin parametric luminaires</div>
+        <div class="region-panel" id="r-me">● Dammam Aramco Stadium, Saudi Arabia — Foster + Partners / Populous · Gulf Cup Opening Ceremony, Kuwait</div>
+        <div class="region-panel" id="r-ca">● ForteBank HQ, Astana · Astana Expo — A. Smith / G. Gill · Kolinka Lighting Bureau, founded 2013</div>
+        <div class="region-panel" id="r-af">● Villa Sedrati, Rabat · CFG Bank HQ, Casablanca · University, Marrakech · Dust Memory — RAK Biennale 2027</div>
+        <div class="region-panel" id="r-as">● Yves Saint Laurent, Shanghai · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo, South Korea</div>
       </div>
     </div>
-
-    <div class="scroll-hint">Scroll to explore</div>
+    <div class="home-right"><img src="ripples.jpeg" alt="Light & Form"></div>
   </div>
-  <div class="hero-right">
-    <!-- Hero image: crOOZin illuminated warm white -->
-    <img class="hero-img"
-      src="ripples.jpeg"
-      alt="Light sculpture">
-  </div>
-</div>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-label">Profile</div>
-  <div class="about-grid">
-    <div class="reveal">
+  <div class="home-about">
+    <div>
       <h2 class="about-heading">Where light<br>becomes <em>matter</em></h2>
       <div class="about-stats">
-        <div>
-          <div class="stat-number">15+</div>
-          <div class="stat-label">Years of practice</div>
-        </div>
-        <div>
-          <div class="stat-number">4</div>
-          <div class="stat-label">Continents</div>
-        </div>
-        <div>
-          <div class="stat-number">∞</div>
-          <div class="stat-label">Parametric forms</div>
-        </div>
-        <div>
-          <div class="stat-number">1</div>
-          <div class="stat-label">Obsession</div>
-        </div>
+        <div><div class="stat-num">15+</div><div class="stat-lbl">Years of practice</div></div>
+        <div><div class="stat-num">4</div><div class="stat-lbl">Continents</div></div>
+        <div><div class="stat-num">∞</div><div class="stat-lbl">Parametric forms</div></div>
+        <div><div class="stat-num">1</div><div class="stat-lbl">Obsession</div></div>
       </div>
     </div>
-    <div class="reveal">
-      <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience across architectural lighting, media façades, and public realm installations. From <span class="kw" data-target="work-dammam">stadium skins in Saudi Arabia</span> to cultural venues in <span class="kw" data-target="work-fortebank">Kazakhstan</span>, from <span class="kw" data-target="work-chanel">luxury retail in Paris</span> to <span class="kw" data-target="objects">parametric light objects</span> born in a Paris studio.</p>
-      <p class="about-text">Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong> — an independent research studio working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the <span class="kw" data-target="objects">crOOZin series</span>: biomorphic light objects grown from <span class="kw-tool" data-tip="Parametric 3D modelling + visual scripting for generative design">Grasshopper</span> geometries and printed at 25 micron resolution, and <span class="kw" data-target="work-dustmemory">Luminous Drift</span> — a sand and laser installation for the Ras Al Khaimah Art Biennale 2027.</p>
-      <p class="about-text">Fluent in <span class="kw-tool" data-tip="3D modelling — primary design tool">Rhino</span> · <span class="kw" data-target="work-ligeo" data-tip="Parametric visual scripting for generative design">Grasshopper</span> · <span class="kw" data-target="work-sedrati" data-tip="Professional lighting simulation software">DIALux</span> · <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server for architectural lighting">LightAct</span> · <span class="kw-tool" data-tip="3D motion graphics & rendering">Cinema 4D</span> · <span class="kw-tool" data-tip="Microcontroller programming for custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Professional lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D visualisation engine">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span>.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════
-     SECTION 1 — ARCHITECTURAL LIGHTING
-═══════════════════════════════════════════ -->
-<div class="cat-section" id="section-architectural">
-  <div class="cat-header reveal">
-    <div class="cat-number">01</div>
     <div>
-      <h2 class="cat-title">Architectural <em>Lighting</em></h2>
-      <p class="cat-intro">Large-scale lighting strategies for buildings, façades and public realm. From stadium skins to corporate headquarters, from cultural institutions to residential schemes — light as an architectural material, integrated from concept through to commissioning.</p>
+      <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience. From <span class="kw" onclick="sw('architectural')">stadium skins in Saudi Arabia</span> to cultural venues in <span class="kw" onclick="sw('architectural')">Kazakhstan</span>, from <span class="kw" onclick="sw('retail')">luxury retail in Paris</span> to <span class="kw" onclick="sw('objects')">parametric light objects</span> born in a Paris studio.</p>
+      <p class="about-text">Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong> — working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the <span class="kw" onclick="sw('objects')">crOOZin series</span>: biomorphic light objects grown from <span class="kw" onclick="sw('parametric')">Grasshopper</span> geometries and printed at 25 micron resolution.</p>
+      <p class="about-text">Fluent in <span class="kw-tool" data-tip="3D modelling">Rhino</span> · <span class="kw" onclick="sw('parametric')">Grasshopper</span> · <span class="kw" onclick="sw('architectural')">DIALux</span> · <span class="kw-tool" data-tip="LED pixel mapping & show control">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server">LightAct</span> · <span class="kw-tool" data-tip="3D motion graphics">Cinema 4D</span> · <span class="kw-tool" data-tip="Custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D visualisation">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span>.</p>
     </div>
   </div>
-  <div class="work-inner">
-    <div class="work-grid reveal">
 
-      <div class="work-item wide" id="work-dammam">
-        <img src="satdium.jpg" alt="Dammam Aramco Stadium">
-        <div class="work-overlay">
-          <div class="work-project">Dammam Aramco Stadium</div>
-          <div class="work-meta">Saudi Arabia · Foster + Partners · Populous · LDC</div>
-        </div>
-      </div>
+  <div class="clients-sec">
+    <div class="sec-label">Collaborations</div>
+    <div class="clients-row">
+      <span class="c-name kw" onclick="sp('chanel')">Chanel</span><div class="c-sep"></div>
+      <span class="c-name kw" onclick="sp('chanel')">Burberry</span><div class="c-sep"></div>
+      <span class="c-name kw" onclick="sp('ysl')">Yves Saint Laurent</span><div class="c-sep"></div>
+      <span class="c-name">Rolex</span><div class="c-sep"></div>
+      <span class="c-name">Louis Vuitton</span><div class="c-sep"></div>
+      <span class="c-name kw" onclick="sp('dammam')">Foster + Partners</span><div class="c-sep"></div>
+      <span class="c-name kw" onclick="sp('dammam')">Populous</span><div class="c-sep"></div>
+      <span class="c-name kw" onclick="sp('fortebank')">Saraiva & Associados</span><div class="c-sep"></div>
+      <span class="c-name">David Chipperfield</span><div class="c-sep"></div>
+      <span class="c-name">Olafur Eliasson</span><div class="c-sep"></div>
+      <span class="c-name">Samsung</span><div class="c-sep"></div>
+      <span class="c-name">Audi</span><div class="c-sep"></div>
+      <span class="c-name">BMW</span>
+    </div>
+  </div>
 
-      <div class="work-item">
-        <img src="satdium-1.jpg" alt="Dammam Stadium facade">
-        <div class="work-overlay">
-          <div class="work-project">Dammam Stadium — Façade</div>
-          <div class="work-meta">Saudi Arabia · Media façade · LED mapping</div>
-        </div>
-      </div>
+  <footer>
+    <span>© 2026 Alexandre Kolinka · Studio Incandescence</span>
+    <span>Paris · International</span>
+  </footer>
+</div>
 
-      <div class="work-item">
-        <img src="satdium-2.jpg" alt="Dammam Stadium night">
-        <div class="work-overlay">
-          <div class="work-project">Dammam Stadium — Night</div>
-          <div class="work-meta">Saudi Arabia · Dynamic lighting concept</div>
-        </div>
-      </div>
+<!-- ══ WORK ══ -->
+<div class="page" id="page-work">
+  <div class="cat-tabs">
+    <button class="cat-tab active" data-c="architectural">01 · Architectural</button>
+    <button class="cat-tab" data-c="retail">02 · Retail</button>
+    <button class="cat-tab" data-c="events">03 · Events</button>
+    <button class="cat-tab" data-c="art">04 · Art & Light</button>
+    <button class="cat-tab" data-c="parametric">05 · Parametric</button>
+    <button class="cat-tab" data-c="objects">06 · Objects</button>
+  </div>
 
-      <div class="work-item">
-        <img src="satdium-3.jpg" alt="Dammam Stadium structure">
-        <div class="work-overlay">
-          <div class="work-project">Dammam Stadium — Structure</div>
-          <div class="work-meta">Saudi Arabia · Parametric geometry</div>
-        </div>
-      </div>
+  <!-- 01 -->
+  <div class="cat-panel active" id="cat-architectural">
+    <div class="cat-hdr"><div class="cat-num">01</div><div><h2 class="cat-ttl">Architectural <em>Lighting</em></h2><p class="cat-intro">Large-scale lighting strategies for buildings, façades and public realm. From stadium skins to corporate headquarters — light as an architectural material, integrated from concept through to commissioning.</p></div></div>
+    <div class="work-grid">
+      <div class="wi wide" onclick="sp('dammam')"><img src="satdium.jpg" alt=""><div class="wo"><div class="wp">Dammam Aramco Stadium</div><div class="wm">Saudi Arabia · Foster + Partners · LDC</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('dammam')"><img src="satdium-1.jpg" alt=""><div class="wo"><div class="wp">Dammam — Façade</div><div class="wm">Media façade · LED mapping</div></div></div>
+      <div class="wi" onclick="sp('dammam')"><img src="satdium-2.jpg" alt=""><div class="wo"><div class="wp">Dammam — Night</div><div class="wm">Dynamic lighting concept</div></div></div>
+      <div class="wi" onclick="sp('dammam')"><img src="satdium-3.jpg" alt=""><div class="wo"><div class="wp">Dammam — Structure</div><div class="wm">Parametric geometry</div></div></div>
+      <div class="wi" onclick="sp('dammam')"><img src="satdium-6.jpg" alt=""><div class="wo"><div class="wp">Dammam — Lighting</div><div class="wm">Stage 3 · LDC</div></div></div>
+      <div class="wi" onclick="sp('dammam')"><img src="satdium-7.jpg" alt=""><div class="wo"><div class="wp">Dammam — Detail</div><div class="wm">Facade integration</div></div></div>
+      <div class="wi wide" onclick="sp('fortebank')"><img src="fortebank001.jpeg" alt=""><div class="wo"><div class="wp">ForteBank HQ</div><div class="wm">Astana, Kazakhstan · Saraiva & Associados</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('fortebank')"><img src="klb-ForteBank-5.jpeg" alt=""><div class="wo"><div class="wp">ForteBank — Façade</div><div class="wm">Exterior lighting</div></div></div>
+      <div class="wi" onclick="sp('fortebank')"><img src="klb-Fortebank-10.jpg" alt=""><div class="wo"><div class="wp">ForteBank — Detail</div><div class="wm">Bespoke light fixture</div></div></div>
+      <div class="wi wide" onclick="sp('sedrati')"><img src="sedrati.jpg" alt=""><div class="wo"><div class="wp">Villa Sedrati</div><div class="wm">Rabat, Morocco · Residential · DIALux</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('sedrati')"><img src="sedrati1.jpg" alt=""><div class="wo"><div class="wp">Villa Sedrati — Living</div></div></div>
+      <div class="wi" onclick="sp('sedrati')"><img src="sedrati2.jpg" alt=""><div class="wo"><div class="wp">Villa Sedrati — Detail</div></div></div>
+    </div>
+  </div>
 
-      <div class="work-item">
-        <img src="satdium-4.jpg" alt="Dammam Stadium aerial">
-        <div class="work-overlay">
-          <div class="work-project">Dammam Stadium — Aerial</div>
-          <div class="work-meta">Saudi Arabia · Concept design</div>
-        </div>
-      </div>
+  <!-- 02 -->
+  <div class="cat-panel" id="cat-retail">
+    <div class="cat-hdr"><div class="cat-num">02</div><div><h2 class="cat-ttl">Luxury Retail<br><em>& Scenography</em></h2><p class="cat-intro">Light as brand identity. Bespoke lighting concepts and installations for the world's most demanding luxury houses. Blurring the line between scenography, architecture and art.</p></div></div>
+    <div class="work-grid">
+      <div class="wi wide" onclick="sp('chanel')"><img src="moon.jpg" alt=""><div class="wo"><div class="wp">Chanel — Once Upon a Moon</div><div class="wm">Place Vendôme, Paris · Atelier Athem</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('ysl')"><img src="YSL.jpg" alt=""><div class="wo"><div class="wp">Yves Saint Laurent</div><div class="wm">Shanghai · Ligeo</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('beirut-bar')"><img src="bar2.jpg" alt=""><div class="wo"><div class="wp">Hospitality — Bar</div><div class="wm">Beirut · Spatial scenography</div></div></div>
+      <div class="wi"><img src="fire-dj2.png" alt=""><div class="wo"><div class="wp">DJ Stage — Bespoke Luminaire</div><div class="wm">Custom light fixture</div></div></div>
+      <div class="wi wide"><img src="ripples.jpeg" alt=""><div class="wo"><div class="wp">Architectural Scenography</div><div class="wm">Luxury retail · Light & space</div></div></div>
+    </div>
+  </div>
 
-      <div class="work-item">
-        <img src="satdium-6.jpg" alt="Dammam Stadium lighting">
-        <div class="work-overlay">
-          <div class="work-project">Dammam Stadium — Lighting</div>
-          <div class="work-meta">Saudi Arabia · LDC · Stage 3</div>
-        </div>
-      </div>
+  <!-- 03 -->
+  <div class="cat-panel" id="cat-events">
+    <div class="cat-hdr"><div class="cat-num">03</div><div><h2 class="cat-ttl">Event & Live<br><em>Performance</em></h2><p class="cat-intro">Turning city skylines into theatrical shows. From world-record video mapping in Seoul to urban light mapping in Beirut — live light design at the scale of spectacle.</p></div></div>
+    <div class="work-grid">
+      <div class="wi wide"><img src="festival-1.png" alt=""><div class="wo"><div class="wp">Event Scenography</div><div class="wm">International · Live performance</div></div></div>
+      <div class="wi"><img src="satdium-4.jpg" alt=""><div class="wo"><div class="wp">Gulf Cup Opening</div><div class="wm">Kuwait · 500 light sabers</div></div></div>
+      <div class="wi"><img src="klb-Fortebank-13.jpg" alt=""><div class="wo"><div class="wp">Namsan Electronic Fire</div><div class="wm">Seoul · World record mapping</div></div></div>
+      <div class="wi wide" onclick="sp('beirut')"><img src="beyrouth-1.png" alt=""><div class="wo"><div class="wp">Beirut — Urban Light Mapping</div><div class="wm">Lebanon · LED & Video Mapping</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-2.png" alt=""><div class="wo"><div class="wp">Beirut — Installation</div></div></div>
+      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-3.png" alt=""><div class="wo"><div class="wp">Beirut — Mapping Study</div></div></div>
+      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-4.png" alt=""><div class="wo"><div class="wp">Beirut — Night View</div></div></div>
+      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-5.png" alt=""><div class="wo"><div class="wp">Beirut — Colour</div></div></div>
+      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-6.png" alt=""><div class="wo"><div class="wp">Beirut — Detail</div></div></div>
+    </div>
+  </div>
 
-      <div class="work-item">
-        <img src="satdium-7.jpg" alt="Dammam Stadium detail">
-        <div class="work-overlay">
-          <div class="work-project">Dammam Stadium — Detail</div>
-          <div class="work-meta">Saudi Arabia · Facade integration</div>
-        </div>
-      </div>
+  <!-- 04 -->
+  <div class="cat-panel" id="cat-art">
+    <div class="cat-hdr"><div class="cat-num">04</div><div><h2 class="cat-ttl">Art & Light<br><em>Installations</em></h2><p class="cat-intro">Site-specific works at the intersection of light, form and environment. Biomorphic structures, aquatic light systems, immersive environments — designed to transform space into experience.</p></div></div>
+    <div class="work-grid">
+      <div class="wi wide" onclick="sp('dustmemory')"><img src="dust-memory.png" alt=""><div class="wo"><div class="wp">Dust Memory</div><div class="wm">RAK Art Biennale 2027 · Concept</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('dustmemory')"><img src="dust-memory-2.png" alt=""><div class="wo"><div class="wp">Dust Memory — Detail</div><div class="wm">UAE · In development</div></div></div>
+      <div class="wi" onclick="sp('seaSwarm')"><img src="drone-aqua.png" alt=""><div class="wo"><div class="wp">Autonomous Sea Swarm</div><div class="wm">Concept · Light drones</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('cuddle')"><img src="cuddle-shuttle-01.jpeg" alt=""><div class="wo"><div class="wp">Cuddle Shuttle</div><div class="wm">Burning Man 2018–2024</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('cuddle')"><img src="cuddle-shuttle-02.jpeg" alt=""><div class="wo"><div class="wp">Cuddle Shuttle — Night</div></div></div>
+      <div class="wi" onclick="sp('cuddle')"><img src="cuddle-shuttle-03.jpeg" alt=""><div class="wo"><div class="wp">Cuddle Shuttle — Detail</div></div></div>
+    </div>
+  </div>
 
-      <div class="work-item" id="work-fortebank">
-        <img src="fortebank001.jpeg" alt="ForteBank HQ">
-        <div class="work-overlay">
-          <div class="work-project">ForteBank HQ</div>
-          <div class="work-meta">Astana, Kazakhstan · Saraiva & Associados</div>
-        </div>
-      </div>
+  <!-- 05 -->
+  <div class="cat-panel" id="cat-parametric">
+    <div class="cat-hdr"><div class="cat-num">05</div><div><h2 class="cat-ttl">Parametric Design<br><em>& Research</em></h2><p class="cat-intro">Where the hand gets lost, the code continues. Algorithmic tools for light distribution, generative form and fabrication logic — building environments where aesthetic intention and technical deployment are resolved in the same gesture.</p></div></div>
+    <div class="work-grid">
+      <div class="wi wide" onclick="sp('ligeo')"><img src="LIGEO-1.png" alt=""><div class="wo"><div class="wp">Ligeo Spatial Distribution</div><div class="wm">Grasshopper · Perlin Noise · 2021</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('ligeo')"><img src="LIGEO-2.png" alt=""><div class="wo"><div class="wp">Ligeo — Spatial Recursion</div></div></div>
+      <div class="wi" onclick="sp('ligeo')"><img src="LIGEO-3.png" alt=""><div class="wo"><div class="wp">Ligeo — RGB Simulation</div></div></div>
+      <div class="wi wide" onclick="sp('ligeo')"><img src="LIGEO-4.png" alt=""><div class="wo"><div class="wp">Ligeo — Grasshopper Interface</div></div></div>
+      <div class="wi" onclick="sp('gencork')"><img src="gencork1.jpeg" alt=""><div class="wo"><div class="wp">Gencork — Ambient Studies</div><div class="wm">Spatial scenography</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('gencork')"><img src="gencork2.jpeg" alt=""><div class="wo"><div class="wp">Gencork — Study 2</div></div></div>
+      <div class="wi" onclick="sp('gencork')"><img src="gencork3.jpeg" alt=""><div class="wo"><div class="wp">Gencork — Study 3</div></div></div>
+      <div class="wi wide"><img src="parametric distribution .png" alt=""><div class="wo"><div class="wp">Parametric Distribution Study</div><div class="wm">Dammam Stadium · Research</div></div></div>
+    </div>
+  </div>
 
-      <div class="work-item">
-        <img src="klb-ForteBank-5.jpeg" alt="ForteBank facade">
-        <div class="work-overlay">
-          <div class="work-project">ForteBank HQ — Façade</div>
-          <div class="work-meta">Astana, Kazakhstan · Exterior lighting</div>
-        </div>
-      </div>
-
+  <!-- 06 -->
+  <div class="cat-panel" id="cat-objects">
+    <div class="cat-hdr"><div class="cat-num">06</div><div><h2 class="cat-ttl">Objects &<br><em>Luminaires</em></h2><p class="cat-intro">Bespoke light objects born from parametric geometry and artisan fabrication. Limited series, conceived and made in Paris — where code, material and light meet in a single form.</p></div></div>
+    <div class="work-grid">
+      <div class="wi wide" onclick="sp('croozin')"><img src="croozinluna2.jpg" alt=""><div class="wo"><div class="wp">crOOZin</div><div class="wm">Studio Incandescence · Paris · 2026</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('croozin')"><img src="crOOzin-pink.jpeg" alt=""><div class="wo"><div class="wp">crOOZin — Pink</div></div></div>
+      <div class="wi" onclick="sp('croozin')"><img src="crOOzin-zoom.jpeg" alt=""><div class="wo"><div class="wp">crOOZin — Detail</div></div></div>
+      <div class="wi" onclick="sp('croozin')"><img src="croozin-25.jpg" alt=""><div class="wo"><div class="wp">crOOZin — 25</div></div></div>
+      <div class="wi" onclick="sp('croozin')"><img src="croozin-26.jpg" alt=""><div class="wo"><div class="wp">crOOZin — 26</div></div></div>
+      <div class="wi" onclick="sp('croozin')"><img src="croozin-27.jpg" alt=""><div class="wo"><div class="wp">crOOZin — 27</div></div></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SECTION 2 — LUXURY RETAIL & SCENOGRAPHY
-═══════════════════════════════════════════ -->
-<div class="cat-section" id="section-retail">
-  <div class="cat-header reveal">
-    <div class="cat-number">02</div>
-    <div>
-      <h2 class="cat-title">Luxury Retail<br><em>& Scenography</em></h2>
-      <p class="cat-intro">Light as brand identity. Bespoke lighting concepts and installations for the world's most demanding luxury houses — Chanel, Burberry, Yves Saint Laurent, Louis Vuitton, Rolex. Blurring the line between scenography, architecture and art.</p>
-    </div>
-  </div>
-  <div class="work-inner">
-    <div class="work-grid reveal">
-
-      <div class="work-item wide" id="work-chanel">
-        <img src="moon.jpg" alt="Chanel Once Upon a Moon">
-        <div class="work-overlay">
-          <div class="work-project">Chanel — Once Upon a Moon</div>
-          <div class="work-meta">Place Vendôme, Paris · Atelier Athem · Light installation</div>
-        </div>
-      </div>
-
-      <div class="work-item" id="work-ysl">
-        <img src="YSL.jpg" alt="Yves Saint Laurent Shanghai">
-        <div class="work-overlay">
-          <div class="work-project">Yves Saint Laurent</div>
-          <div class="work-meta">Shanghai, China · Ligeo · Light installation</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="ripples.jpeg" alt="Retail scenography">
-        <div class="work-overlay">
-          <div class="work-project">Architectural Scenography</div>
-          <div class="work-meta">Luxury retail · Light & space</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="bar2.jpg" alt="Hospitality bar lighting">
-        <div class="work-overlay">
-          <div class="work-project">Hospitality — Bar Scenography</div>
-          <div class="work-meta">Beirut · Spatial light design</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="fire-dj2.png" alt="DJ luminaire fire installation">
-        <div class="work-overlay">
-          <div class="work-project">DJ Stage — Bespoke Luminaire</div>
-          <div class="work-meta">Spatial scenography · Custom light fixture</div>
-        </div>
-      </div>
-
-    </div>
+<!-- ══ CONTACT ══ -->
+<div class="page" id="page-contact">
+  <h2 class="c-head">Let's build<br><em>something</em></h2>
+  <p class="c-sub">Available for architectural lighting commissions, parametric sculpture projects, and artistic collaborations worldwide.</p>
+  <div class="c-links">
+    <a href="mailto:lightsonic@gmail.com" class="c-email">lightsonic@gmail.com</a>
+    <div class="c-sep"></div>
+    <a href="https://instagram.com/alexandre_kolinka" class="c-lnk" target="_blank">Instagram</a>
+    <div class="c-sep"></div>
+    <a href="https://instagram.com/croozin_lamp" class="c-lnk" target="_blank">crOOZin</a>
+    <div class="c-sep"></div>
+    <a href="https://alexandre-kolinka.github.io" class="c-lnk" target="_blank">Portfolio</a>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SECTION 3 — EVENT & LIVE PERFORMANCE
-═══════════════════════════════════════════ -->
-<div class="cat-section" id="section-events">
-  <div class="cat-header reveal">
-    <div class="cat-number">03</div>
-    <div>
-      <h2 class="cat-title">Event & Live<br><em>Performance</em></h2>
-      <p class="cat-intro">Turning city skylines into theatrical shows. From world-record video mapping in Seoul to 500 synchronized light sabers in Kuwait — live light design at the scale of spectacle, for brands, institutions and public celebrations.</p>
-    </div>
+<!-- ══ PROJECT OVERLAY ══ -->
+<div class="proj-ov" id="pov">
+  <div class="proj-bar">
+    <button class="proj-back" onclick="cp()">Back to Work</button>
+    <span class="proj-crumb" id="pcrumb"></span>
   </div>
-  <div class="work-inner">
-    <div class="work-grid reveal">
-
-      <div class="work-item wide">
-        <img src="festival-1.png" alt="Event scenography">
-        <div class="work-overlay">
-          <div class="work-project">Event Scenography</div>
-          <div class="work-meta">International · Live performance & light</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="satdium-4.jpg" alt="Gulf Cup Kuwait">
-        <div class="work-overlay">
-          <div class="work-project">Gulf Cup Opening Ceremony</div>
-          <div class="work-meta">Kuwait · Auditoire · 500 synchronized light sabers</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="klb-Fortebank-10.jpg" alt="Namsan Electronic Fire Seoul">
-        <div class="work-overlay">
-          <div class="work-project">Namsan Electronic Fire</div>
-          <div class="work-meta">Seoul, South Korea · World record video mapping</div>
-        </div>
-      </div>
-
-      <div class="work-item wide">
-        <img src="beyrouth-1.png" alt="Beirut Urban Light Mapping">
-        <div class="work-overlay">
-          <div class="work-project">Beirut — Urban Light Mapping</div>
-          <div class="work-meta">Beirut, Lebanon · LED & Video Mapping · City Centre</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="beyrouth-2.png" alt="Beirut installation 2">
-        <div class="work-overlay">
-          <div class="work-project">Beirut — Light Installation</div>
-          <div class="work-meta">Lebanon · Architectural video mapping</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="beyrouth-3.png" alt="Beirut installation 3">
-        <div class="work-overlay">
-          <div class="work-project">Beirut — Mapping Study</div>
-          <div class="work-meta">Lebanon · Urban light design</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="beyrouth-4.png" alt="Beirut installation 4">
-        <div class="work-overlay">
-          <div class="work-project">Beirut — Night View</div>
-          <div class="work-meta">Lebanon · LED mapping</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="beyrouth-5.png" alt="Beirut installation 5">
-        <div class="work-overlay">
-          <div class="work-project">Beirut — Colour Study</div>
-          <div class="work-meta">Lebanon · Dynamic lighting</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="beyrouth-6.png" alt="Beirut installation 6">
-        <div class="work-overlay">
-          <div class="work-project">Beirut — Detail</div>
-          <div class="work-meta">Lebanon · Video mapping</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="exa.png" alt="Beirut spatial scenography">
-        <div class="work-overlay">
-          <div class="work-project">Beirut — Spatial Scenography</div>
-          <div class="work-meta">Lebanon · Immersive light environment</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
+  <div class="proj-body" id="pbody"></div>
 </div>
-
-<!-- ═══════════════════════════════════════════
-     SECTION 4 — ART & LIGHT INSTALLATIONS
-═══════════════════════════════════════════ -->
-<div class="cat-section" id="section-art">
-  <div class="cat-header reveal">
-    <div class="cat-number">04</div>
-    <div>
-      <h2 class="cat-title">Art & Light<br><em>Installations</em></h2>
-      <p class="cat-intro">Site-specific works at the intersection of light, form and environment. Biomorphic structures, aquatic light systems, immersive environments — designed to transform space into experience and let light become a living presence.</p>
-    </div>
-  </div>
-  <div class="work-inner">
-    <div class="work-grid reveal">
-
-      <div class="work-item wide">
-        <img src="drone-aqua.png" alt="Autonomous Luminous Sea Swarm">
-        <div class="work-overlay">
-          <div class="work-project">Autonomous Luminous Sea Swarm</div>
-          <div class="work-meta">Concept · Floating light drones · Phyllotaxis distribution</div>
-        </div>
-      </div>
-
-      <div class="work-item wide">
-        <img src="dust-memory.png" alt="Dust Memory">
-        <div class="work-overlay">
-          <div class="work-project">Dust Memory</div>
-          <div class="work-meta">Ras Al Khaimah Art Biennale 2027 · Concept · Light installation</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="dust-memory-2.png" alt="Dust Memory detail">
-        <div class="work-overlay">
-          <div class="work-project">Dust Memory — Detail</div>
-          <div class="work-meta">UAE · Site-specific · In development</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="croozinluna2.jpg" alt="crOOZin light sculpture">
-        <div class="work-overlay">
-          <div class="work-project">crOOZin — Light Sculpture</div>
-          <div class="work-meta">Studio Incandescence · Paris · 2026</div>
-        </div>
-      </div>
-
-      <div class="work-item">
-        <img src="crOOzin-pink.jpeg" alt="crOOZin pink">
-        <div class="work-overlay">
-          <div class="work-project">crOOZin — Colour Series</div>
-          <div class="work-meta">Biomorphic · 3D printed · Dichroic lens</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- DUST MEMORY DOSSIER -->
-  <div class="work-inner" style="padding-top:80px;">
-    <div class="parametric-divider reveal"></div>
-    <div class="ligeo-grid reveal">
-
-      <div class="ligeo-content">
-        <div class="parametric-project-label">Concept · Ras Al Khaimah Art Biennale 2027</div>
-        <h2 class="ligeo-title">Dust <em>Memory</em></h2>
-        <div class="ligeo-subtitle">Light · Sand · Laser · UAE · In development</div>
-
-        <p class="ligeo-text" style="font-style:italic; color:var(--off-white); font-size:16px; line-height:1.9; margin-bottom:28px;">"In the heart of Ras Al Khaimah's historic fishermen's village, Dust Memory materialises as a hovering cube of blue light, scaled just shy of the surrounding coral-stone houses."</p>
-
-        <p class="ligeo-text">A minimal dark-aluminium frame suspends a vibrating ceiling grid, releasing a whisper-thin veil of local sand that cascades through horizontal laser planes. Each grain becomes a momentary star, sparking as it intersects the beams and dissolving into darkness as it falls — an ever-changing constellation that fuses the site's maritime past with a vision of technological poetics.</p>
-
-        <p class="ligeo-text">Visitors are invited to walk the perimeter and witness tradition, light and gravity in quiet dialogue, framing the Biennale's wider conversation on memory and future craft.</p>
-
-        <div class="ligeo-meta">
-          <div class="ligeo-meta-row"><span class="ligeo-key">Location</span><span class="ligeo-val">Ras Al Khaimah, UAE — Historic Fishermen's Village</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Event</span><span class="ligeo-val">Ras Al Khaimah Art Biennale 2027</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Dimensions</span><span class="ligeo-val">2.20 × 2.20 × 2.20 m</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Materials</span><span class="ligeo-val">Dark aluminium frame · Local sand · Horizontal laser planes</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Light</span><span class="ligeo-val">Blue laser grid · Vibrating sand veil · Particle constellations</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Status</span><span class="ligeo-val">Concept — In development · 2027</span></div>
-        </div>
-      </div>
-
-      <div class="ligeo-images">
-        <div class="ligeo-img-main"><img src="dust-memory.png" alt="Dust Memory concept"></div>
-        <div class="ligeo-img-wide"><img src="dust-memory-2.png" alt="Dust Memory detail"></div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- CUDDLE SHUTTLE DOSSIER -->
-  <div class="work-inner" style="padding-top:80px;">
-    <div class="parametric-divider reveal"></div>
-    <div class="ligeo-grid reveal">
-
-      <div class="ligeo-content">
-        <div class="parametric-project-label">Mutant Vehicle · Burning Man · 2018 – 2024</div>
-        <h2 class="ligeo-title">Cuddle <em>Shuttle</em></h2>
-        <div class="ligeo-subtitle">Black Rock City · Light · Sound · Camp Campi Camp</div>
-
-        <p class="ligeo-text" style="font-style:italic; color:var(--off-white); font-size:16px; line-height:1.9; margin-bottom:28px;">"A mutant vehicle built for the Black Rock City playa. Light and sound as architecture — tuned to the body, the dust and the darkness."</p>
-
-        <p class="ligeo-text">Conceived and built with Louve Kolinka and Luna Kolinka for Camp Campi Camp, the Cuddle Shuttle carried strangers into the Nevada night from 2018 to 2024. Its last ride ended in fire on the playa.</p>
-
-        <div class="ligeo-meta">
-          <div class="ligeo-meta-row"><span class="ligeo-key">Location</span><span class="ligeo-val">Black Rock City, Nevada — Burning Man</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Years</span><span class="ligeo-val">2018 – 2024</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Collaboration</span><span class="ligeo-val">Louve Kolinka · Luna Kolinka</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Camp</span><span class="ligeo-val">Camp Campi Camp</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Type</span><span class="ligeo-val">Mutant vehicle · Light & sound installation</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Fate</span><span class="ligeo-val">Burned on the playa · 2024</span></div>
-        </div>
-      </div>
-
-      <div class="ligeo-images">
-        <div class="ligeo-img-main"><img src="cuddle-shuttle-01.jpeg" alt="Cuddle Shuttle Burning Man"></div>
-        <div class="ligeo-img-sm"><img src="cuddle-shuttle-02.jpeg" alt="Cuddle Shuttle night"></div>
-        <div class="ligeo-img-sm"><img src="cuddle-shuttle-03.jpeg" alt="Cuddle Shuttle detail"></div>
-        <div class="ligeo-img-wide"><img src="cuddle-shuttle-04.jpeg" alt="Cuddle Shuttle playa"></div>
-      </div>
-
-    </div>
-  </div>
-
-</div>
-═══════════════════════════════════════════ -->
-<div id="section-objects">
-  <div class="cat-header reveal" style="max-width:1400px; margin:0 auto; padding:80px 60px 0;">
-    <div class="cat-number">06</div>
-    <div>
-      <h2 class="cat-title">Objects &<br><em>Luminaires</em></h2>
-      <p class="cat-intro">Bespoke light objects born from parametric geometry and artisan fabrication. Limited series, conceived and made in Paris — where code, material and light meet in a single form.</p>
-    </div>
-  </div>
-  <div id="objects">
-  <div class="croozin-section">
-    <div class="croozin-images reveal">
-      <div class="croozin-img-main">
-        <img src="croozinluna2.jpg" alt="crOOZin illuminated">
-      </div>
-      <div class="croozin-img-sm">
-        <img src="crOOzin-pink.jpeg" alt="crOOZin pink">
-      </div>
-      <div class="croozin-img-sm">
-        <img src="crOOzin-zoom.jpeg" alt="crOOZin detail">
-      </div>
-    </div>
-
-    <div class="croozin-content reveal">
-      <div class="section-label">Studio Incandescence</div>
-      <h2 class="croozin-title">crOOZin</h2>
-      <div class="croozin-subtitle">Parametric light object · Limited series · Paris</div>
-      <p class="croozin-text">A biomorphic light sculpture born from Grasshopper-driven parametric design. Inspired by Art Nouveau fluidity and Zaha Hadid's structural logic, crOOZin is printed at 25 micron resolution in translucent resin — a form that comes alive only when light passes through it.</p>
-      <p class="croozin-text">Each piece is unique. Each form is a conversation between code, material, and light.</p>
-      <div class="croozin-specs">
-        <div class="spec-row">
-          <span class="spec-key">Dimensions</span>
-          <span class="spec-val">Ø 15 cm × 27 cm</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Material</span>
-          <span class="spec-val">3D-printed resin · 25 µm · Hand-turned wood base</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Light source</span>
-          <span class="spec-val">LED 2700K dimmable · Dichroic lens · USB-C</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Production</span>
-          <span class="spec-val">Conçu & fabriqué à Paris · Série numérotée</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-key">Studio</span>
-          <span class="spec-val">Studio Incandescence · 2026</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- DUST MEMORY DOSSIER -->
-  <div class="work-inner" style="padding-top:80px;">
-    <div class="parametric-divider reveal"></div>
-    <div class="ligeo-grid reveal">
-
-      <div class="ligeo-content">
-        <div class="parametric-project-label">Concept · Ras Al Khaimah Art Biennale 2027</div>
-        <h2 class="ligeo-title">Dust <em>Memory</em></h2>
-        <div class="ligeo-subtitle">Light · Sand · Laser · UAE · In development</div>
-
-        <p class="ligeo-text" style="font-style:italic; color:var(--off-white); font-size:16px; line-height:1.9; margin-bottom:28px;">"In the heart of Ras Al Khaimah's historic fishermen's village, Dust Memory materialises as a hovering cube of blue light, scaled just shy of the surrounding coral-stone houses."</p>
-
-        <p class="ligeo-text">A minimal dark-aluminium frame suspends a vibrating ceiling grid, releasing a whisper-thin veil of local sand that cascades through horizontal laser planes. Each grain becomes a momentary star, sparking as it intersects the beams and dissolving into darkness as it falls — an ever-changing constellation that fuses the site's maritime past with a vision of technological poetics.</p>
-
-        <p class="ligeo-text">Visitors are invited to walk the perimeter and witness tradition, light and gravity in quiet dialogue, framing the Biennale's wider conversation on memory and future craft.</p>
-
-        <div class="ligeo-meta">
-          <div class="ligeo-meta-row"><span class="ligeo-key">Location</span><span class="ligeo-val">Ras Al Khaimah, UAE — Historic Fishermen's Village</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Event</span><span class="ligeo-val">Ras Al Khaimah Art Biennale 2027</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Dimensions</span><span class="ligeo-val">2.20 × 2.20 × 2.20 m</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Materials</span><span class="ligeo-val">Dark aluminium frame · Local sand · Horizontal laser planes</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Light</span><span class="ligeo-val">Blue laser grid · Vibrating sand veil · Particle constellations</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Status</span><span class="ligeo-val">Concept — In development · 2027</span></div>
-        </div>
-      </div>
-
-      <div class="ligeo-images">
-        <div class="ligeo-img-main"><img src="dust-memory.png" alt="Dust Memory concept"></div>
-        <div class="ligeo-img-wide"><img src="dust-memory-2.png" alt="Dust Memory detail"></div>
-      </div>
-
-    </div>
-  </div>
-
-</div>
-<div class="work-section parametric-dossier" id="section-parametric">
-  <div class="work-inner">
-
-    <!-- SECTION HEADER -->
-    <div class="cat-header reveal" style="padding:0; margin-bottom:0;">
-      <div class="cat-number">05</div>
-      <div>
-        <h2 class="cat-title">Parametric Design<br><em>& Research</em></h2>
-        <p class="cat-intro">Where the hand gets lost, the code continues. Algorithmic tools for light distribution, generative form and fabrication logic — building environments where aesthetic intention and technical deployment are resolved in the same gesture.</p>
-      </div>
-    </div>
-
-    <!-- INTRO BLOCK -->
-    <div class="parametric-intro reveal">
-      <div class="parametric-intro-left">
-        <h2 class="parametric-heading">Where the hand<br>gets <em>lost</em></h2>
-      </div>
-      <div class="parametric-intro-right">
-        <p class="parametric-intro-text">Parametric design is not a style — it is an extension of the hand, precisely where the hand gets lost. Where the pencil hesitates, the code continues. Using <span class="kw" data-target="work-ligeo">Rhino</span> and <span class="kw" data-target="work-ligeo">Grasshopper</span>, I build algorithms that generate form from rules: structural logic, light distribution, material behaviour, fabrication constraints.</p>
-        <p class="parametric-intro-text">But beyond form itself, parametric design is memory. Every iteration is recorded, every decision traceable. The form does not appear — it reveals itself progressively, through time and space, as a sequence of states each carrying the trace of the one before.</p>
-        <p class="parametric-intro-text">The crOOZin luminaires, the Dammam Stadium façade strategy, the Ligeo spatial distribution tool — all emerge from the same dialogue between intention and code, between the limits of the hand and the infinity of the rule.</p>
-      </div>
-    </div>
-
-    <!-- DIVIDER -->
-    <div class="parametric-divider reveal"></div>
-
-    <!-- DIVIDER -->
-    <div class="parametric-divider reveal"></div>
-
-    <!-- GENCORK PROJECT -->
-    <div class="ligeo-grid reveal">
-      <div class="ligeo-content">
-        <div class="parametric-project-label">Project 02 · Spatial Scenography</div>
-        <h2 class="ligeo-title">Gencork —<br><em>Ambient Studies</em></h2>
-        <div class="ligeo-subtitle">Parametric · Spatial Scenography · Beirut</div>
-        <p class="ligeo-text">Exploratory studies at the intersection of parametric design and spatial scenography. These ambient studies investigate how algorithmically generated forms can define atmosphere, guide movement and shape the emotional register of a space — from hospitality to cultural venues.</p>
-        <p class="ligeo-text">Each study is a conversation between geometry, material and light — where the parametric logic of the form becomes inseparable from the sensory experience it produces.</p>
-      </div>
-      <div class="ligeo-images">
-        <div class="ligeo-img-main"><img src="gencork1.jpeg" alt="Gencork ambient study 1"></div>
-        <div class="ligeo-img-sm"><img src="gencork2.jpeg" alt="Gencork ambient study 2"></div>
-        <div class="ligeo-img-sm"><img src="gencork3.jpeg" alt="Gencork ambient study 3"></div>
-      </div>
-    </div>
-
-    <!-- LIGEO PROJECT -->
-    <div class="ligeo-grid reveal" id="work-ligeo">
-
-      <div class="ligeo-content">
-        <div class="parametric-project-label">Project 01 · 2021</div>
-        <h2 class="ligeo-title">Ligeo Spatial<br><em>Distribution</em></h2>
-        <div class="ligeo-subtitle">
-          <span class="kw-tool" data-tip="Parametric visual scripting — generative design plugin for Rhino">Grasshopper</span> · 
-          <span class="kw-tool" data-tip="Smooth organic random generation — avoids mechanical regularity">Perlin Noise</span> · 
-          <span class="kw-tool" data-tip="Professional lighting control protocol">ArtNet</span> · 
-          <span class="kw-tool" data-tip="Streaming ACN — lighting control over IP">sACN</span> · 
-          <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span>
-        </div>
-
-        <p class="ligeo-text">A parametric tool developed in February 2021 for Ligeo Lighting, designed to solve a precise spatial problem: how to distribute a series of LED bars in three-dimensional space with controlled randomness. The algorithm uses <span class="kw-tool" data-tip="Smooth organic random generation algorithm — avoids mechanical regularity">Perlin Noise</span> — a smooth, organic generative model — to avoid mechanical regularity while maintaining full designer control over density, angular amplitude, bar length and spatial recursion within a defined volume.</p>
-
-        <p class="ligeo-text">Unlike discrete assembly approaches such as Wave Function Collapse — which fill a volume with pre-defined modules following connectivity rules — this tool generates a continuous, analogue distribution governed by physical constraints: bars ranging from 30 to 150 cm, angular ranges from 20° to 160°, angular shift from -45° to +45°, and hub points supporting up to 5 recursive branches. Each bar is assigned a unique IP address, auto-generated by the tool, ready for <span class="kw-tool" data-tip="Professional lighting control protocol">ArtNet</span>/<span class="kw-tool" data-tip="Streaming ACN — lighting control over IP">sACN</span> deployment in <span class="kw-tool" data-tip="LED pixel mapping & show control software">Madrix</span> and compatible light software.</p>
-
-        <p class="ligeo-text">The output also includes a hanging point schedule — coordinates and lengths — for on-site installation. A design environment where aesthetic intention, structural logic and technical deployment are resolved in the same gesture.</p>
-
-        <div class="ligeo-meta">
-          <div class="ligeo-meta-row"><span class="ligeo-key">Tool</span><span class="ligeo-val">Grasshopper / Rhino</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Generation</span><span class="ligeo-val">Perlin Noise — smooth controlled random</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Bar lengths</span><span class="ligeo-val">30 · 60 · 90 · 120 · 150 cm</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Angular range</span><span class="ligeo-val">20° – 160° · shift -45° / +45°</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Hub recursion</span><span class="ligeo-val">Up to 5 branches per hub</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Control</span><span class="ligeo-val">ArtNet · sACN · Madrix · unique IP per bar</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Output</span><span class="ligeo-val">3D distribution + hanging point schedule</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Client</span><span class="ligeo-val">Ligeo Lighting · February 2021</span></div>
-          <div class="ligeo-meta-row"><span class="ligeo-key">Ecosystem</span><span class="ligeo-val"><a href="https://sub.digital" target="_blank" style="color:var(--gold-light); text-decoration:none; border-bottom:1px solid rgba(212,172,58,0.3); transition:border-color 0.3s ease;" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='rgba(212,172,58,0.3)'">sub.digital</a> · Grasshopper / Rhino community</span></div>
-        </div>
-      </div>
-
-      <div class="ligeo-images">
-        <div class="ligeo-img-main"><img src="LIGEO-1.png" alt="Ligeo parametric distribution"></div>
-        <div class="ligeo-img-sm"><img src="LIGEO-2.png" alt="Ligeo spatial recursion"></div>
-        <div class="ligeo-img-sm"><img src="LIGEO-3.png" alt="Ligeo RGB simulation"></div>
-        <div class="ligeo-img-wide"><img src="LIGEO-4.png" alt="Ligeo Grasshopper interface"></div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-  </div>
-</div>
-
-<!-- CLIENTS -->
-<div class="clients-section reveal">
-  <div class="section-label">Collaborations</div>
-  <div class="clients-scroll">
-    <span class="client-name kw" data-target="work-chanel" title="Chanel — Once Upon a Moon, Paris">Chanel</span><div class="client-sep"></div>
-    <span class="client-name kw" data-target="work-chanel" title="Burberry — Faubourg St-Honoré, Paris">Burberry</span><div class="client-sep"></div>
-    <span class="client-name kw" data-target="work-ysl" title="Yves Saint Laurent — Shanghai">Yves Saint Laurent</span><div class="client-sep"></div>
-    <span class="client-name" title="Rolex — Into the Realm of Rolex, Beijing 2009">Rolex</span><div class="client-sep"></div>
-    <span class="client-name" title="Louis Vuitton — Iconic Trunk, Champs-Élysées">Louis Vuitton</span><div class="client-sep"></div>
-    <span class="client-name kw" data-target="work-dammam" title="Foster + Partners — Dammam Aramco Stadium">Foster + Partners</span><div class="client-sep"></div>
-    <span class="client-name kw" data-target="work-dammam" title="Dammam Aramco Stadium, Saudi Arabia">Populous</span><div class="client-sep"></div>
-    <span class="client-name kw" data-target="work-fortebank" title="ForteBank HQ — Astana, Kazakhstan">Saraiva & Associados</span><div class="client-sep"></div>
-    <span class="client-name" title="David Chipperfield — Morland Mixité Capitale, Paris">David Chipperfield</span><div class="client-sep"></div>
-    <span class="client-name" title="Olafur Eliasson — Morland Mixité Capitale, Paris">Olafur Eliasson</span><div class="client-sep"></div>
-    <span class="client-name" title="OMA — The Perigon, Miami Beach">OMA</span><div class="client-sep"></div>
-    <span class="client-name" title="Kengo Kuma — Aman Miami Beach">Kengo Kuma</span><div class="client-sep"></div>
-    <span class="client-name" title="Samsung — Yeosu Expo Digital Gallery, South Korea">Samsung</span><div class="client-sep"></div>
-    <span class="client-name" title="Audi — Event scenography, Europe">Audi</span><div class="client-sep"></div>
-    <span class="client-name" title="BMW — Event scenography, Europe">BMW</span><div class="client-sep"></div>
-    <span class="client-name" title="Renault — Event scenography, Europe">Renault</span>
-  </div>
-</div>
-
-<!-- VILLA SEDRATI -->
-<div class="sedrati-section reveal" id="work-sedrati">
-  <div class="section-label">Architectural Lighting — Residential</div>
-  <div class="sedrati-grid">
-    <div class="sedrati-images">
-      <div class="sedrati-main">
-        <img src="sedrati.jpg" alt="Villa Sedrati Rabat">
-      </div>
-      <div class="sedrati-sm">
-        <img src="sedrati1.jpg" alt="Villa Sedrati detail">
-      </div>
-      <div class="sedrati-sm">
-        <img src="sedrati2.jpg" alt="Villa Sedrati living">
-      </div>
-      <div class="sedrati-sm">
-        <img src="sedrati3.jpg" alt="Villa Sedrati cinema">
-      </div>
-      <div class="sedrati-sm">
-        <img src="sedrati4.jpg" alt="Villa Sedrati exterior">
-      </div>
-    </div>
-    <div class="sedrati-content">
-      <h2 class="sedrati-title">Villa Sedrati</h2>
-      <div class="sedrati-subtitle">Residential · Rabat, Morocco · 2025</div>
-      <p class="sedrati-text">A refined residential lighting scheme balancing high-end comfort with cost efficiency. The design integrates layered lighting: discreet DALI-controlled downlights for general illumination, continuous LED coves for ambient architectural highlights, and focused accents using rail-mounted spots and minimalist pendants to enhance artworks and spatial depth.</p>
-      <p class="sedrati-text">Premium fixtures by Arkoslight were selected for key living areas, while Hofflights and Luxio products ensured budget-conscious consistency in secondary spaces and the home cinema. The result is a custom, responsive lighting environment tailored to the villa's elegance and functionality.</p>
-      <div class="sedrati-meta">
-        <div class="sedrati-meta-row">
-          <span class="sedrati-meta-key">Location</span>
-          <span class="sedrati-meta-val">Rabat, Morocco</span>
-        </div>
-        <div class="sedrati-meta-row">
-          <span class="sedrati-meta-key">Sector</span>
-          <span class="sedrati-meta-val">Residential · High-end</span>
-        </div>
-        <div class="sedrati-meta-row">
-          <span class="sedrati-meta-key">Client</span>
-          <span class="sedrati-meta-val">Luxio Lighting</span>
-        </div>
-        <div class="sedrati-meta-row">
-          <span class="sedrati-meta-key">Stage</span>
-          <span class="sedrati-meta-val">Consulting · DIALux</span>
-        </div>
-        <div class="sedrati-meta-row">
-          <span class="sedrati-meta-key">Date</span>
-          <span class="sedrati-meta-val">June 2025</span>
-        </div>
-        <div class="sedrati-meta-row">
-          <span class="sedrati-meta-key">Fixtures</span>
-          <span class="sedrati-meta-val">Arkoslight · Hofflights · Luxio</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACT -->
-<div class="contact-section" id="contact">
-  <h2 class="contact-heading reveal">Let's build<br><em>something</em></h2>
-  <p class="contact-sub reveal">Available for architectural lighting commissions, parametric sculpture projects, and artistic collaborations worldwide.</p>
-  <div class="contact-links reveal">
-    <a href="mailto:lightsonic@gmail.com" class="contact-email">lightsonic@gmail.com</a>
-    <div class="client-sep"></div>
-    <a href="https://instagram.com/alexandre_kolinka" class="contact-link" target="_blank">Instagram</a>
-    <a href="https://instagram.com/croozin_lamp" class="contact-link" target="_blank">crOOZin</a>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <span>© 2026 Alexandre Kolinka · Studio Incandescence</span>
-  <span>Paris · International</span>
-</footer>
 
 <script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
-  let mx = 0, my = 0, rx = 0, ry = 0;
+const PD = {
+  dammam:{lbl:'Architectural Lighting · Saudi Arabia',ttl:'Dammam Aramco<br><em>Stadium</em>',sub:'Concept Design · Lighting Strategy · Foster + Partners · Populous · LDC',texts:[{t:'text',c:'Concept design and strategy for the lighting of one of the most complex stadium structures in the Middle East. Working within the Lighting Design Collective framework alongside Foster + Partners and Populous, the project involved developing a comprehensive media façade and dynamic lighting strategy across a doubly curved geometry.'},{t:'text',c:'Parametric mapping of content and LED nodes across the skin of the stadium, coordination with structural engineers, and a narrative-driven approach to the building\'s identity at night.'}],meta:[['Location','Dammam, Saudi Arabia'],['Client','Saudi Aramco'],['Architects','Foster + Partners · Populous'],['Practice','Lighting Design Collective (LDC)'],['Stage','Concept design · Stage 3 completed · Stage 4 in 2024'],['Type','Stadium · Media façade · Architectural lighting']],imgs:['satdium.jpg','satdium-1.jpg','satdium-2.jpg','satdium-3.jpg','satdium-4.jpg','satdium-6.jpg','satdium-7.jpg']},
+  fortebank:{lbl:'Architectural Lighting · Kazakhstan',ttl:'ForteBank<br><em>Headquarters</em>',sub:'Façade Lighting · Bespoke Fixture · Astana',texts:[{t:'text',c:'Exterior and façade lighting for a landmark corporate headquarters in Astana, integrating light into a layered glass and metal façade. The project involved coordination with architects and façade engineers in extreme climate conditions — temperatures ranging from -40°C to +40°C.'},{t:'text',c:'Concept design, creation and production of a bespoke light fixture — custom designed to complement the architectural language of the building.'}],meta:[['Location','Astana, Kazakhstan'],['Architect','Saraiva & Associados'],['Stage','Stages 3 to 5 completed'],['Type','Corporate HQ · Façade lighting · Bespoke fixture']],imgs:['fortebank001.jpeg','klb-ForteBank-5.jpeg','klb-Fortebank-10.jpg','klb-Fortebank-13.jpg']},
+  sedrati:{lbl:'Residential Lighting · Morocco',ttl:'Villa<br><em>Sedrati</em>',sub:'DIALux · DALI · Arkoslight · Rabat · 2025',texts:[{t:'text',c:'A refined residential lighting scheme balancing high-end comfort with cost efficiency. The design integrates layered lighting: discreet DALI-controlled downlights for general illumination, continuous LED coves for ambient architectural highlights, and focused accents using rail-mounted spots and minimalist pendants.'},{t:'text',c:'Premium fixtures by Arkoslight were selected for key living areas, while Hofflights and Luxio products ensured budget-conscious consistency in secondary spaces and the home cinema.'}],meta:[['Location','Rabat, Morocco'],['Client','Luxio Lighting'],['Sector','Residential · High-end'],['Tools','DIALux · DALI control'],['Fixtures','Arkoslight · Hofflights · Luxio'],['Date','June 2025'],['Stage','Consulting']],imgs:['sedrati.jpg','sedrati1.jpg','sedrati2.jpg','sedrati3.jpg','sedrati4.jpg','sedrati5.jpg']},
+  chanel:{lbl:'Luxury Retail · Paris',ttl:'Chanel —<br><em>Once Upon a Moon</em>',sub:'Light Installation · Place Vendôme · Atelier Athem',texts:[{t:'text',c:'Concept lighting and production of the installation "Once Upon a Moon" for Chanel at Place Vendôme, Paris. A large-scale illuminated moon suspended above the façade — a poetic and technically precise installation that transformed one of Paris\'s most prestigious addresses into a nocturnal spectacle.'}],meta:[['Location','Place Vendôme, Paris'],['Client','Chanel'],['Agency','Atelier Athem'],['Type','Light installation · Retail scenography']],imgs:['moon.jpg']},
+  ysl:{lbl:'Luxury Retail · Shanghai',ttl:'Yves Saint<br><em>Laurent</em>',sub:'Light Installation · Shanghai · Ligeo',texts:[{t:'text',c:'Concept lighting and production of a bespoke light installation for Yves Saint Laurent in Shanghai. A spatial light composition designed to enhance the brand experience and create an immersive environment at the intersection of fashion and light art.'}],meta:[['Location','Shanghai, China'],['Client','Yves Saint Laurent'],['Agency','Ligeo'],['Type','Light installation · Retail scenography']],imgs:['YSL.jpg']},
+  beirut:{lbl:'Event · Lebanon',ttl:'Beirut —<br><em>Urban Light Mapping</em>',sub:'LED & Video Mapping · City Centre · Beirut',texts:[{t:'text',c:'A series of light and video mapping installations in the historic centre of Beirut, transforming urban architecture into a canvas for light. Multiple events and interventions using LED mapping, projection and spatial light design to animate the city\'s buildings and public spaces.'}],meta:[['Location','Beirut City Centre, Lebanon'],['Type','LED mapping · Video mapping · Urban light installation'],['Context','Multiple events · Hospitality & cultural venues']],imgs:['beyrouth-1.png','beyrouth-2.png','beyrouth-3.png','beyrouth-4.png','beyrouth-5.png','beyrouth-6.png','exa.png']},
+  dustmemory:{lbl:'Concept · RAK Art Biennale 2027',ttl:'Dust<br><em>Memory</em>',sub:'Light · Sand · Laser · UAE · In development',texts:[{t:'qt',c:'"In the heart of Ras Al Khaimah\'s historic fishermen\'s village, Dust Memory materialises as a hovering cube of blue light, scaled just shy of the surrounding coral-stone houses."'},{t:'text',c:'A minimal dark-aluminium frame suspends a vibrating ceiling grid, releasing a whisper-thin veil of local sand that cascades through horizontal laser planes. Each grain becomes a momentary star, sparking as it intersects the beams and dissolving into darkness as it falls.'},{t:'text',c:'Visitors are invited to walk the perimeter and witness tradition, light and gravity in quiet dialogue, framing the Biennale\'s wider conversation on memory and future craft.'}],meta:[['Location','Ras Al Khaimah, UAE — Historic Fishermen\'s Village'],['Event','Ras Al Khaimah Art Biennale 2027'],['Dimensions','2.20 × 2.20 × 2.20 m'],['Materials','Dark aluminium frame · Local sand · Horizontal laser planes'],['Light','Blue laser grid · Vibrating sand veil · Particle constellations'],['Status','Concept — In development · 2027']],imgs:['dust-memory.png','dust-memory-2.png']},
+  seaSwarm:{lbl:'Concept · Marine Installation',ttl:'Autonomous Luminous<br><em>Sea Swarm</em>',sub:'Floating Light Drones · Phyllotaxis · Marine Environment',texts:[{t:'qt',c:'"A constellation of small autonomous floating light drones designed to surround a yacht at night and gently illuminate the sea surface."'},{t:'text',c:'Each device emits a focused beam of light into the water, creating a field of glowing points that reveal the movement of waves, particles, and marine life below. Using simple swarm intelligence, the drones self-position around the vessel, maintaining a harmonious spatial distribution inspired by natural phyllotaxis patterns.'},{t:'text',c:'The result is a mesmerizing halo of light that transforms the surrounding ocean into a living luminous landscape — turning the yacht into the centre of a dynamic constellation floating on the sea.'}],meta:[['Type','Autonomous floating light installation'],['Algorithm','Phyllotaxis — Fibonacci spiral distribution'],['Context','Marine · Yacht · Nocturnal environment'],['Status','Concept in development']],imgs:['drone-aqua.png']},
+  cuddle:{lbl:'Mutant Vehicle · Burning Man · 2018–2024',ttl:'Cuddle<br><em>Shuttle</em>',sub:'Black Rock City · Light · Sound · Camp Campi Camp',texts:[{t:'qt',c:'"A mutant vehicle built for the Black Rock City playa. Light and sound as architecture — tuned to the body, the dust and the darkness."'},{t:'text',c:'Conceived and built with Louve Kolinka and Luna Kolinka for Camp Campi Camp, the Cuddle Shuttle carried strangers into the Nevada night from 2018 to 2024. Its last ride ended in fire on the playa.'}],meta:[['Location','Black Rock City, Nevada — Burning Man'],['Years','2018 – 2024'],['Collaboration','Louve Kolinka · Luna Kolinka'],['Camp','Camp Campi Camp'],['Type','Mutant vehicle · Light & sound installation'],['Fate','Burned on the playa · 2024']],imgs:['cuddle-shuttle-01.jpeg','cuddle-shuttle-02.jpeg','cuddle-shuttle-03.jpeg','cuddle-shuttle-04.jpeg']},
+  ligeo:{lbl:'Parametric Tool · Ligeo Lighting · 2021',ttl:'Ligeo Spatial<br><em>Distribution</em>',sub:'Grasshopper · Perlin Noise · ArtNet · sACN · Madrix',texts:[{t:'text',c:'A parametric tool developed in February 2021 for Ligeo Lighting, designed to solve a precise spatial problem: how to distribute a series of LED bars in three-dimensional space with controlled randomness. The algorithm uses Perlin Noise — a smooth, organic generative model — to avoid mechanical regularity while maintaining full designer control over density, angular amplitude, bar length and spatial recursion within a defined volume.'},{t:'text',c:'Unlike discrete assembly approaches such as Wave Function Collapse, this tool generates a continuous, analogue distribution governed by physical constraints. Each bar is assigned a unique IP address, auto-generated by the tool, ready for ArtNet/sACN deployment in Madrix. The output also includes a hanging point schedule — coordinates and lengths — for on-site installation.'}],meta:[['Tool','Grasshopper / Rhino'],['Generation','Perlin Noise — smooth controlled random'],['Bar lengths','30 · 60 · 90 · 120 · 150 cm'],['Angular range','20° – 160° · shift -45° / +45°'],['Hub recursion','Up to 5 branches per hub'],['Control','ArtNet · sACN · Madrix · unique IP per bar'],['Output','3D distribution + hanging point schedule'],['Client','Ligeo Lighting · February 2021']],imgs:['LIGEO-1.png','LIGEO-2.png','LIGEO-3.png','LIGEO-4.png']},
+  gencork:{lbl:'Parametric · Spatial Scenography',ttl:'Gencork —<br><em>Ambient Studies</em>',sub:'Parametric Design · Spatial Scenography · Beirut',texts:[{t:'text',c:'Exploratory studies at the intersection of parametric design and spatial scenography. These ambient studies investigate how algorithmically generated forms can define atmosphere, guide movement and shape the emotional register of a space.'},{t:'text',c:'Each study is a conversation between geometry, material and light — where the parametric logic of the form becomes inseparable from the sensory experience it produces.'}],meta:[['Type','Parametric ambient study'],['Context','Spatial scenography · Hospitality'],['Location','Beirut, Lebanon'],['Tools','Rhino · Grasshopper']],imgs:['gencork1.jpeg','gencork2.jpeg','gencork3.jpeg']},
+  croozin:{lbl:'Object · Studio Incandescence · Paris',ttl:'crOOZin —<br><em>Light Object</em>',sub:'Parametric · 3D printed · LED · Limited series · Paris · 2026',texts:[{t:'text',c:'A biomorphic light sculpture born from Grasshopper-driven parametric design. Inspired by Art Nouveau fluidity and Zaha Hadid\'s structural logic, crOOZin is printed at 25 micron resolution in translucent resin — a form that comes alive only when light passes through it.'},{t:'text',c:'Each piece is unique. Each form is a conversation between code, material, and light.'}],meta:[['Dimensions','Ø 15 cm × 27 cm'],['Material','3D-printed resin · 25 µm · Hand-turned wood base'],['Light source','LED 2700K dimmable · Dichroic lens · USB-C'],['Production','Conçu & fabriqué à Paris · Série numérotée'],['Studio','Studio Incandescence · 2026'],['Contact','croozinlamp@gmail.com']],imgs:['croozinluna2.jpg','crOOzin-pink.jpeg','crOOzin-zoom.jpeg','croozin-25.jpg','croozin-26.jpg','croozin-27.jpg']}
+};
 
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX; my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
+function sp(id) {
+  const p = PD[id]; if(!p) return;
+  document.getElementById('pcrumb').textContent = p.lbl;
+  const imgs = p.imgs;
+  let ih = '<div class="p-imgs">';
+  imgs.forEach((img,i) => {
+    if(i===0) ih+=`<div class="p-main"><img src="${img}" alt=""></div>`;
+    else if(i===imgs.length-1 && imgs.length%2===0) ih+=`<div class="p-wide"><img src="${img}" alt=""></div>`;
+    else ih+=`<div class="p-sm"><img src="${img}" alt=""></div>`;
   });
+  ih+='</div>';
+  let th=`<div class="p-lbl">${p.lbl}</div><h2 class="p-ttl">${p.ttl}</h2><div class="p-sub">${p.sub}</div>`;
+  p.texts.forEach(t=>{ th+=`<p class="p-txt${t.t==='qt'?' qt':''}">${t.c}</p>`; });
+  th+='<div class="p-meta">';
+  p.meta.forEach(([k,v])=>{ th+=`<div class="p-row"><span class="p-key">${k}</span><span class="p-val">${v}</span></div>`; });
+  th+='</div>';
+  document.getElementById('pbody').innerHTML=`<div>${th}</div>${ih}`;
+  const ov=document.getElementById('pov');
+  ov.classList.add('open'); ov.scrollTop=0;
+}
 
-  function animRing() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animRing);
+function cp() { document.getElementById('pov').classList.remove('open'); }
+
+function go(name) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);
+  if(pg){pg.classList.add('active');pg.scrollTop=0;}
+  const nv=document.getElementById('n-'+name);
+  if(nv) nv.classList.add('active');
+}
+
+function sw(cat) {
+  go('work');
+  setTimeout(()=>{
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
+    const tb=document.querySelector(`[data-c="${cat}"]`);
+    const pn=document.getElementById('cat-'+cat);
+    if(tb) tb.classList.add('active');
+    if(pn){pn.classList.add('active');pn.scrollTop=0;}
+  },150);
+}
+
+// Cat tabs
+document.querySelectorAll('.cat-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    const pn=document.getElementById('cat-'+tab.dataset.c);
+    if(pn){pn.classList.add('active');pn.scrollTop=0;}
+  });
+});
+
+// Regions
+document.querySelectorAll('.region-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.region-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.region-panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    const pn=document.getElementById('r-'+tab.dataset.r);
+    if(pn) pn.classList.add('active');
+  });
+});
+
+// Cursor
+const cur=document.getElementById('cur'), curR=document.getElementById('curR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(anim);})();
+
+// Hero zoom
+setTimeout(()=>{const img=document.querySelector('.home-right img');if(img)img.style.transform='scale(1)';},200);
+
+// ── COLOR WHEEL ──
+(function() {
+  const canvas = document.getElementById('colorWheel');
+  const needle = document.getElementById('colorNeedle');
+  const ctx = canvas.getContext('2d');
+  const size = 64;
+  const cx = size / 2, cy = size / 2, r = size / 2 - 1;
+
+  // Draw wheel
+  for (let angle = 0; angle < 360; angle++) {
+    const startAngle = (angle - 1) * Math.PI / 180;
+    const endAngle = (angle + 1) * Math.PI / 180;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, startAngle, endAngle);
+    ctx.closePath();
+    ctx.fillStyle = `hsl(${angle}, 80%, 55%)`;
+    ctx.fill();
   }
-  animRing();
 
-  document.querySelectorAll('a, button').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.style.width = '20px';
-      cursor.style.height = '20px';
-      cursor.style.opacity = '0.5';
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.style.width = '8px';
-      cursor.style.height = '8px';
-      cursor.style.opacity = '1';
-    });
-  });
+  // Center dark circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, r * 0.35, 0, Math.PI * 2);
+  ctx.fillStyle = '#080808';
+  ctx.fill();
 
-  // Interactive keywords — scroll + flash
-  document.querySelectorAll('.kw[data-target]').forEach(kw => {
-    kw.addEventListener('click', () => {
-      const targetId = kw.dataset.target;
-      const target = document.getElementById(targetId);
-      if (!target) return;
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      setTimeout(() => {
-        target.classList.remove('highlight-flash');
-        void target.offsetWidth; // reflow
-        target.classList.add('highlight-flash');
-        setTimeout(() => target.classList.remove('highlight-flash'), 1400);
-      }, 600);
-    });
-  });
+  let currentHue = 43; // gold default
+  let isDragging = false;
 
-  // Regions bar interaction
-  document.querySelectorAll('.region-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.region-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById('region-' + tab.dataset.region).classList.add('active');
-    });
-  });
+  function hueToColors(h) {
+    const gold = `hsl(${h}, 80%, 45%)`;
+    const goldLight = `hsl(${h}, 75%, 58%)`;
+    const goldDim = `hsl(${h}, 60%, 35%)`;
+    return { gold, goldLight, goldDim };
+  }
 
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => {
-          entry.target.classList.add('visible');
-        }, 100);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+  function applyHue(h) {
+    const { gold, goldLight } = hueToColors(h);
+    document.documentElement.style.setProperty('--gold', gold);
+    document.documentElement.style.setProperty('--gold-light', goldLight);
+    // Update cursor color
+    const cur = document.getElementById('cur');
+    if (cur) cur.style.background = gold;
+  }
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  function getAngleFromEvent(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = size / rect.width;
+    const scaleY = size / rect.height;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const x = (clientX - rect.left) * scaleX - cx;
+    const y = (clientY - rect.top) * scaleY - cy;
+    let angle = Math.atan2(y, x) * 180 / Math.PI;
+    if (angle < 0) angle += 360;
+    return angle;
+  }
+
+  function updateFromAngle(angle) {
+    currentHue = Math.round(angle);
+    needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
+    applyHue(currentHue);
+  }
+
+  // Init needle position (gold ~43°)
+  updateFromAngle(43);
+
+  // Mouse events
+  canvas.addEventListener('mousedown', e => { isDragging = true; updateFromAngle(getAngleFromEvent(e)); e.preventDefault(); });
+  document.addEventListener('mousemove', e => { if (isDragging) updateFromAngle(getAngleFromEvent(e)); });
+  document.addEventListener('mouseup', () => { isDragging = false; });
+
+  // Touch events
+  canvas.addEventListener('touchstart', e => { isDragging = true; updateFromAngle(getAngleFromEvent(e)); e.preventDefault(); }, { passive: false });
+  document.addEventListener('touchmove', e => { if (isDragging) { updateFromAngle(getAngleFromEvent(e)); e.preventDefault(); } }, { passive: false });
+  document.addEventListener('touchend', () => { isDragging = false; });
+})();
+
+// Escape
+document.addEventListener('keydown',e=>{if(e.key==='Escape')cp();});
 </script>
 </body>
 </html>
