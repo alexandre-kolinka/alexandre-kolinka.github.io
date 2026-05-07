@@ -40,7 +40,7 @@ nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify
 /* MOBILE NAV DRAWER */
 .nav-drawer { display:none; position:fixed; inset:0; background:rgba(8,8,8,.98); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:40px; opacity:0; transition:opacity .3s; pointer-events:none; }
 .nav-drawer.open { opacity:1; pointer-events:all; }
-.nav-drawer a { font-family:'Bebas Neue',sans-serif; font-size:48px; letter-spacing:.08em; color:var(--gray); text-decoration:none; transition:color .3s; cursor:pointer; }
+.nav-drawer a { font-family:'Montserrat',sans-serif; font-size:18px; letter-spacing:.25em; text-transform:uppercase; color:var(--gray); text-decoration:none; transition:color .3s; cursor:pointer; font-weight:300; }
 .nav-drawer a:hover, .nav-drawer a.active { color:var(--gold); }
 
 @media(max-width:700px){
@@ -141,7 +141,7 @@ nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify
 .sec-label { font-size:12px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:44px; display:flex; align-items:center; gap:16px; }
 .sec-label::after { content:''; flex:1; max-width:60px; height:1px; background:var(--gold); opacity:.35; }
 .clients-row { display:flex; flex-wrap:wrap; gap:16px 40px; align-items:center; }
-.c-name { font-family:'Bebas Neue',sans-serif; font-size:26px; font-weight:400; color:rgba(255,255,255,.15); transition:color .3s; white-space:nowrap; }
+.c-name { font-family:'Bebas Neue',sans-serif; font-size:26px; font-weight:400; color:rgba(255,255,255,.4); transition:color .3s; white-space:nowrap; }
 .c-name:hover { color:var(--off-white); }
 .c-name.kw { cursor:pointer; border-bottom:1px solid rgba(212,172,58,.2); }
 .c-name.kw:hover { color:var(--gold-light); }
@@ -325,18 +325,18 @@ footer { padding:28px 60px; border-top:1px solid var(--border); display:flex; ju
 <div class="cursor-ring" id="curR"></div>
 
 <nav>
-  <span class="nav-logo" onclick="go('home');closeDr()">A · K</span>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span class="nav-logo" onclick="go('home');closeDr()">A · K</span>
+    <div class="color-wheel-wrap" title="Drag to change accent colour">
+      <canvas class="color-wheel-canvas" id="colorWheel" width="64" height="64"></canvas>
+      <div class="color-wheel-needle" id="colorNeedle"></div>
+    </div>
+  </div>
   <ul class="nav-links">
     <li><a id="n-home" class="active" onclick="go('home')">Home</a></li>
     <li><a id="n-portfolio" onclick="go('portfolio')">Portfolio</a></li>
     <li><a id="n-wwm" onclick="go('wwm')">Work with Me</a></li>
     <li><a id="n-contact" onclick="go('contact')">Contact</a></li>
-    <li>
-      <div class="color-wheel-wrap" title="Drag to change accent colour">
-        <canvas class="color-wheel-canvas" id="colorWheel" width="64" height="64"></canvas>
-        <div class="color-wheel-needle" id="colorNeedle"></div>
-      </div>
-    </li>
   </ul>
   <button class="burger" id="burger" onclick="toggleDr()" aria-label="Menu">
     <span></span><span></span><span></span>
