@@ -231,7 +231,56 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
 .c-lnk:hover { color:var(--off-white); }
 @media(max-width:600px){ #page-contact{padding:80px 24px} .c-links{flex-direction:column;gap:20px} }
 
-/* HOME responsive */
+/* CAROUSEL */
+.home-right { position:relative; overflow:hidden; cursor:pointer; }
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease, transform 8s ease;
+  transform: scale(1.05);
+  filter: brightness(.65) saturate(.9);
+}
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+}
+.carousel-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--black) 0%, rgba(8,8,8,.3) 60%, transparent 100%);
+  z-index: 1;
+}
+.carousel-info {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  z-index: 2;
+  text-align: right;
+}
+.carousel-label {
+  font-size: 10px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.6);
+  margin-bottom: 12px;
+  transition: opacity .4s ease;
+}
+.carousel-dots { display:flex; gap:8px; justify-content:flex-end; }
+.cdot {
+  width: 20px; height: 2px;
+  background: rgba(255,255,255,.25);
+  cursor: pointer;
+  transition: all .4s ease;
+  border: none;
+  padding: 0;
+}
+.cdot.active { background: var(--gold); width: 32px; }
+
+@media(max-width:900px){ .home-right{display:block;position:absolute;inset:0;z-index:0} }
+@media(max-width:600px){ .carousel-info{bottom:24px;right:24px} }
 @media(max-width:900px){
   .home-hero{grid-template-columns:1fr}
   .home-right{display:none}
@@ -292,7 +341,22 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
         <div class="region-panel" id="r-as">● Yves Saint Laurent, Shanghai · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo, South Korea</div>
       </div>
     </div>
-    <div class="home-right"><img src="ripples.jpeg" alt="Light & Form"></div>
+    <div class="home-right" id="heroCarousel">
+      <div class="carousel-slide active" data-cat="architectural" style="background-image:url('satdium.jpg')"></div>
+      <div class="carousel-slide" data-cat="retail" style="background-image:url('moon.jpg')"></div>
+      <div class="carousel-slide" data-cat="art" style="background-image:url('dust-memory.png')"></div>
+      <div class="carousel-slide" data-cat="parametric" style="background-image:url('LIGEO-1.png')"></div>
+      <div class="carousel-overlay"></div>
+      <div class="carousel-info">
+        <div class="carousel-label" id="carouselLabel">Architectural Lighting</div>
+        <div class="carousel-dots">
+          <span class="cdot active" data-i="0"></span>
+          <span class="cdot" data-i="1"></span>
+          <span class="cdot" data-i="2"></span>
+          <span class="cdot" data-i="3"></span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="home-about">
@@ -561,6 +625,57 @@ const cur=document.getElementById('cur'), curR=document.getElementById('curR');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 (function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(anim);})();
+
+// ── CAROUSEL ──
+(function() {
+  const slides = Array.from(document.querySelectorAll('.carousel-slide'));
+  const dots = Array.from(document.querySelectorAll('.cdot'));
+  const label = document.getElementById('carouselLabel');
+  const carousel = document.getElementById('heroCarousel');
+
+  const labels = {
+    architectural: 'Architectural Lighting',
+    retail: 'Luxury Retail & Scenography',
+    art: 'Art & Light Installations',
+    parametric: 'Parametric Design & Research'
+  };
+
+  // Shuffle slides randomly on load
+  const order = [0,1,2,3].sort(() => Math.random() - .5);
+  let current = 0;
+
+  function goTo(idx) {
+    slides[order[current]].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = idx % 4;
+    slides[order[current]].classList.add('active');
+    dots[current].classList.add('active');
+    const cat = slides[order[current]].dataset.cat;
+    label.textContent = labels[cat] || '';
+  }
+
+  // Auto rotation
+  let timer = setInterval(() => goTo(current + 1), 4000);
+
+  // Click on carousel → open work section
+  carousel.addEventListener('click', () => {
+    const cat = slides[order[current]].dataset.cat;
+    sw(cat);
+  });
+
+  // Dot navigation
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', e => {
+      e.stopPropagation();
+      clearInterval(timer);
+      goTo(i);
+      timer = setInterval(() => goTo(current + 1), 4000);
+    });
+  });
+
+  // Init label
+  label.textContent = labels[slides[order[0]].dataset.cat];
+})();
 
 // Hero zoom
 setTimeout(()=>{const img=document.querySelector('.home-right img');if(img)img.style.transform='scale(1)';},200);
