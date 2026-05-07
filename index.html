@@ -30,6 +30,26 @@ nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify
 .nav-links a { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--gray); text-decoration:none; transition:color .3s; cursor:pointer; font-family:'Montserrat',sans-serif; font-weight:300; }
 .nav-links a:hover, .nav-links a.active { color:var(--gold); }
 
+/* BURGER */
+.burger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; background:none; border:none; z-index:101; }
+.burger span { display:block; width:22px; height:1.5px; background:var(--gray); transition:all .3s; }
+.burger.open span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); background:var(--off-white); }
+.burger.open span:nth-child(2) { opacity:0; }
+.burger.open span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); background:var(--off-white); }
+
+/* MOBILE NAV DRAWER */
+.nav-drawer { display:none; position:fixed; inset:0; background:rgba(8,8,8,.98); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:40px; opacity:0; transition:opacity .3s; pointer-events:none; }
+.nav-drawer.open { opacity:1; pointer-events:all; }
+.nav-drawer a { font-family:'Bebas Neue',sans-serif; font-size:48px; letter-spacing:.08em; color:var(--gray); text-decoration:none; transition:color .3s; cursor:pointer; }
+.nav-drawer a:hover, .nav-drawer a.active { color:var(--gold); }
+
+@media(max-width:700px){
+  nav { padding:14px 20px; }
+  .nav-links { display:none; }
+  .burger { display:flex; }
+  .nav-drawer { display:flex; }
+}
+
 /* COLOR WHEEL */
 .color-wheel-wrap { position:relative; width:28px; height:28px; flex-shrink:0; }
 .color-wheel-canvas { width:28px; height:28px; border-radius:50%; cursor:grab; touch-action:none; display:block; border:1px solid rgba(255,255,255,.15); transition:transform .2s ease; }
@@ -242,6 +262,41 @@ footer { padding:28px 60px; border-top:1px solid var(--border); display:flex; ju
 .status-concept { color:#ff9900; border-color:#ff9900; background:rgba(255,153,0,.08); }
 .status-rd { color:var(--gold); border-color:var(--gold); background:rgba(184,150,12,.08); }
 
+/* BIO */
+.home-bio { padding:56px 60px; border-top:1px solid var(--border); max-width:900px; }
+.home-bio-text { font-family:'Lora',serif; font-size:18px; line-height:2; color:var(--gray); margin-bottom:20px; }
+.home-bio-tools { font-size:13px; letter-spacing:.12em; color:var(--gray-dark); font-family:'Montserrat',sans-serif; font-weight:300; line-height:2; }
+
+/* REGIONS standalone */
+.home-regions { padding:56px 60px; border-top:1px solid var(--border); }
+.region-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
+.region-tab { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gray); background:none; border:1px solid rgba(255,255,255,.12); padding:6px 14px; cursor:pointer; transition:all .3s; font-family:'Montserrat',sans-serif; font-weight:300; }
+.region-tab:hover { color:var(--off-white); border-color:rgba(255,255,255,.3); }
+.region-tab.active { color:var(--black); background:var(--gold); border-color:var(--gold); }
+.region-panel { display:none; font-family:'Lora',serif; font-size:15px; line-height:1.9; color:var(--gray); padding:16px 0; border-top:1px solid var(--border); }
+.region-panel.active { display:block; }
+
+/* STATS ROW */
+.home-stats { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.stat-block { padding:40px 60px; border-right:1px solid var(--border); }
+.stat-block:last-child { border-right:none; }
+
+@media(max-width:900px){
+  .home-bio{padding:48px 40px}
+  .home-regions{padding:48px 40px}
+  .home-stats{grid-template-columns:1fr 1fr}
+  .stat-block{padding:32px 40px}
+  .stat-block:nth-child(2){border-right:none}
+  .stat-block:nth-child(3){border-top:1px solid var(--border)}
+}
+@media(max-width:600px){
+  .home-bio{padding:40px 24px}
+  .home-bio-text{font-size:16px}
+  .home-regions{padding:40px 24px}
+  .home-stats{grid-template-columns:1fr 1fr}
+  .stat-block{padding:28px 24px}
+}
+
 /* WORK WITH ME PAGE */
 #page-wwm { padding-top:57px; }
 .wwm-hero { padding:80px 60px 60px; border-bottom:1px solid var(--border); }
@@ -270,7 +325,7 @@ footer { padding:28px 60px; border-top:1px solid var(--border); display:flex; ju
 <div class="cursor-ring" id="curR"></div>
 
 <nav>
-  <span class="nav-logo" onclick="go('home')">A · K</span>
+  <span class="nav-logo" onclick="go('home');closeDr()">A · K</span>
   <ul class="nav-links">
     <li><a id="n-home" class="active" onclick="go('home')">Home</a></li>
     <li><a id="n-portfolio" onclick="go('portfolio')">Portfolio</a></li>
@@ -283,58 +338,45 @@ footer { padding:28px 60px; border-top:1px solid var(--border); display:flex; ju
       </div>
     </li>
   </ul>
+  <button class="burger" id="burger" onclick="toggleDr()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE DRAWER -->
+<div class="nav-drawer" id="navDrawer">
+  <a id="d-home" class="active" onclick="go('home');closeDr()">Home</a>
+  <a id="d-portfolio" onclick="go('portfolio');closeDr()">Portfolio</a>
+  <a id="d-wwm" onclick="go('wwm');closeDr()">Work with Me</a>
+  <a id="d-contact" onclick="go('contact');closeDr()">Contact</a>
+</div>
 
 <!-- ══ HOME ══ -->
 <div class="page active" id="page-home">
+
+  <!-- 1. HERO -->
   <div class="home-hero">
     <div class="home-left">
       <div class="home-tag">Senior Lighting Designer · Paris · International</div>
       <h1 class="home-name">Alexandre<br><em>Kolinka</em></h1>
       <div class="home-line"></div>
       <p class="home-phrase">"Structures that begin where architecture ends — designed to host light, time, and living things."</p>
-      <div class="regions-bar">
-        <div class="region-tabs">
-          <button class="region-tab active" data-r="eu">Europe</button>
-          <button class="region-tab" data-r="me">Middle East</button>
-          <button class="region-tab" data-r="ca">Central Asia</button>
-          <button class="region-tab" data-r="af">North Africa</button>
-          <button class="region-tab" data-r="as">Asia</button>
-        </div>
-        <div class="region-panel active" id="r-eu">Chanel — Once Upon a Moon, Paris · Burberry, Faubourg St-Honoré · Morland Mixité Capitale with Olafur Eliasson · crOOZin parametric luminaires</div>
-        <div class="region-panel" id="r-me">Dammam Aramco Stadium, Saudi Arabia — Foster + Partners / Populous · Gulf Cup Opening Ceremony, Kuwait</div>
-        <div class="region-panel" id="r-ca">ForteBank HQ, Astana · Astana Expo — A. Smith / G. Gill · Kolinka Lighting Bureau, founded 2013</div>
-        <div class="region-panel" id="r-af">Villa Sedrati, Rabat · CFG Bank HQ, Casablanca · University, Marrakech · Dust Memory — RAK Biennale 2027</div>
-        <div class="region-panel" id="r-as">Yves Saint Laurent, Shanghai · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo, South Korea</div>
-      </div>
     </div>
-
     <div class="home-right">
       <img src="ripples.jpeg" alt="Light & Form" style="width:100%;height:100%;object-fit:cover;filter:brightness(.75) saturate(.9);">
       <div class="carousel-left-fade"></div>
     </div>
   </div>
 
-  <div class="home-about">
-    <div>
-      <h2 class="about-heading">Where light<br>becomes <em>matter</em></h2>
-      <div class="about-stats">
-        <div><div class="stat-num">15+</div><div class="stat-lbl">Years of practice</div></div>
-        <div><div class="stat-num">4</div><div class="stat-lbl">Continents</div></div>
-        <div><div class="stat-num">∞</div><div class="stat-lbl">Parametric forms</div></div>
-        <div><div class="stat-num">1</div><div class="stat-lbl">Obsession</div></div>
-      </div>
-    </div>
-    <div>
-      <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience. From <span class="kw" onclick="sw('architectural')">stadium skins in Saudi Arabia</span> to cultural venues in <span class="kw" onclick="sw('architectural')">Kazakhstan</span>, from <span class="kw" onclick="sw('retail')">luxury retail in Paris</span> to <span class="kw" onclick="sw('objects')">parametric light objects</span> born in a Paris studio.</p>
-      <p class="about-text">Founder of <strong style="color:var(--off-white);font-weight:500">Studio Incandescence</strong> — working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the <span class="kw" onclick="sw('objects')">crOOZin series</span>: biomorphic light objects grown from <span class="kw" onclick="sw('parametric')">Grasshopper</span> geometries and printed at 25 micron resolution.</p>
-      <p class="about-text">Fluent in <span class="kw-tool" data-tip="3D modelling">Rhino</span> · <span class="kw" onclick="sw('parametric')">Grasshopper</span> · <span class="kw" onclick="sw('architectural')">DIALux</span> · <span class="kw-tool" data-tip="LED pixel mapping & show control">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server">LightAct</span> · <span class="kw-tool" data-tip="3D motion graphics">Cinema 4D</span> · <span class="kw-tool" data-tip="Custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D visualisation">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span>.</p>
-    </div>
+  <!-- 2. BIO -->
+  <div class="home-bio">
+    <p class="home-bio-text">Senior lighting designer and scenographer. 15+ years across architecture, luxury retail, public art and parametric research — from <span class="kw" onclick="sw('architectural')">stadium skins in Saudi Arabia</span> to <span class="kw" onclick="sw('retail')">luxury retail in Paris</span>, from <span class="kw" onclick="sw('art')">light installations</span> to <span class="kw" onclick="sw('objects')">bespoke light objects</span> made in Paris. Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong>.</p>
+    <p class="home-bio-tools">Rhino · <span class="kw" onclick="sw('parametric')">Grasshopper</span> · <span class="kw-tool" data-tip="LED pixel mapping">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server">LightAct</span> · <span class="kw-tool" data-tip="Lighting simulation">DIALux</span> · <span class="kw-tool" data-tip="Custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span></p>
   </div>
 
-  <!-- WORK CAROUSEL -->
+  <!-- 3. VISUAL CAROUSEL -->
   <div class="work-carousel-section">
-    <div class="wc-label">Explore Work</div>
+    <div class="wc-label">Portfolio</div>
     <div class="wc-track">
       <div class="wc-item" onclick="sw('architectural')" style="background-image:url('satdium.jpg')"><div class="wc-overlay"><div class="wc-cat">01</div><div class="wc-name">Architectural</div></div></div>
       <div class="wc-item" onclick="sw('retail')" style="background-image:url('moon.jpg')"><div class="wc-overlay"><div class="wc-cat">02</div><div class="wc-name">Retail</div></div></div>
@@ -345,7 +387,34 @@ footer { padding:28px 60px; border-top:1px solid var(--border); display:flex; ju
     </div>
   </div>
 
+  <!-- 4. REGIONS -->
+  <div class="home-regions">
+    <div class="sec-label">Geography</div>
+    <div class="region-tabs">
+      <button class="region-tab active" data-r="eu">Europe</button>
+      <button class="region-tab" data-r="me">Middle East</button>
+      <button class="region-tab" data-r="ca">Central Asia</button>
+      <button class="region-tab" data-r="af">North Africa</button>
+      <button class="region-tab" data-r="as">Asia</button>
+    </div>
+    <div class="region-panel active" id="r-eu">Chanel — Once Upon a Moon, Paris · Burberry, Faubourg St-Honoré · Morland Mixité Capitale with Olafur Eliasson · crOOZin parametric luminaires · Rotary Audio Room, Paris</div>
+    <div class="region-panel" id="r-me">Dammam Aramco Stadium, Saudi Arabia — Foster + Partners / Populous · Gulf Cup Opening Ceremony, Kuwait · Dust Memory — RAK Biennale 2027</div>
+    <div class="region-panel" id="r-ca">ForteBank HQ, Astana · Astana Expo — A. Smith / G. Gill · Kolinka Lighting Bureau, founded 2013</div>
+    <div class="region-panel" id="r-af">Villa Sedrati, Rabat · CFG Bank HQ, Casablanca · University, Marrakech</div>
+    <div class="region-panel" id="r-as">Yves Saint Laurent, Shanghai · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo, South Korea · Beirut urban light mapping</div>
+  </div>
+
+  <!-- 5. STATS -->
+  <div class="home-stats">
+    <div class="stat-block"><div class="stat-num">15+</div><div class="stat-lbl">Years of practice</div></div>
+    <div class="stat-block"><div class="stat-num">4</div><div class="stat-lbl">Continents</div></div>
+    <div class="stat-block"><div class="stat-num">∞</div><div class="stat-lbl">Parametric forms</div></div>
+    <div class="stat-block"><div class="stat-num">1</div><div class="stat-lbl"><a href="https://www.ecstatic-yoga.com/" target="_blank" style="color:var(--gray);text-decoration:none;border-bottom:1px solid rgba(170,170,170,.3);transition:color .3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--gray)'">Obsession</a></div></div>
+  </div>
+
+  <!-- 6. CLIENTS -->
   <div class="clients-sec">
+    <div class="sec-label">Clients & Collaborations</div>
     <div class="clients-row">
       <span class="c-name kw" onclick="sp('chanel')">Chanel</span><div class="c-sep"></div>
       <span class="c-name kw" onclick="sp('chanel')">Burberry</span><div class="c-sep"></div>
@@ -596,11 +665,13 @@ function cp(){ document.getElementById('pov').classList.remove('open'); }
 
 function go(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.querySelectorAll('.nav-links a, .nav-drawer a').forEach(a=>a.classList.remove('active'));
   const pg=document.getElementById('page-'+name);
   if(pg){pg.classList.add('active');pg.scrollTop=0;}
   const nv=document.getElementById('n-'+name);
   if(nv) nv.classList.add('active');
+  const dr=document.getElementById('d-'+name);
+  if(dr) dr.classList.add('active');
 }
 
 function sw(cat){
@@ -613,6 +684,18 @@ function sw(cat){
     if(tb) tb.classList.add('active');
     if(pn){pn.classList.add('active');pn.scrollTop=0;}
   },150);
+}
+
+// Burger menu
+function toggleDr(){
+  const b=document.getElementById('burger');
+  const d=document.getElementById('navDrawer');
+  b.classList.toggle('open');
+  d.classList.toggle('open');
+}
+function closeDr(){
+  document.getElementById('burger').classList.remove('open');
+  document.getElementById('navDrawer').classList.remove('open');
 }
 
 // Cat tabs
