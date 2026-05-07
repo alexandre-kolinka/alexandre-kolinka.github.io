@@ -4,18 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Alexandre Kolinka — Light & Form</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --black: #080808;
   --off-white: #f0ece4;
   --gold: #b8960c;
   --gold-light: #d4ac3a;
-  --gray: #888;
-  --gray-dark: #444;
+  --gray: #aaa;
+  --gray-dark: #666;
+  --border: rgba(255,255,255,.07);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-html, body { height:100%; background:var(--black); color:var(--off-white); font-family:'Helvetica Neue',Helvetica,sans-serif; font-weight:300; overflow:hidden; -webkit-overflow-scrolling:touch; }
+html, body { height:100%; background:var(--black); color:var(--off-white); font-family:'DM Sans',sans-serif; font-weight:300; overflow:hidden; -webkit-overflow-scrolling:touch; }
 
 /* CURSOR */
 .cursor { position:fixed; width:8px; height:8px; background:var(--gold); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:screen; transition:width .3s,height .3s; }
@@ -23,281 +24,193 @@ html, body { height:100%; background:var(--black); color:var(--off-white); font-
 @media(max-width:600px){ .cursor,.cursor-ring{display:none} body{cursor:auto} }
 
 /* NAV */
-nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:14px 60px; background:rgba(8,8,8,.97); border-bottom:1px solid rgba(255,255,255,.04); }
-.nav-logo { font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:.15em; color:var(--off-white); text-decoration:none; cursor:pointer; }
-.nav-links { display:flex; gap:40px; list-style:none; align-items:center; }
-.nav-links a { font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:#888; text-decoration:none; transition:color .3s; cursor:pointer; }
+nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:16px 60px; background:rgba(8,8,8,.96); border-bottom:1px solid var(--border); }
+.nav-logo { font-family:'Playfair Display',serif; font-size:20px; letter-spacing:.1em; color:var(--off-white); cursor:pointer; font-style:italic; }
+.nav-links { display:flex; gap:36px; list-style:none; align-items:center; }
+.nav-links a { font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--gray); text-decoration:none; transition:color .3s; cursor:pointer; font-family:'DM Sans',sans-serif; font-weight:400; }
 .nav-links a:hover, .nav-links a.active { color:var(--gold); }
 
 /* COLOR WHEEL */
-.color-wheel-wrap {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-}
-.color-wheel-canvas {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  cursor: grab;
-  touch-action: none;
-  display: block;
-  border: 1px solid rgba(255,255,255,.12);
-  transition: transform .2s ease;
-}
-.color-wheel-canvas:active { cursor: grabbing; transform: scale(1.1); }
-.color-wheel-needle {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 1.5px; height: 10px;
-  background: white;
-  border-radius: 1px;
-  transform-origin: bottom center;
-  transform: translate(-50%, -100%) rotate(0deg);
-  pointer-events: none;
-  box-shadow: 0 0 3px rgba(0,0,0,.9);
-}
-
-@media(max-width:600px){
-  nav{padding:14px 20px}
-  .nav-links{gap:14px}
-  .nav-links a{font-size:9px;letter-spacing:.1em}
-  .color-wheel-wrap{width:28px;height:28px}
-  .color-wheel-canvas{width:28px;height:28px}
-  .color-wheel-needle{height:10px}
-  /* Cat tabs mobile */
-  .cat-tabs{padding:0 16px;top:56px}
-  .cat-tab{padding:12px 12px;font-size:8px;letter-spacing:.12em}
-  /* Cat panel mobile */
-  .cat-panel{padding:28px 16px;min-height:calc(100vh - 130px)}
-  .cat-hdr{grid-template-columns:1fr;gap:10px;margin-bottom:32px}
-  .cat-num{font-size:40px}
-  .cat-ttl{font-size:22px}
-  .cat-intro{font-size:13px;line-height:1.7}
-  /* Work grid mobile */
-  .work-grid{grid-template-columns:1fr;gap:10px}
-  .wi.wide{grid-column:span 1;aspect-ratio:4/3}
-  .wo{opacity:1;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 60%)}
-  .wp{font-size:15px}
-  .wm{font-size:9px}
-  .wh{display:none}
-  /* About mobile */
-  .home-left{padding:80px 20px 50px}
-  .home-about{padding:50px 20px;gap:40px}
-  .about-text{font-size:14px}
-  .clients-sec{padding:48px 20px}
-  /* Project overlay mobile */
-  .proj-bar{padding:14px 20px}
-  .proj-body{padding:28px 20px;gap:40px}
-  .p-main{height:220px}
-  .p-sm{height:130px}
-  .p-txt{font-size:14px}
-}
+.color-wheel-wrap { position:relative; width:28px; height:28px; flex-shrink:0; }
+.color-wheel-canvas { width:28px; height:28px; border-radius:50%; cursor:grab; touch-action:none; display:block; border:1px solid rgba(255,255,255,.15); transition:transform .2s ease; }
+.color-wheel-canvas:active { cursor:grabbing; transform:scale(1.1); }
+.color-wheel-needle { position:absolute; top:50%; left:50%; width:1.5px; height:10px; background:white; border-radius:1px; transform-origin:bottom center; transform:translate(-50%,-100%) rotate(0deg); pointer-events:none; box-shadow:0 0 3px rgba(0,0,0,.9); }
+@media(max-width:600px){ nav{padding:14px 20px} .nav-links{gap:16px} .nav-links a{font-size:10px;letter-spacing:.12em} }
 
 /* PAGES */
-.page { position:fixed; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch; opacity:0; pointer-events:none; transition:opacity .45s ease; }
+.page { position:fixed; inset:0; overflow-y:auto; -webkit-overflow-scrolling:touch; opacity:0; pointer-events:none; transition:opacity .45s ease; padding-top:57px; }
 .page.active { opacity:1; pointer-events:all; }
 
-/* ══ HOME ══ */
-.home-hero { display:grid; grid-template-columns:1fr 1fr; min-height:100vh; }
-.home-right { position:relative; overflow:hidden; }
-.home-right img { width:100%; height:100%; object-fit:cover; filter:brightness(.7); transform:scale(1.04); transition:transform 10s ease; }
-.home-right::after { content:''; position:absolute; inset:0; background:linear-gradient(to right,var(--black) 0%,transparent 45%); }
-.home-left { display:flex; flex-direction:column; justify-content:center; padding:120px 60px 80px; z-index:2; }
-.home-tag { font-size:10px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:32px; opacity:0; animation:fu .8s ease .2s forwards; }
-.home-name { font-family:'Cormorant Garamond',serif; font-size:clamp(52px,7vw,96px); font-weight:300; line-height:.95; color:var(--off-white); opacity:0; animation:fu .8s ease .4s forwards; }
-.home-name em { font-style:italic; color:var(--gold-light); }
-.home-line { width:40px; height:1px; background:var(--gold); margin:28px 0; opacity:0; animation:fu .8s ease .6s forwards; }
-.home-phrase { font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:var(--off-white); line-height:1.7; max-width:400px; opacity:0; animation:fu .8s ease .8s forwards; }
+/* ══════════ HOME ══════════ */
+.home-hero { display:grid; grid-template-columns:1fr 1fr; height:calc(100vh - 57px); }
+
+/* LEFT */
+.home-left {
+  display:flex; flex-direction:column; justify-content:center;
+  padding:80px 60px 60px;
+  position:relative; z-index:2;
+  background:linear-gradient(to right, var(--black) 60%, rgba(8,8,8,.7) 100%);
+}
+.home-tag { font-size:11px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:28px; opacity:0; animation:fu .8s ease .2s forwards; display:flex; align-items:center; gap:12px; }
+.home-tag::before { content:''; width:24px; height:1px; background:var(--gold); }
+.home-name { font-family:'Playfair Display',serif; font-size:clamp(48px,6vw,88px); font-weight:400; line-height:.98; color:var(--off-white); opacity:0; animation:fu .8s ease .4s forwards; }
+.home-name em { font-style:italic; color:var(--gold-light); display:block; }
+.home-line { width:48px; height:1px; background:var(--gold); margin:28px 0; opacity:0; animation:fu .8s ease .6s forwards; }
+.home-phrase { font-family:'Playfair Display',serif; font-size:16px; font-style:italic; color:rgba(240,236,228,.75); line-height:1.75; max-width:420px; opacity:0; animation:fu .8s ease .8s forwards; }
 
 /* REGIONS */
-.regions-bar { margin-top:36px; max-width:440px; opacity:0; animation:fu .8s ease 1s forwards; }
-.region-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
-.region-tab { font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:#888; background:none; border:1px solid rgba(255,255,255,.1); padding:5px 10px; cursor:pointer; transition:all .3s; font-family:'Helvetica Neue',sans-serif; }
+.regions-bar { margin-top:40px; max-width:460px; opacity:0; animation:fu .8s ease 1s forwards; }
+.region-tabs { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.region-tab { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gray); background:none; border:1px solid rgba(255,255,255,.12); padding:5px 12px; cursor:pointer; transition:all .3s; font-family:'DM Sans',sans-serif; }
 .region-tab:hover { color:var(--off-white); border-color:rgba(255,255,255,.3); }
 .region-tab.active { color:var(--black); background:var(--gold); border-color:var(--gold); }
-.region-panel { display:none; font-size:12px; line-height:1.8; color:#888; padding:10px 0; border-top:1px solid rgba(255,255,255,.06); }
+.region-panel { display:none; font-size:13px; line-height:1.85; color:var(--gray); padding:12px 0; border-top:1px solid var(--border); }
 .region-panel.active { display:block; animation:fu .4s ease forwards; }
 
+/* RIGHT — CAROUSEL */
+.home-right { position:relative; overflow:hidden; cursor:pointer; }
+.carousel-bg { position:absolute; inset:0; background:url('ripples.jpeg') center/cover no-repeat; filter:brightness(.5) saturate(.8); z-index:0; }
+.carousel-slide { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity 1.4s ease; z-index:1; }
+.carousel-slide.active { opacity:1; }
+.carousel-left-fade { position:absolute; inset:0; background:linear-gradient(to right, var(--black) 0%, rgba(8,8,8,.2) 30%, transparent 60%); z-index:2; pointer-events:none; }
+.carousel-info { position:absolute; bottom:36px; right:36px; z-index:3; text-align:right; }
+.carousel-label { font-size:11px; letter-spacing:.25em; text-transform:uppercase; color:rgba(255,255,255,.55); margin-bottom:14px; font-family:'DM Sans',sans-serif; }
+.carousel-dots { display:flex; gap:8px; justify-content:flex-end; }
+.cdot { width:20px; height:2px; background:rgba(255,255,255,.25); cursor:pointer; transition:all .4s ease; border:none; padding:0; flex-shrink:0; }
+.cdot.active { background:var(--gold); width:36px; }
+.carousel-click-hint { position:absolute; bottom:36px; left:36px; z-index:3; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.3); font-family:'DM Sans',sans-serif; }
+
 /* ABOUT */
-.home-about { padding:100px 60px; display:grid; grid-template-columns:1fr 1fr; gap:100px; border-top:1px solid rgba(255,255,255,.05); }
-.about-heading { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,4vw,52px); font-weight:300; color:var(--off-white); line-height:1.1; }
+.home-about { padding:100px 60px; display:grid; grid-template-columns:1fr 1fr; gap:100px; border-top:1px solid var(--border); }
+.about-heading { font-family:'Playfair Display',serif; font-size:clamp(30px,3.5vw,48px); font-weight:400; color:var(--off-white); line-height:1.15; }
 .about-heading em { font-style:italic; color:var(--gold-light); }
-.about-stats { display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:40px; padding-top:40px; border-top:1px solid rgba(255,255,255,.06); }
-.stat-num { font-family:'Cormorant Garamond',serif; font-size:44px; font-weight:300; color:var(--gold); }
-.stat-lbl { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#888; margin-top:6px; }
-.about-text { font-size:15px; line-height:2; color:#888; margin-bottom:18px; }
-.kw { color:var(--gold-light); cursor:pointer; border-bottom:1px solid rgba(212,172,58,.3); transition:color .2s; }
+.about-stats { display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:44px; padding-top:44px; border-top:1px solid var(--border); }
+.stat-num { font-family:'Playfair Display',serif; font-size:48px; font-weight:400; color:var(--gold); line-height:1; }
+.stat-lbl { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gray); margin-top:8px; }
+.about-text { font-size:16px; line-height:1.95; color:var(--gray); margin-bottom:20px; }
+.kw { color:var(--gold-light); cursor:pointer; border-bottom:1px solid rgba(212,172,58,.35); transition:color .2s; }
 .kw:hover { color:var(--off-white); border-color:var(--gold); }
-.kw-tool { color:#888; cursor:help; border-bottom:1px dotted rgba(136,136,136,.4); position:relative; }
+.kw-tool { color:var(--gray); cursor:help; border-bottom:1px dotted rgba(170,170,170,.35); position:relative; }
 .kw-tool:hover { color:var(--off-white); }
-.kw-tool::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(16,16,16,.97); color:var(--off-white); font-size:10px; padding:6px 12px; white-space:nowrap; border:1px solid rgba(184,150,12,.25); opacity:0; pointer-events:none; z-index:200; transition:opacity .2s; }
+.kw-tool::after { content:attr(data-tip); position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(14,14,14,.97); color:var(--off-white); font-size:11px; padding:7px 14px; white-space:nowrap; border:1px solid rgba(184,150,12,.25); opacity:0; pointer-events:none; z-index:200; transition:opacity .2s; font-family:'DM Sans',sans-serif; }
 .kw-tool:hover::after { opacity:1; }
 
 /* CLIENTS */
-.clients-sec { padding:80px 60px; border-top:1px solid rgba(255,255,255,.05); }
-.sec-label { font-size:11px; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:40px; }
-.clients-row { display:flex; flex-wrap:wrap; gap:14px 36px; align-items:center; }
-.c-name { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; color:rgba(255,255,255,.13); transition:color .3s; white-space:nowrap; }
+.clients-sec { padding:80px 60px; border-top:1px solid var(--border); }
+.sec-label { font-size:12px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:44px; display:flex; align-items:center; gap:16px; }
+.sec-label::after { content:''; flex:1; max-width:60px; height:1px; background:var(--gold); opacity:.35; }
+.clients-row { display:flex; flex-wrap:wrap; gap:16px 40px; align-items:center; }
+.c-name { font-family:'Playfair Display',serif; font-size:26px; font-weight:400; color:rgba(255,255,255,.15); transition:color .3s; white-space:nowrap; }
 .c-name:hover { color:var(--off-white); }
 .c-name.kw { cursor:pointer; border-bottom:1px solid rgba(212,172,58,.2); }
 .c-name.kw:hover { color:var(--gold-light); }
-.c-sep { width:4px; height:4px; border-radius:50%; background:var(--gold); opacity:.25; }
+.c-sep { width:4px; height:4px; border-radius:50%; background:var(--gold); opacity:.3; }
+footer { padding:28px 60px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.2); }
+.footer-sil { color:rgba(255,255,255,.2); text-decoration:none; transition:color .3s; }
+.footer-sil:hover { color:var(--gold); }
 
-footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:flex; justify-content:space-between; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.18); }
-@media(max-width:600px){ footer{padding:20px 24px;flex-direction:column;gap:6px;text-align:center} }
-
-/* ══ WORK PAGE ══ */
-#page-work { padding-top: 56px; }
-.cat-tabs { position:sticky; top:56px; z-index:50; background:rgba(8,8,8,.97); border-bottom:1px solid rgba(255,255,255,.06); padding:0 60px; display:flex; gap:0; overflow-x:auto; scrollbar-width:none; }
+/* ══════════ WORK ══════════ */
+#page-work { padding-top:57px; }
+.cat-tabs { position:sticky; top:57px; z-index:50; background:rgba(8,8,8,.97); border-bottom:1px solid var(--border); padding:0 60px; display:flex; overflow-x:auto; scrollbar-width:none; }
 .cat-tabs::-webkit-scrollbar { display:none; }
-.cat-tab { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:#888; background:none; border:none; border-bottom:2px solid transparent; padding:14px 20px; cursor:pointer; white-space:nowrap; transition:all .3s; font-family:'Helvetica Neue',sans-serif; flex-shrink:0; }
+.cat-tab { font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--gray); background:none; border:none; border-bottom:2px solid transparent; padding:15px 22px; cursor:pointer; white-space:nowrap; transition:all .3s; font-family:'DM Sans',sans-serif; font-weight:400; flex-shrink:0; }
 .cat-tab:hover { color:var(--off-white); }
 .cat-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
-.cat-panel { display:none; padding:50px 60px; min-height:calc(100vh - 112px); }
+.cat-panel { display:none; padding:56px 60px; min-height:calc(100vh - 113px); }
 .cat-panel.active { display:block; animation:fu .45s ease forwards; }
-.cat-hdr { display:grid; grid-template-columns:auto 1fr; gap:36px; align-items:start; margin-bottom:56px; }
-.cat-num { font-family:'Cormorant Garamond',serif; font-size:72px; font-weight:300; color:rgba(184,150,12,.1); line-height:1; }
-.cat-ttl { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,4vw,44px); font-weight:300; color:var(--off-white); line-height:1.1; margin-bottom:10px; }
+.cat-hdr { display:grid; grid-template-columns:auto 1fr; gap:40px; align-items:start; margin-bottom:60px; }
+.cat-num { font-family:'Playfair Display',serif; font-size:80px; font-weight:400; color:rgba(184,150,12,.1); line-height:1; font-style:italic; }
+.cat-ttl { font-family:'Playfair Display',serif; font-size:clamp(28px,4vw,48px); font-weight:400; color:var(--off-white); line-height:1.1; margin-bottom:12px; }
 .cat-ttl em { font-style:italic; color:var(--gold-light); }
-.cat-intro { font-size:15px; line-height:1.9; color:#888; max-width:540px; }
+.cat-intro { font-size:16px; line-height:1.9; color:var(--gray); max-width:560px; }
 
 /* GRID */
 .work-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
 .wi { position:relative; overflow:hidden; aspect-ratio:4/5; background:#0f0f0f; cursor:pointer; }
 .wi.wide { grid-column:span 2; aspect-ratio:8/5; }
 .wi img { width:100%; height:100%; object-fit:cover; filter:brightness(.65) saturate(.85); transition:transform .8s cubic-bezier(.25,.46,.45,.94),filter .5s; }
-.wi:hover img { transform:scale(1.05); filter:brightness(.85) saturate(1.1); }
-.wo { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 55%); display:flex; flex-direction:column; justify-content:flex-end; padding:22px; opacity:0; transition:opacity .35s; }
+.wi:hover img { transform:scale(1.05); filter:brightness(.88) saturate(1.1); }
+.wo { position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.88) 0%,transparent 55%); display:flex; flex-direction:column; justify-content:flex-end; padding:24px; opacity:0; transition:opacity .35s; }
 .wi:hover .wo { opacity:1; }
-.wp { font-family:'Cormorant Garamond',serif; font-size:19px; color:var(--off-white); margin-bottom:3px; }
-.wm { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
-.wh { font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-top:6px; }
+.wp { font-family:'Playfair Display',serif; font-size:20px; color:var(--off-white); margin-bottom:4px; }
+.wm { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--gold); }
+.wh { font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-top:6px; }
 
-@media(max-width:900px){
-  .work-grid{grid-template-columns:1fr 1fr}
-  .wi.wide{grid-column:span 2;aspect-ratio:16/9}
-  .cat-panel{padding:40px 32px}
-  .cat-tabs{padding:0 24px}
-}
-@media(max-width:600px){
-  .work-grid{grid-template-columns:1fr}
-  .wi.wide{grid-column:span 1;aspect-ratio:4/3}
-  .cat-panel{padding:32px 20px}
-  .cat-tab{padding:14px 14px;font-size:9px}
-  .wo{opacity:1}
-}
-
-/* ══ PROJECT OVERLAY ══ */
+/* PROJECT OVERLAY */
 .proj-ov { position:fixed; inset:0; z-index:200; background:var(--black); overflow-y:auto; -webkit-overflow-scrolling:touch; opacity:0; pointer-events:none; transition:opacity .35s; }
 .proj-ov.open { opacity:1; pointer-events:all; }
-.proj-bar { position:sticky; top:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:20px 60px; background:rgba(8,8,8,.97); border-bottom:1px solid rgba(255,255,255,.06); }
-.proj-back { font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:#888; background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:10px; font-family:'Helvetica Neue',sans-serif; transition:color .3s; }
+.proj-bar { position:sticky; top:0; z-index:10; display:flex; justify-content:space-between; align-items:center; padding:18px 60px; background:rgba(8,8,8,.97); border-bottom:1px solid var(--border); }
+.proj-back { font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--gray); background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:10px; font-family:'DM Sans',sans-serif; transition:color .3s; }
 .proj-back:hover { color:var(--off-white); }
-.proj-back::before { content:'←'; font-size:13px; }
-.proj-crumb { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.25); }
+.proj-back::before { content:'←'; font-size:14px; }
+.proj-crumb { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:var(--gray-dark); font-family:'DM Sans',sans-serif; }
 .proj-body { max-width:1400px; margin:0 auto; padding:60px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
-.p-lbl { font-size:9px; letter-spacing:.4em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; opacity:.7; }
-.p-ttl { font-family:'Cormorant Garamond',serif; font-size:clamp(32px,5vw,60px); font-weight:300; color:var(--off-white); line-height:1.05; margin-bottom:10px; }
+.p-lbl { font-size:10px; letter-spacing:.35em; text-transform:uppercase; color:var(--gold); margin-bottom:16px; opacity:.8; }
+.p-ttl { font-family:'Playfair Display',serif; font-size:clamp(34px,5vw,62px); font-weight:400; color:var(--off-white); line-height:1.05; margin-bottom:12px; }
 .p-ttl em { font-style:italic; color:var(--gold-light); }
-.p-sub { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:32px; }
-.p-txt { font-size:15px; line-height:2; color:#888; margin-bottom:16px; }
-.p-txt.qt { font-style:italic; color:var(--off-white); font-size:17px; line-height:1.8; margin-bottom:24px; }
-.p-meta { border-top:1px solid rgba(255,255,255,.06); padding-top:28px; margin-top:28px; }
-.p-row { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.04); font-size:12px; }
-.p-key { text-transform:uppercase; letter-spacing:.12em; color:#888; font-size:10px; }
-.p-val { color:var(--off-white); text-align:right; max-width:60%; }
+.p-sub { font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:32px; }
+.p-txt { font-size:16px; line-height:2; color:var(--gray); margin-bottom:18px; }
+.p-txt.qt { font-style:italic; font-family:'Playfair Display',serif; color:var(--off-white); font-size:19px; line-height:1.75; margin-bottom:28px; }
+.p-meta { border-top:1px solid var(--border); padding-top:28px; margin-top:28px; }
+.p-row { display:flex; justify-content:space-between; padding:11px 0; border-bottom:1px solid rgba(255,255,255,.04); }
+.p-key { text-transform:uppercase; letter-spacing:.12em; color:var(--gray-dark); font-size:11px; }
+.p-val { color:var(--off-white); text-align:right; max-width:60%; font-size:13px; }
 .p-imgs { display:grid; grid-template-columns:1fr 1fr; gap:3px; }
-.p-main { grid-column:span 2; height:360px; overflow:hidden; }
+.p-main { grid-column:span 2; height:380px; overflow:hidden; }
 .p-main img { width:100%; height:100%; object-fit:cover; filter:brightness(.85); }
-.p-sm { height:190px; overflow:hidden; }
+.p-sm { height:200px; overflow:hidden; }
 .p-sm img { width:100%; height:100%; object-fit:cover; filter:brightness(.8); }
-.p-wide { grid-column:span 2; height:190px; overflow:hidden; }
+.p-wide { grid-column:span 2; height:200px; overflow:hidden; }
 .p-wide img { width:100%; height:100%; object-fit:cover; filter:brightness(.8); }
 
-@media(max-width:900px){ .proj-body{grid-template-columns:1fr;gap:48px;padding:40px 32px} .proj-bar{padding:18px 32px} }
-@media(max-width:600px){ .proj-body{padding:28px 20px} .proj-bar{padding:14px 20px} .p-main{height:240px} .p-sm{height:140px} }
-
-/* ══ CONTACT ══ */
-#page-contact { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:100px 60px; }
+/* CONTACT */
+#page-contact { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; padding:100px 60px; position:relative; }
 #page-contact::before { content:''; position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(184,150,12,.05) 0%,transparent 70%); }
-.c-head { font-family:'Cormorant Garamond',serif; font-size:clamp(44px,7vw,90px); font-weight:300; color:var(--off-white); line-height:1; margin-bottom:20px; position:relative; z-index:1; }
+.c-head { font-family:'Playfair Display',serif; font-size:clamp(44px,7vw,90px); font-weight:400; color:var(--off-white); line-height:1; margin-bottom:20px; position:relative; z-index:1; }
 .c-head em { font-style:italic; color:var(--gold-light); }
-.c-sub { font-size:15px; color:#888; margin-bottom:48px; max-width:480px; line-height:1.8; position:relative; z-index:1; }
-.c-links { display:flex; gap:40px; align-items:center; flex-wrap:wrap; justify-content:center; position:relative; z-index:1; }
-.c-email { font-family:'Cormorant Garamond',serif; font-size:22px; font-style:italic; color:var(--gold-light); text-decoration:none; }
-.c-lnk { font-size:11px; letter-spacing:.28em; text-transform:uppercase; color:#888; text-decoration:none; transition:color .3s; }
+.c-sub { font-size:16px; color:var(--gray); margin-bottom:52px; max-width:500px; line-height:1.85; position:relative; z-index:1; }
+.c-links { display:flex; gap:44px; align-items:center; flex-wrap:wrap; justify-content:center; position:relative; z-index:1; }
+.c-email { font-family:'Playfair Display',serif; font-size:24px; font-style:italic; color:var(--gold-light); text-decoration:none; transition:opacity .3s; }
+.c-email:hover { opacity:.7; }
+.c-lnk { font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--gray); text-decoration:none; transition:color .3s; position:relative; }
+.c-lnk::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:1px; background:var(--gold); transition:width .3s; }
 .c-lnk:hover { color:var(--off-white); }
-@media(max-width:600px){ #page-contact{padding:80px 24px} .c-links{flex-direction:column;gap:20px} }
+.c-lnk:hover::after { width:100%; }
 
-/* HOME HERO */
-.home-hero { display:grid; grid-template-columns:1fr 1fr; min-height:100vh; min-height:100dvh; }
-.home-right { position:relative; overflow:hidden; cursor:pointer; min-height:100vh; min-height:100dvh; }
+/* RESPONSIVE */
 @media(max-width:900px){
-  .home-hero{grid-template-columns:1fr; position:relative;}
-  .home-right{position:absolute;inset:0;min-height:auto;}
-  .home-left{position:relative;z-index:1;min-height:100vh;min-height:100dvh;background:linear-gradient(to bottom,rgba(8,8,8,.85) 0%,rgba(8,8,8,.7) 60%,rgba(8,8,8,.95) 100%);}
-}
-.carousel-slide {
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1.2s ease, transform 8s ease;
-  transform: scale(1.05);
-  filter: brightness(.65) saturate(.9);
-}
-.carousel-slide.active {
-  opacity: 1;
-  transform: scale(1);
-}
-.carousel-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right, var(--black) 0%, rgba(8,8,8,.3) 60%, transparent 100%);
-  z-index: 1;
-}
-.carousel-info {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-  z-index: 2;
-  text-align: right;
-}
-.carousel-label {
-  font-size: 10px;
-  letter-spacing: .3em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.6);
-  margin-bottom: 12px;
-  transition: opacity .4s ease;
-}
-.carousel-dots { display:flex; gap:8px; justify-content:flex-end; }
-.cdot {
-  width: 20px; height: 2px;
-  background: rgba(255,255,255,.25);
-  cursor: pointer;
-  transition: all .4s ease;
-  border: none;
-  padding: 0;
-}
-.cdot.active { background: var(--gold); width: 32px; }
-
-@media(max-width:900px){ .home-right{display:block;position:absolute;inset:0;z-index:0} }
-@media(max-width:600px){ .carousel-info{bottom:24px;right:24px} }
-@media(max-width:900px){
-  .home-hero{grid-template-columns:1fr}
-  .home-right{display:none}
-  .home-left{padding:100px 32px 60px;justify-content:flex-end;min-height:100vh}
-  .home-about{grid-template-columns:1fr;gap:60px;padding:80px 32px}
-  .clients-sec{padding:60px 32px}
+  .home-hero{grid-template-columns:1fr;height:auto;min-height:100vh}
+  .home-right{position:absolute;inset:0;height:100%}
+  .home-left{position:relative;z-index:2;min-height:100vh;background:linear-gradient(to bottom,rgba(8,8,8,.88) 0%,rgba(8,8,8,.75) 60%,rgba(8,8,8,.95) 100%);padding:90px 40px 80px}
+  .home-about{grid-template-columns:1fr;gap:60px;padding:80px 40px}
+  .clients-sec{padding:60px 40px}
+  footer{padding:22px 40px}
+  .cat-tabs{padding:0 32px}
+  .cat-panel{padding:44px 40px}
+  .proj-body{grid-template-columns:1fr;gap:48px;padding:40px 40px}
+  .proj-bar{padding:18px 40px}
+  .work-grid{grid-template-columns:1fr 1fr}
+  .wi.wide{grid-column:span 2;aspect-ratio:16/9}
 }
 @media(max-width:600px){
-  .home-left{padding:90px 24px 60px}
-  .home-about{padding:60px 24px}
-  .clients-sec{padding:60px 24px}
+  .home-left{padding:80px 24px 60px}
+  .home-about{padding:56px 24px}
+  .clients-sec{padding:56px 24px}
+  footer{padding:20px 24px;flex-direction:column;gap:8px;text-align:center}
+  .cat-tabs{padding:0 20px;top:55px}
+  .cat-tab{padding:13px 14px;font-size:10px}
+  .cat-panel{padding:32px 20px}
+  .cat-hdr{grid-template-columns:1fr;gap:12px;margin-bottom:36px}
+  .cat-num{font-size:52px}
+  .work-grid{grid-template-columns:1fr}
+  .wi.wide{grid-column:span 1;aspect-ratio:4/3}
+  .wo{opacity:1;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 60%)}
+  .proj-body{padding:28px 20px;gap:40px}
+  .proj-bar{padding:14px 20px}
+  .p-main{height:240px}
+  .p-sm{height:140px}
+  #page-contact{padding:80px 24px}
+  .c-links{flex-direction:column;gap:24px}
   .about-stats{grid-template-columns:1fr 1fr}
 }
 
@@ -310,7 +223,7 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
 <div class="cursor-ring" id="curR"></div>
 
 <nav>
-  <span class="nav-logo" onclick="go('home')">A · K</span>
+  <span class="nav-logo" onclick="go('home')">Alexandre Kolinka</span>
   <ul class="nav-links">
     <li><a id="n-home" class="active" onclick="go('home')">Home</a></li>
     <li><a id="n-work" onclick="go('work')">Work</a></li>
@@ -331,7 +244,7 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
       <div class="home-tag">Senior Lighting Designer · Paris · International</div>
       <h1 class="home-name">Alexandre<br><em>Kolinka</em></h1>
       <div class="home-line"></div>
-      <p class="home-phrase">"Structures that begin where architecture ends —<br>designed to host light, time, and living things."</p>
+      <p class="home-phrase">"Structures that begin where architecture ends — designed to host light, time, and living things."</p>
       <div class="regions-bar">
         <div class="region-tabs">
           <button class="region-tab active" data-r="eu">Europe</button>
@@ -340,28 +253,31 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
           <button class="region-tab" data-r="af">North Africa</button>
           <button class="region-tab" data-r="as">Asia</button>
         </div>
-        <div class="region-panel active" id="r-eu">● Chanel — Once Upon a Moon, Paris · Burberry, Faubourg St-Honoré · Morland Mixité Capitale with Olafur Eliasson · crOOZin parametric luminaires</div>
-        <div class="region-panel" id="r-me">● Dammam Aramco Stadium, Saudi Arabia — Foster + Partners / Populous · Gulf Cup Opening Ceremony, Kuwait</div>
-        <div class="region-panel" id="r-ca">● ForteBank HQ, Astana · Astana Expo — A. Smith / G. Gill · Kolinka Lighting Bureau, founded 2013</div>
-        <div class="region-panel" id="r-af">● Villa Sedrati, Rabat · CFG Bank HQ, Casablanca · University, Marrakech · Dust Memory — RAK Biennale 2027</div>
-        <div class="region-panel" id="r-as">● Yves Saint Laurent, Shanghai · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo, South Korea</div>
+        <div class="region-panel active" id="r-eu">Chanel — Once Upon a Moon, Paris · Burberry, Faubourg St-Honoré · Morland Mixité Capitale with Olafur Eliasson · crOOZin parametric luminaires</div>
+        <div class="region-panel" id="r-me">Dammam Aramco Stadium, Saudi Arabia — Foster + Partners / Populous · Gulf Cup Opening Ceremony, Kuwait</div>
+        <div class="region-panel" id="r-ca">ForteBank HQ, Astana · Astana Expo — A. Smith / G. Gill · Kolinka Lighting Bureau, founded 2013</div>
+        <div class="region-panel" id="r-af">Villa Sedrati, Rabat · CFG Bank HQ, Casablanca · University, Marrakech · Dust Memory — RAK Biennale 2027</div>
+        <div class="region-panel" id="r-as">Yves Saint Laurent, Shanghai · Namsan Electronic Fire, Seoul — world record video mapping · Yeosu Expo, South Korea</div>
       </div>
     </div>
+
     <div class="home-right" id="heroCarousel">
+      <div class="carousel-bg"></div>
       <div class="carousel-slide active" data-cat="architectural" style="background-image:url('satdium.jpg')"></div>
       <div class="carousel-slide" data-cat="retail" style="background-image:url('moon.jpg')"></div>
       <div class="carousel-slide" data-cat="art" style="background-image:url('dust-memory.png')"></div>
       <div class="carousel-slide" data-cat="parametric" style="background-image:url('LIGEO-1.png')"></div>
-      <div class="carousel-overlay"></div>
+      <div class="carousel-left-fade"></div>
       <div class="carousel-info">
         <div class="carousel-label" id="carouselLabel">Architectural Lighting</div>
         <div class="carousel-dots">
-          <span class="cdot active" data-i="0"></span>
-          <span class="cdot" data-i="1"></span>
-          <span class="cdot" data-i="2"></span>
-          <span class="cdot" data-i="3"></span>
+          <button class="cdot active" data-i="0"></button>
+          <button class="cdot" data-i="1"></button>
+          <button class="cdot" data-i="2"></button>
+          <button class="cdot" data-i="3"></button>
         </div>
       </div>
+      <div class="carousel-click-hint">Click to explore →</div>
     </div>
   </div>
 
@@ -377,7 +293,7 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
     </div>
     <div>
       <p class="about-text">Senior lighting designer and scenographer with over 15 years of international experience. From <span class="kw" onclick="sw('architectural')">stadium skins in Saudi Arabia</span> to cultural venues in <span class="kw" onclick="sw('architectural')">Kazakhstan</span>, from <span class="kw" onclick="sw('retail')">luxury retail in Paris</span> to <span class="kw" onclick="sw('objects')">parametric light objects</span> born in a Paris studio.</p>
-      <p class="about-text">Founder of <strong style="color:var(--off-white)">Studio Incandescence</strong> — working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the <span class="kw" onclick="sw('objects')">crOOZin series</span>: biomorphic light objects grown from <span class="kw" onclick="sw('parametric')">Grasshopper</span> geometries and printed at 25 micron resolution.</p>
+      <p class="about-text">Founder of <strong style="color:var(--off-white);font-weight:500">Studio Incandescence</strong> — working at the intersection of parametric design, LED electronics, and fabrication. Currently developing the <span class="kw" onclick="sw('objects')">crOOZin series</span>: biomorphic light objects grown from <span class="kw" onclick="sw('parametric')">Grasshopper</span> geometries and printed at 25 micron resolution.</p>
       <p class="about-text">Fluent in <span class="kw-tool" data-tip="3D modelling">Rhino</span> · <span class="kw" onclick="sw('parametric')">Grasshopper</span> · <span class="kw" onclick="sw('architectural')">DIALux</span> · <span class="kw-tool" data-tip="LED pixel mapping & show control">Madrix</span> · <span class="kw-tool" data-tip="Real-time media server">LightAct</span> · <span class="kw-tool" data-tip="3D motion graphics">Cinema 4D</span> · <span class="kw-tool" data-tip="Custom LED hardware">Arduino</span> · <span class="kw-tool" data-tip="Lighting control protocols">DMX/ArtNet</span> · <span class="kw-tool" data-tip="Real-time 3D visualisation">Unreal Engine</span> · <span class="kw-tool" data-tip="Photorealistic rendering">V-Ray</span>.</p>
     </div>
   </div>
@@ -402,8 +318,8 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
   </div>
 
   <footer>
-    <span>© 2026 Alexandre Kolinka · Studio Incandescence</span>
-    <a href="https://alexandre-kolinka.github.io/studioincandescence.github.io/" target="_blank" style="color:rgba(255,255,255,.2); text-decoration:none; font-size:10px; letter-spacing:.18em; text-transform:uppercase; transition:color .3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,.2)'">↗ Studio Incandescence — R&D</a>
+    <span>© 2026 Alexandre Kolinka · Studio Incandescence · Paris</span>
+    <a class="footer-sil" href="https://alexandre-kolinka.github.io/studioincandescence.github.io/" target="_blank">↗ Studio Incandescence — R&D</a>
   </footer>
 </div>
 
@@ -418,88 +334,82 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
     <button class="cat-tab" data-c="objects">06 · Objects</button>
   </div>
 
-  <!-- 01 -->
   <div class="cat-panel active" id="cat-architectural">
     <div class="cat-hdr"><div class="cat-num">01</div><div><h2 class="cat-ttl">Architectural <em>Lighting</em></h2><p class="cat-intro">Large-scale lighting strategies for buildings, façades and public realm. From stadium skins to corporate headquarters — light as an architectural material, integrated from concept through to commissioning.</p></div></div>
     <div class="work-grid">
-      <div class="wi wide" onclick="sp('dammam')"><img src="satdium.jpg" alt=""><div class="wo"><div class="wp">Dammam Aramco Stadium</div><div class="wm">Saudi Arabia · Foster + Partners · LDC</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('dammam')"><img src="satdium.jpg" alt=""><div class="wo"><div class="wp">Dammam Aramco Stadium</div><div class="wm">Saudi Arabia · Foster + Partners · LDC</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('dammam')"><img src="satdium-1.jpg" alt=""><div class="wo"><div class="wp">Dammam — Façade</div><div class="wm">Media façade · LED mapping</div></div></div>
-      <div class="wi" onclick="sp('dammam')"><img src="satdium-2.jpg" alt=""><div class="wo"><div class="wp">Dammam — Night</div><div class="wm">Dynamic lighting concept</div></div></div>
+      <div class="wi" onclick="sp('dammam')"><img src="satdium-2.jpg" alt=""><div class="wo"><div class="wp">Dammam — Night</div><div class="wm">Dynamic lighting</div></div></div>
       <div class="wi" onclick="sp('dammam')"><img src="satdium-3.jpg" alt=""><div class="wo"><div class="wp">Dammam — Structure</div><div class="wm">Parametric geometry</div></div></div>
       <div class="wi" onclick="sp('dammam')"><img src="satdium-6.jpg" alt=""><div class="wo"><div class="wp">Dammam — Lighting</div><div class="wm">Stage 3 · LDC</div></div></div>
       <div class="wi" onclick="sp('dammam')"><img src="satdium-7.jpg" alt=""><div class="wo"><div class="wp">Dammam — Detail</div><div class="wm">Facade integration</div></div></div>
-      <div class="wi wide" onclick="sp('fortebank')"><img src="fortebank001.jpeg" alt=""><div class="wo"><div class="wp">ForteBank HQ</div><div class="wm">Astana, Kazakhstan · Saraiva & Associados</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('fortebank')"><img src="fortebank001.jpeg" alt=""><div class="wo"><div class="wp">ForteBank HQ</div><div class="wm">Astana, Kazakhstan · Saraiva & Associados</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('fortebank')"><img src="klb-ForteBank-5.jpeg" alt=""><div class="wo"><div class="wp">ForteBank — Façade</div><div class="wm">Exterior lighting</div></div></div>
-      <div class="wi" onclick="sp('fortebank')"><img src="klb-Fortebank-10.jpg" alt=""><div class="wo"><div class="wp">ForteBank — Detail</div><div class="wm">Bespoke light fixture</div></div></div>
-      <div class="wi wide" onclick="sp('sedrati')"><img src="sedrati.jpg" alt=""><div class="wo"><div class="wp">Villa Sedrati</div><div class="wm">Rabat, Morocco · Residential · DIALux</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('fortebank')"><img src="klb-Fortebank-10.jpg" alt=""><div class="wo"><div class="wp">ForteBank — Detail</div><div class="wm">Bespoke fixture</div></div></div>
+      <div class="wi wide" onclick="sp('sedrati')"><img src="sedrati.jpg" alt=""><div class="wo"><div class="wp">Villa Sedrati</div><div class="wm">Rabat, Morocco · Residential · DIALux</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('sedrati')"><img src="sedrati1.jpg" alt=""><div class="wo"><div class="wp">Villa Sedrati — Living</div></div></div>
       <div class="wi" onclick="sp('sedrati')"><img src="sedrati2.jpg" alt=""><div class="wo"><div class="wp">Villa Sedrati — Detail</div></div></div>
     </div>
   </div>
 
-  <!-- 02 -->
   <div class="cat-panel" id="cat-retail">
     <div class="cat-hdr"><div class="cat-num">02</div><div><h2 class="cat-ttl">Luxury Retail<br><em>& Scenography</em></h2><p class="cat-intro">Light as brand identity. Bespoke lighting concepts and installations for the world's most demanding luxury houses. Blurring the line between scenography, architecture and art.</p></div></div>
     <div class="work-grid">
-      <div class="wi wide" onclick="sp('chanel')"><img src="moon.jpg" alt=""><div class="wo"><div class="wp">Chanel — Once Upon a Moon</div><div class="wm">Place Vendôme, Paris · Atelier Athem</div><div class="wh">Click to open ↗</div></div></div>
-      <div class="wi" onclick="sp('ysl')"><img src="YSL.jpg" alt=""><div class="wo"><div class="wp">Yves Saint Laurent</div><div class="wm">Shanghai · Ligeo</div><div class="wh">Click to open ↗</div></div></div>
-      <div class="wi" onclick="sp('rotary')"><img src="rotary-1.png" alt=""><div class="wo"><div class="wp">Rotary Audio Room</div><div class="wm">Paris · Automatik · Custom luminaire</div><div class="wh">Click to open ↗</div></div></div>
-      <div class="wi" onclick="sp('rotary')"><img src="rotary-2.png" alt=""><div class="wo"><div class="wp">Rotary — Signature Wall</div><div class="wm">Incandescent grid · DMX · Concept</div></div></div>
+      <div class="wi wide" onclick="sp('chanel')"><img src="moon.jpg" alt=""><div class="wo"><div class="wp">Chanel — Once Upon a Moon</div><div class="wm">Place Vendôme, Paris · Atelier Athem</div><div class="wh">Open ↗</div></div></div>
+      <div class="wi" onclick="sp('ysl')"><img src="YSL.jpg" alt=""><div class="wo"><div class="wp">Yves Saint Laurent</div><div class="wm">Shanghai · Ligeo</div><div class="wh">Open ↗</div></div></div>
+      <div class="wi" onclick="sp('rotary')"><img src="rotary-1.png" alt=""><div class="wo"><div class="wp">Rotary Audio Room</div><div class="wm">Paris · Automatik · Custom luminaire</div><div class="wh">Open ↗</div></div></div>
+      <div class="wi" onclick="sp('rotary')"><img src="rotary-2.png" alt=""><div class="wo"><div class="wp">Rotary — Signature Wall</div><div class="wm">Incandescent grid · DMX</div></div></div>
       <div class="wi" onclick="sp('beirut-bar')"><img src="bar2.jpg" alt=""><div class="wo"><div class="wp">Hospitality — Bar</div><div class="wm">Beirut · Spatial scenography</div></div></div>
-      <div class="wi"><img src="fire-dj2.png" alt=""><div class="wo"><div class="wp">DJ Stage — Bespoke Luminaire</div><div class="wm">Custom light fixture</div></div></div>
+      <div class="wi"><img src="fire-dj2.png" alt=""><div class="wo"><div class="wp">DJ Stage Luminaire</div><div class="wm">Custom light fixture</div></div></div>
       <div class="wi wide"><img src="ripples.jpeg" alt=""><div class="wo"><div class="wp">Architectural Scenography</div><div class="wm">Luxury retail · Light & space</div></div></div>
     </div>
   </div>
 
-  <!-- 03 -->
   <div class="cat-panel" id="cat-events">
     <div class="cat-hdr"><div class="cat-num">03</div><div><h2 class="cat-ttl">Event & Live<br><em>Performance</em></h2><p class="cat-intro">Turning city skylines into theatrical shows. From world-record video mapping in Seoul to urban light mapping in Beirut — live light design at the scale of spectacle.</p></div></div>
     <div class="work-grid">
       <div class="wi wide"><img src="festival-1.png" alt=""><div class="wo"><div class="wp">Event Scenography</div><div class="wm">International · Live performance</div></div></div>
       <div class="wi"><img src="satdium-4.jpg" alt=""><div class="wo"><div class="wp">Gulf Cup Opening</div><div class="wm">Kuwait · 500 light sabers</div></div></div>
       <div class="wi"><img src="klb-Fortebank-13.jpg" alt=""><div class="wo"><div class="wp">Namsan Electronic Fire</div><div class="wm">Seoul · World record mapping</div></div></div>
-      <div class="wi wide" onclick="sp('beirut')"><img src="beyrouth-1.png" alt=""><div class="wo"><div class="wp">Beirut — Urban Light Mapping</div><div class="wm">Lebanon · LED & Video Mapping</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('beirut')"><img src="beyrouth-1.png" alt=""><div class="wo"><div class="wp">Beirut — Urban Light Mapping</div><div class="wm">Lebanon · LED & Video Mapping</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('beirut')"><img src="beyrouth-2.png" alt=""><div class="wo"><div class="wp">Beirut — Installation</div></div></div>
-      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-3.png" alt=""><div class="wo"><div class="wp">Beirut — Mapping Study</div></div></div>
-      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-4.png" alt=""><div class="wo"><div class="wp">Beirut — Night View</div></div></div>
+      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-3.png" alt=""><div class="wo"><div class="wp">Beirut — Study</div></div></div>
+      <div class="wi" onclick="sp('beirut')"><img src="beyrouth-4.png" alt=""><div class="wo"><div class="wp">Beirut — Night</div></div></div>
       <div class="wi" onclick="sp('beirut')"><img src="beyrouth-5.png" alt=""><div class="wo"><div class="wp">Beirut — Colour</div></div></div>
       <div class="wi" onclick="sp('beirut')"><img src="beyrouth-6.png" alt=""><div class="wo"><div class="wp">Beirut — Detail</div></div></div>
     </div>
   </div>
 
-  <!-- 04 -->
   <div class="cat-panel" id="cat-art">
     <div class="cat-hdr"><div class="cat-num">04</div><div><h2 class="cat-ttl">Art & Light<br><em>Installations</em></h2><p class="cat-intro">Site-specific works at the intersection of light, form and environment. Biomorphic structures, aquatic light systems, immersive environments — designed to transform space into experience.</p></div></div>
     <div class="work-grid">
-      <div class="wi wide" onclick="sp('dustmemory')"><img src="dust-memory.png" alt=""><div class="wo"><div class="wp">Dust Memory</div><div class="wm">RAK Art Biennale 2027 · Concept</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('dustmemory')"><img src="dust-memory.png" alt=""><div class="wo"><div class="wp">Dust Memory</div><div class="wm">RAK Art Biennale 2027 · Concept</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('dustmemory')"><img src="dust-memory-2.png" alt=""><div class="wo"><div class="wp">Dust Memory — Detail</div><div class="wm">UAE · In development</div></div></div>
-      <div class="wi" onclick="sp('seaSwarm')"><img src="drone-aqua.png" alt=""><div class="wo"><div class="wp">Autonomous Sea Swarm</div><div class="wm">Concept · Light drones</div><div class="wh">Click to open ↗</div></div></div>
-      <div class="wi wide" onclick="sp('cuddle')"><img src="cuddle-shuttle-01.jpeg" alt=""><div class="wo"><div class="wp">Cuddle Shuttle</div><div class="wm">Burning Man 2018–2024</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('seaSwarm')"><img src="drone-aqua.png" alt=""><div class="wo"><div class="wp">Autonomous Sea Swarm</div><div class="wm">Concept · Light drones</div><div class="wh">Open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('cuddle')"><img src="cuddle-shuttle-01.jpeg" alt=""><div class="wo"><div class="wp">Cuddle Shuttle</div><div class="wm">Burning Man 2018–2024</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('cuddle')"><img src="cuddle-shuttle-02.jpeg" alt=""><div class="wo"><div class="wp">Cuddle Shuttle — Night</div></div></div>
       <div class="wi" onclick="sp('cuddle')"><img src="cuddle-shuttle-03.jpeg" alt=""><div class="wo"><div class="wp">Cuddle Shuttle — Detail</div></div></div>
     </div>
   </div>
 
-  <!-- 05 -->
   <div class="cat-panel" id="cat-parametric">
     <div class="cat-hdr"><div class="cat-num">05</div><div><h2 class="cat-ttl">Parametric Design<br><em>& Research</em></h2><p class="cat-intro">Where the hand gets lost, the code continues. Algorithmic tools for light distribution, generative form and fabrication logic — building environments where aesthetic intention and technical deployment are resolved in the same gesture.</p></div></div>
     <div class="work-grid">
-      <div class="wi wide" onclick="sp('ligeo')"><img src="LIGEO-1.png" alt=""><div class="wo"><div class="wp">Ligeo Spatial Distribution</div><div class="wm">Grasshopper · Perlin Noise · 2021</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('ligeo')"><img src="LIGEO-1.png" alt=""><div class="wo"><div class="wp">Ligeo Spatial Distribution</div><div class="wm">Grasshopper · Perlin Noise · 2021</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('ligeo')"><img src="LIGEO-2.png" alt=""><div class="wo"><div class="wp">Ligeo — Spatial Recursion</div></div></div>
       <div class="wi" onclick="sp('ligeo')"><img src="LIGEO-3.png" alt=""><div class="wo"><div class="wp">Ligeo — RGB Simulation</div></div></div>
       <div class="wi wide" onclick="sp('ligeo')"><img src="LIGEO-4.png" alt=""><div class="wo"><div class="wp">Ligeo — Grasshopper Interface</div></div></div>
-      <div class="wi" onclick="sp('gencork')"><img src="gencork1.jpeg" alt=""><div class="wo"><div class="wp">Gencork — Ambient Studies</div><div class="wm">Spatial scenography</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi" onclick="sp('gencork')"><img src="gencork1.jpeg" alt=""><div class="wo"><div class="wp">Gencork — Ambient Studies</div><div class="wm">Spatial scenography</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('gencork')"><img src="gencork2.jpeg" alt=""><div class="wo"><div class="wp">Gencork — Study 2</div></div></div>
       <div class="wi" onclick="sp('gencork')"><img src="gencork3.jpeg" alt=""><div class="wo"><div class="wp">Gencork — Study 3</div></div></div>
       <div class="wi wide"><img src="parametric distribution .png" alt=""><div class="wo"><div class="wp">Parametric Distribution Study</div><div class="wm">Dammam Stadium · Research</div></div></div>
     </div>
   </div>
 
-  <!-- 06 -->
   <div class="cat-panel" id="cat-objects">
     <div class="cat-hdr"><div class="cat-num">06</div><div><h2 class="cat-ttl">Objects &<br><em>Luminaires</em></h2><p class="cat-intro">Bespoke light objects born from parametric geometry and artisan fabrication. Limited series, conceived and made in Paris — where code, material and light meet in a single form.</p></div></div>
     <div class="work-grid">
-      <div class="wi wide" onclick="sp('croozin')"><img src="croozinluna2.jpg" alt=""><div class="wo"><div class="wp">crOOZin</div><div class="wm">Studio Incandescence · Paris · 2026</div><div class="wh">Click to open ↗</div></div></div>
+      <div class="wi wide" onclick="sp('croozin')"><img src="croozinluna2.jpg" alt=""><div class="wo"><div class="wp">crOOZin</div><div class="wm">Studio Incandescence · Paris · 300 €</div><div class="wh">Open ↗</div></div></div>
       <div class="wi" onclick="sp('croozin')"><img src="crOOzin-pink.jpeg" alt=""><div class="wo"><div class="wp">crOOZin — Pink</div></div></div>
       <div class="wi" onclick="sp('croozin')"><img src="crOOzin-zoom.jpeg" alt=""><div class="wo"><div class="wp">crOOZin — Detail</div></div></div>
       <div class="wi" onclick="sp('croozin')"><img src="croozin-25.jpg" alt=""><div class="wo"><div class="wp">crOOZin — 25</div></div></div>
@@ -509,7 +419,7 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
   </div>
 </div>
 
-<!-- ══ CONTACT ══ -->
+<!-- CONTACT -->
 <div class="page" id="page-contact">
   <h2 class="c-head">Let's build<br><em>something</em></h2>
   <p class="c-sub">Available for architectural lighting commissions, parametric sculpture projects, and artistic collaborations worldwide.</p>
@@ -520,11 +430,11 @@ footer { padding:28px 60px; border-top:1px solid rgba(255,255,255,.04); display:
     <div class="c-sep"></div>
     <a href="https://instagram.com/croozin_lamp" class="c-lnk" target="_blank">crOOZin</a>
     <div class="c-sep"></div>
-    <a href="https://alexandre-kolinka.github.io" class="c-lnk" target="_blank">Portfolio</a>
+    <a href="https://alexandre-kolinka.github.io/studioincandescence.github.io/" class="c-lnk" target="_blank">Studio Incandescence</a>
   </div>
 </div>
 
-<!-- ══ PROJECT OVERLAY ══ -->
+<!-- PROJECT OVERLAY -->
 <div class="proj-ov" id="pov">
   <div class="proj-bar">
     <button class="proj-back" onclick="cp()">Back to Work</button>
@@ -540,22 +450,22 @@ const PD = {
   sedrati:{lbl:'Residential Lighting · Morocco',ttl:'Villa<br><em>Sedrati</em>',sub:'DIALux · DALI · Arkoslight · Rabat · 2025',texts:[{t:'text',c:'A refined residential lighting scheme balancing high-end comfort with cost efficiency. The design integrates layered lighting: discreet DALI-controlled downlights for general illumination, continuous LED coves for ambient architectural highlights, and focused accents using rail-mounted spots and minimalist pendants.'},{t:'text',c:'Premium fixtures by Arkoslight were selected for key living areas, while Hofflights and Luxio products ensured budget-conscious consistency in secondary spaces and the home cinema.'}],meta:[['Location','Rabat, Morocco'],['Client','Luxio Lighting'],['Sector','Residential · High-end'],['Tools','DIALux · DALI control'],['Fixtures','Arkoslight · Hofflights · Luxio'],['Date','June 2025'],['Stage','Consulting']],imgs:['sedrati.jpg','sedrati1.jpg','sedrati2.jpg','sedrati3.jpg','sedrati4.jpg','sedrati5.jpg']},
   chanel:{lbl:'Luxury Retail · Paris',ttl:'Chanel —<br><em>Once Upon a Moon</em>',sub:'Light Installation · Place Vendôme · Atelier Athem',texts:[{t:'text',c:'Concept lighting and production of the installation "Once Upon a Moon" for Chanel at Place Vendôme, Paris. A large-scale illuminated moon suspended above the façade — a poetic and technically precise installation that transformed one of Paris\'s most prestigious addresses into a nocturnal spectacle.'}],meta:[['Location','Place Vendôme, Paris'],['Client','Chanel'],['Agency','Atelier Athem'],['Type','Light installation · Retail scenography']],imgs:['moon.jpg']},
   ysl:{lbl:'Luxury Retail · Shanghai',ttl:'Yves Saint<br><em>Laurent</em>',sub:'Light Installation · Shanghai · Ligeo',texts:[{t:'text',c:'Concept lighting and production of a bespoke light installation for Yves Saint Laurent in Shanghai. A spatial light composition designed to enhance the brand experience and create an immersive environment at the intersection of fashion and light art.'}],meta:[['Location','Shanghai, China'],['Client','Yves Saint Laurent'],['Agency','Ligeo'],['Type','Light installation · Retail scenography']],imgs:['YSL.jpg']},
+  rotary:{lbl:'Luxury Scenography · Paris',ttl:'Rotary —<br><em>Audio Room</em>',sub:'Custom Luminaire · Incandescent Grid · DMX · Automatik · Paris',texts:[{t:'qt',c:'"A signature light wall for a premium audio listening room — where light and sound share the same frequency."'},{t:'text',c:'Custom lighting concept for the Rotary Audio Room in Paris, developed for the Automatik label. The project centres on a bespoke incandescent grid — a signature backdrop that functions as both architectural element and immersive light installation, combining a diffuse magma glow with the possibility of a sun-halo effect.'},{t:'text',c:'The palette is deliberately restrained: red and incandescent orange gradients, slow dynamics in ambient mode, with an optional club mode for live events. Control via DMX with pre-set scenes.'}],meta:[['Location','Paris, France'],['Client','Rotary · Automatik'],['Type','Custom luminaire · Audio room scenography'],['Palette','Red + incandescent orange · 2200K amber'],['Effects','Diffuse glow · Sun halo · Slow gradients · Strobe option'],['Control','DMX · Pre-set scenes'],['Stage','Concept — In development · 2025']],imgs:['rotary-1.png','rotary-2.png']},
   beirut:{lbl:'Event · Lebanon',ttl:'Beirut —<br><em>Urban Light Mapping</em>',sub:'LED & Video Mapping · City Centre · Beirut',texts:[{t:'text',c:'A series of light and video mapping installations in the historic centre of Beirut, transforming urban architecture into a canvas for light. Multiple events and interventions using LED mapping, projection and spatial light design to animate the city\'s buildings and public spaces.'}],meta:[['Location','Beirut City Centre, Lebanon'],['Type','LED mapping · Video mapping · Urban light installation'],['Context','Multiple events · Hospitality & cultural venues']],imgs:['beyrouth-1.png','beyrouth-2.png','beyrouth-3.png','beyrouth-4.png','beyrouth-5.png','beyrouth-6.png','exa.png']},
   dustmemory:{lbl:'Concept · RAK Art Biennale 2027',ttl:'Dust<br><em>Memory</em>',sub:'Light · Sand · Laser · UAE · In development',texts:[{t:'qt',c:'"In the heart of Ras Al Khaimah\'s historic fishermen\'s village, Dust Memory materialises as a hovering cube of blue light, scaled just shy of the surrounding coral-stone houses."'},{t:'text',c:'A minimal dark-aluminium frame suspends a vibrating ceiling grid, releasing a whisper-thin veil of local sand that cascades through horizontal laser planes. Each grain becomes a momentary star, sparking as it intersects the beams and dissolving into darkness as it falls.'},{t:'text',c:'Visitors are invited to walk the perimeter and witness tradition, light and gravity in quiet dialogue, framing the Biennale\'s wider conversation on memory and future craft.'}],meta:[['Location','Ras Al Khaimah, UAE — Historic Fishermen\'s Village'],['Event','Ras Al Khaimah Art Biennale 2027'],['Dimensions','2.20 × 2.20 × 2.20 m'],['Materials','Dark aluminium frame · Local sand · Horizontal laser planes'],['Light','Blue laser grid · Vibrating sand veil · Particle constellations'],['Status','Concept — In development · 2027']],imgs:['dust-memory.png','dust-memory-2.png']},
-  seaSwarm:{lbl:'Concept · Marine Installation',ttl:'Autonomous Luminous<br><em>Sea Swarm</em>',sub:'Floating Light Drones · Phyllotaxis · Marine Environment',texts:[{t:'qt',c:'"A constellation of small autonomous floating light drones designed to surround a yacht at night and gently illuminate the sea surface."'},{t:'text',c:'Each device emits a focused beam of light into the water, creating a field of glowing points that reveal the movement of waves, particles, and marine life below. Using simple swarm intelligence, the drones self-position around the vessel, maintaining a harmonious spatial distribution inspired by natural phyllotaxis patterns.'},{t:'text',c:'The result is a mesmerizing halo of light that transforms the surrounding ocean into a living luminous landscape — turning the yacht into the centre of a dynamic constellation floating on the sea.'}],meta:[['Type','Autonomous floating light installation'],['Algorithm','Phyllotaxis — Fibonacci spiral distribution'],['Context','Marine · Yacht · Nocturnal environment'],['Status','Concept in development']],imgs:['drone-aqua.png']},
+  seaSwarm:{lbl:'Concept · Marine Installation',ttl:'Autonomous Luminous<br><em>Sea Swarm</em>',sub:'Floating Light Drones · Phyllotaxis · Marine Environment',texts:[{t:'qt',c:'"A constellation of small autonomous floating light drones designed to surround a yacht at night and gently illuminate the sea surface."'},{t:'text',c:'Each device emits a focused beam of light into the water, creating a field of glowing points that reveal the movement of waves, particles, and marine life below. Using simple swarm intelligence, the drones self-position around the vessel, maintaining a harmonious spatial distribution inspired by natural phyllotaxis patterns.'}],meta:[['Type','Autonomous floating light installation'],['Algorithm','Phyllotaxis — Fibonacci spiral distribution'],['Context','Marine · Yacht · Nocturnal environment'],['Status','Concept in development']],imgs:['drone-aqua.png']},
   cuddle:{lbl:'Mutant Vehicle · Burning Man · 2018–2024',ttl:'Cuddle<br><em>Shuttle</em>',sub:'Black Rock City · Light · Sound · Camp Campi Camp',texts:[{t:'qt',c:'"A mutant vehicle built for the Black Rock City playa. Light and sound as architecture — tuned to the body, the dust and the darkness."'},{t:'text',c:'Conceived and built with Louve Kolinka and Luna Kolinka for Camp Campi Camp, the Cuddle Shuttle carried strangers into the Nevada night from 2018 to 2024. Its last ride ended in fire on the playa.'}],meta:[['Location','Black Rock City, Nevada — Burning Man'],['Years','2018 – 2024'],['Collaboration','Louve Kolinka · Luna Kolinka'],['Camp','Camp Campi Camp'],['Type','Mutant vehicle · Light & sound installation'],['Fate','Burned on the playa · 2024']],imgs:['cuddle-shuttle-01.jpeg','cuddle-shuttle-02.jpeg','cuddle-shuttle-03.jpeg','cuddle-shuttle-04.jpeg']},
-  ligeo:{lbl:'Parametric Tool · Ligeo Lighting · 2021',ttl:'Ligeo Spatial<br><em>Distribution</em>',sub:'Grasshopper · Perlin Noise · ArtNet · sACN · Madrix',texts:[{t:'text',c:'A parametric tool developed in February 2021 for Ligeo Lighting, designed to solve a precise spatial problem: how to distribute a series of LED bars in three-dimensional space with controlled randomness. The algorithm uses Perlin Noise — a smooth, organic generative model — to avoid mechanical regularity while maintaining full designer control over density, angular amplitude, bar length and spatial recursion within a defined volume.'},{t:'text',c:'Unlike discrete assembly approaches such as Wave Function Collapse, this tool generates a continuous, analogue distribution governed by physical constraints. Each bar is assigned a unique IP address, auto-generated by the tool, ready for ArtNet/sACN deployment in Madrix. The output also includes a hanging point schedule — coordinates and lengths — for on-site installation.'}],meta:[['Tool','Grasshopper / Rhino'],['Generation','Perlin Noise — smooth controlled random'],['Bar lengths','30 · 60 · 90 · 120 · 150 cm'],['Angular range','20° – 160° · shift -45° / +45°'],['Hub recursion','Up to 5 branches per hub'],['Control','ArtNet · sACN · Madrix · unique IP per bar'],['Output','3D distribution + hanging point schedule'],['Client','Ligeo Lighting · February 2021']],imgs:['LIGEO-1.png','LIGEO-2.png','LIGEO-3.png','LIGEO-4.png']},
+  ligeo:{lbl:'Parametric Tool · Ligeo Lighting · 2021',ttl:'Ligeo Spatial<br><em>Distribution</em>',sub:'Grasshopper · Perlin Noise · ArtNet · sACN · Madrix',texts:[{t:'text',c:'A parametric tool developed in February 2021 for Ligeo Lighting, designed to solve a precise spatial problem: how to distribute a series of LED bars in three-dimensional space with controlled randomness. The algorithm uses Perlin Noise — a smooth, organic generative model — to avoid mechanical regularity while maintaining full designer control over density, angular amplitude, bar length and spatial recursion within a defined volume.'},{t:'text',c:'Unlike discrete assembly approaches such as Wave Function Collapse, this tool generates a continuous, analogue distribution governed by physical constraints. Each bar is assigned a unique IP address, auto-generated by the tool, ready for ArtNet/sACN deployment in Madrix.'}],meta:[['Tool','Grasshopper / Rhino'],['Generation','Perlin Noise — smooth controlled random'],['Bar lengths','30 · 60 · 90 · 120 · 150 cm'],['Angular range','20° – 160° · shift -45° / +45°'],['Hub recursion','Up to 5 branches per hub'],['Control','ArtNet · sACN · Madrix · unique IP per bar'],['Output','3D distribution + hanging point schedule'],['Client','Ligeo Lighting · February 2021']],imgs:['LIGEO-1.png','LIGEO-2.png','LIGEO-3.png','LIGEO-4.png']},
   gencork:{lbl:'Parametric · Spatial Scenography',ttl:'Gencork —<br><em>Ambient Studies</em>',sub:'Parametric Design · Spatial Scenography · Beirut',texts:[{t:'text',c:'Exploratory studies at the intersection of parametric design and spatial scenography. These ambient studies investigate how algorithmically generated forms can define atmosphere, guide movement and shape the emotional register of a space.'},{t:'text',c:'Each study is a conversation between geometry, material and light — where the parametric logic of the form becomes inseparable from the sensory experience it produces.'}],meta:[['Type','Parametric ambient study'],['Context','Spatial scenography · Hospitality'],['Location','Beirut, Lebanon'],['Tools','Rhino · Grasshopper']],imgs:['gencork1.jpeg','gencork2.jpeg','gencork3.jpeg']},
-  croozin:{lbl:'Object · Studio Incandescence · Paris',ttl:'crOOZin —<br><em>Light Object</em>',sub:'Parametric · 3D printed · LED · Limited series · Paris · 2026',texts:[{t:'text',c:'A biomorphic light sculpture born from Grasshopper-driven parametric design. Inspired by Art Nouveau fluidity and Zaha Hadid\'s structural logic, crOOZin is printed at 25 micron resolution in translucent resin — a form that comes alive only when light passes through it.'},{t:'text',c:'Each piece is unique. Each form is a conversation between code, material, and light.'},{t:'buy',c:''}],meta:[['Dimensions','Ø 15 cm × 27 cm'],['Material','3D-printed resin · 25 µm · Hand-turned wood base'],['Light source','LED 2700K dimmable · Dichroic lens · USB-C'],['Production','Conçu & fabriqué à Paris · Série numérotée'],['Studio','Studio Incandescence · 2026'],['Price','300 € TTC · Limited series']],imgs:['croozinluna2.jpg','crOOzin-pink.jpeg','crOOzin-zoom.jpeg','croozin-25.jpg','croozin-26.jpg','croozin-27.jpg']},
-  rotary:{lbl:'Luxury Scenography · Paris',ttl:'Rotary —<br><em>Audio Room</em>',sub:'Custom Luminaire · Incandescent Grid · DMX · Automatik · Paris',texts:[{t:'qt',c:'"A signature light wall for a premium audio listening room — where light and sound share the same frequency."'},{t:'text',c:'Custom lighting concept for the Rotary Audio Room in Paris, developed for the Automatik label. The project centres on a bespoke incandescent grid — a signature backdrop that functions as both architectural element and immersive light installation, combining a diffuse magma glow with the possibility of a sun-halo effect.'},{t:'text',c:'The palette is deliberately restrained: red and incandescent orange gradients, slow dynamics in ambient mode, with an optional club mode for live events. Control via DMX with pre-set scenes — a minimum viable solution that allows the room to shift atmosphere without complexity.'}],meta:[['Location','Paris, France'],['Client','Rotary · Automatik'],['Type','Custom luminaire · Audio room scenography'],['Palette','Red + incandescent orange · 2200K amber'],['Effects','Diffuse glow · Sun halo · Slow gradients · Strobe option'],['Control','DMX · Pre-set scenes · 1.5k–3k€ budget'],['Secondary lighting','Fixed wall modules · Format TBD'],['Stage','Concept — In development · 2025']],imgs:['rotary-1.png','rotary-2.png']}
+  croozin:{lbl:'Object · Studio Incandescence · Paris',ttl:'crOOZin —<br><em>Light Object</em>',sub:'Parametric · 3D printed · LED · Limited series · Paris · 2026',texts:[{t:'text',c:'A biomorphic light sculpture born from Grasshopper-driven parametric design. Inspired by Art Nouveau fluidity and Zaha Hadid\'s structural logic, crOOZin is printed at 25 micron resolution in translucent resin — a form that comes alive only when light passes through it.'},{t:'text',c:'Each piece is unique. Each form is a conversation between code, material, and light.'},{t:'buy',c:''}],meta:[['Dimensions','Ø 15 cm × 27 cm'],['Material','3D-printed resin · 25 µm · Hand-turned wood base'],['Light source','LED 2700K dimmable · Dichroic lens · USB-C'],['Production','Conçu & fabriqué à Paris · Série numérotée'],['Studio','Studio Incandescence · 2026'],['Price','300 € TTC · Limited series']],imgs:['croozinluna2.jpg','crOOzin-pink.jpeg','crOOzin-zoom.jpeg','croozin-25.jpg','croozin-26.jpg','croozin-27.jpg']}
 };
 
 function sp(id) {
-  const p = PD[id]; if(!p) return;
-  document.getElementById('pcrumb').textContent = p.lbl;
-  const imgs = p.imgs;
-  let ih = '<div class="p-imgs">';
-  imgs.forEach((img,i) => {
+  const p=PD[id]; if(!p) return;
+  document.getElementById('pcrumb').textContent=p.lbl;
+  const imgs=p.imgs;
+  let ih='<div class="p-imgs">';
+  imgs.forEach((img,i)=>{
     if(i===0) ih+=`<div class="p-main"><img src="${img}" alt=""></div>`;
     else if(i===imgs.length-1 && imgs.length%2===0) ih+=`<div class="p-wide"><img src="${img}" alt=""></div>`;
     else ih+=`<div class="p-sm"><img src="${img}" alt=""></div>`;
@@ -565,9 +475,9 @@ function sp(id) {
   p.texts.forEach(t=>{
     if(t.t==='buy'){
       th+=`<div style="margin-top:24px;padding:24px;border:1px solid rgba(212,172,58,.4);background:rgba(184,150,12,.06);">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold-light);margin-bottom:6px;">300 € TTC</div>
-        <div style="font-size:12px;color:#888;margin-bottom:20px;line-height:1.6;">Série limitée · Conçu & fabriqué à Paris<br>Pièce unique numérotée · Produit à la commande</div>
-        <a href="https://buy.stripe.com/14A9AU4X8fgcbdE2p0gbm01" target="_blank" style="display:inline-block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#080808;background:var(--gold);padding:14px 32px;text-decoration:none;font-family:'Helvetica Neue',sans-serif;transition:opacity .3s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Acheter — 300 €</a>
+        <div style="font-family:'Playfair Display',serif;font-size:30px;color:var(--gold-light);margin-bottom:6px;">300 € TTC</div>
+        <div style="font-size:13px;color:var(--gray);margin-bottom:20px;line-height:1.7;">Série limitée · Conçu & fabriqué à Paris<br>Pièce unique numérotée · Produit à la commande</div>
+        <a href="https://buy.stripe.com/14A9AU4X8fgcbdE2p0gbm01" target="_blank" style="display:inline-block;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#080808;background:var(--gold);padding:14px 32px;text-decoration:none;font-family:'DM Sans',sans-serif;font-weight:500;">Acheter — 300 €</a>
       </div>`;
     } else {
       th+=`<p class="p-txt${t.t==='qt'?' qt':''}">${t.c}</p>`;
@@ -581,9 +491,9 @@ function sp(id) {
   ov.classList.add('open'); ov.scrollTop=0;
 }
 
-function cp() { document.getElementById('pov').classList.remove('open'); }
+function cp(){ document.getElementById('pov').classList.remove('open'); }
 
-function go(name) {
+function go(name){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   const pg=document.getElementById('page-'+name);
@@ -592,7 +502,7 @@ function go(name) {
   if(nv) nv.classList.add('active');
 }
 
-function sw(cat) {
+function sw(cat){
   go('work');
   setTimeout(()=>{
     document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
@@ -627,144 +537,95 @@ document.querySelectorAll('.region-tab').forEach(tab=>{
 });
 
 // Cursor
-const cur=document.getElementById('cur'), curR=document.getElementById('curR');
+const cur=document.getElementById('cur'),curR=document.getElementById('curR');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 (function anim(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(anim);})();
 
 // ── CAROUSEL ──
-(function() {
-  const slides = Array.from(document.querySelectorAll('.carousel-slide'));
-  const dots = Array.from(document.querySelectorAll('.cdot'));
-  const label = document.getElementById('carouselLabel');
-  const carousel = document.getElementById('heroCarousel');
+(function(){
+  const slides=Array.from(document.querySelectorAll('.carousel-slide'));
+  const dots=Array.from(document.querySelectorAll('.cdot'));
+  const label=document.getElementById('carouselLabel');
+  const carousel=document.getElementById('heroCarousel');
+  const labels={architectural:'Architectural Lighting',retail:'Luxury Retail & Scenography',art:'Art & Light Installations',parametric:'Parametric Design & Research'};
+  const order=[0,1,2,3].sort(()=>Math.random()-.5);
+  let current=0;
 
-  const labels = {
-    architectural: 'Architectural Lighting',
-    retail: 'Luxury Retail & Scenography',
-    art: 'Art & Light Installations',
-    parametric: 'Parametric Design & Research'
-  };
-
-  // Shuffle slides randomly on load
-  const order = [0,1,2,3].sort(() => Math.random() - .5);
-  let current = 0;
-
-  function goTo(idx) {
+  function goTo(idx){
     slides[order[current]].classList.remove('active');
     dots[current].classList.remove('active');
-    current = idx % 4;
+    current=((idx%4)+4)%4;
     slides[order[current]].classList.add('active');
     dots[current].classList.add('active');
-    const cat = slides[order[current]].dataset.cat;
-    label.textContent = labels[cat] || '';
+    label.textContent=labels[slides[order[current]].dataset.cat]||'';
   }
 
-  // Auto rotation
-  let timer = setInterval(() => goTo(current + 1), 4000);
+  let timer=setInterval(()=>goTo(current+1),4500);
 
-  // Click on carousel → open work section
-  carousel.addEventListener('click', () => {
-    const cat = slides[order[current]].dataset.cat;
+  carousel.addEventListener('click',()=>{
+    const cat=slides[order[current]].dataset.cat;
     sw(cat);
   });
 
-  // Dot navigation
-  dots.forEach((dot, i) => {
-    dot.addEventListener('click', e => {
+  dots.forEach((dot,i)=>{
+    dot.addEventListener('click',e=>{
       e.stopPropagation();
       clearInterval(timer);
       goTo(i);
-      timer = setInterval(() => goTo(current + 1), 4000);
+      timer=setInterval(()=>goTo(current+1),4500);
     });
   });
 
-  // Init label
-  label.textContent = labels[slides[order[0]].dataset.cat];
+  label.textContent=labels[slides[order[0]].dataset.cat];
 })();
-
-// Hero zoom
-setTimeout(()=>{const img=document.querySelector('.home-right img');if(img)img.style.transform='scale(1)';},200);
 
 // ── COLOR WHEEL ──
-(function() {
-  const canvas = document.getElementById('colorWheel');
-  const needle = document.getElementById('colorNeedle');
-  const ctx = canvas.getContext('2d');
-  const size = 64;
-  const cx = size / 2, cy = size / 2, r = size / 2 - 1;
+(function(){
+  const canvas=document.getElementById('colorWheel');
+  const needle=document.getElementById('colorNeedle');
+  const ctx=canvas.getContext('2d');
+  const sz=64,cx=sz/2,cy=sz/2,r=sz/2-1;
+  for(let a=0;a<360;a++){
+    const s=((a-1)*Math.PI/180),e=((a+1)*Math.PI/180);
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
+    ctx.fillStyle=`hsl(${a},80%,55%)`;ctx.fill();
+  }
+  ctx.beginPath();ctx.arc(cx,cy,r*.35,0,Math.PI*2);ctx.fillStyle='#080808';ctx.fill();
 
-  // Draw wheel
-  for (let angle = 0; angle < 360; angle++) {
-    const startAngle = (angle - 1) * Math.PI / 180;
-    const endAngle = (angle + 1) * Math.PI / 180;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, startAngle, endAngle);
-    ctx.closePath();
-    ctx.fillStyle = `hsl(${angle}, 80%, 55%)`;
-    ctx.fill();
+  let isDragging=false;
+
+  function getAngle(e){
+    const rect=canvas.getBoundingClientRect();
+    const scaleX=sz/rect.width,scaleY=sz/rect.height;
+    const clientX=e.touches?e.touches[0].clientX:e.clientX;
+    const clientY=e.touches?e.touches[0].clientY:e.clientY;
+    const x=(clientX-rect.left)*scaleX-cx,y=(clientY-rect.top)*scaleY-cy;
+    let a=Math.atan2(y,x)*180/Math.PI;
+    return a<0?a+360:a;
   }
 
-  // Center dark circle
-  ctx.beginPath();
-  ctx.arc(cx, cy, r * 0.35, 0, Math.PI * 2);
-  ctx.fillStyle = '#080808';
-  ctx.fill();
-
-  let currentHue = 43; // gold default
-  let isDragging = false;
-
-  function hueToColors(h) {
-    const gold = `hsl(${h}, 80%, 45%)`;
-    const goldLight = `hsl(${h}, 75%, 58%)`;
-    const goldDim = `hsl(${h}, 60%, 35%)`;
-    return { gold, goldLight, goldDim };
+  function applyHue(h){
+    const gold=`hsl(${h},80%,45%)`,goldL=`hsl(${h},75%,58%)`;
+    document.documentElement.style.setProperty('--gold',gold);
+    document.documentElement.style.setProperty('--gold-light',goldL);
+    if(cur) cur.style.background=gold;
   }
 
-  function applyHue(h) {
-    const { gold, goldLight } = hueToColors(h);
-    document.documentElement.style.setProperty('--gold', gold);
-    document.documentElement.style.setProperty('--gold-light', goldLight);
-    // Update cursor color
-    const cur = document.getElementById('cur');
-    if (cur) cur.style.background = gold;
+  function update(a){
+    needle.style.transform=`translate(-50%,-100%) rotate(${a}deg)`;
+    applyHue(Math.round(a));
   }
 
-  function getAngleFromEvent(e) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = size / rect.width;
-    const scaleY = size / rect.height;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const x = (clientX - rect.left) * scaleX - cx;
-    const y = (clientY - rect.top) * scaleY - cy;
-    let angle = Math.atan2(y, x) * 180 / Math.PI;
-    if (angle < 0) angle += 360;
-    return angle;
-  }
-
-  function updateFromAngle(angle) {
-    currentHue = Math.round(angle);
-    needle.style.transform = `translate(-50%, -100%) rotate(${angle}deg)`;
-    applyHue(currentHue);
-  }
-
-  // Init needle position (gold ~43°)
-  updateFromAngle(43);
-
-  // Mouse events
-  canvas.addEventListener('mousedown', e => { isDragging = true; updateFromAngle(getAngleFromEvent(e)); e.preventDefault(); });
-  document.addEventListener('mousemove', e => { if (isDragging) updateFromAngle(getAngleFromEvent(e)); });
-  document.addEventListener('mouseup', () => { isDragging = false; });
-
-  // Touch events
-  canvas.addEventListener('touchstart', e => { isDragging = true; updateFromAngle(getAngleFromEvent(e)); e.preventDefault(); }, { passive: false });
-  document.addEventListener('touchmove', e => { if (isDragging) { updateFromAngle(getAngleFromEvent(e)); e.preventDefault(); } }, { passive: false });
-  document.addEventListener('touchend', () => { isDragging = false; });
+  update(43);
+  canvas.addEventListener('mousedown',e=>{isDragging=true;update(getAngle(e));e.preventDefault();});
+  document.addEventListener('mousemove',e=>{if(isDragging)update(getAngle(e));});
+  document.addEventListener('mouseup',()=>isDragging=false);
+  canvas.addEventListener('touchstart',e=>{isDragging=true;update(getAngle(e));e.preventDefault();},{passive:false});
+  document.addEventListener('touchmove',e=>{if(isDragging){update(getAngle(e));e.preventDefault();}},{passive:false});
+  document.addEventListener('touchend',()=>isDragging=false);
 })();
 
-// Escape
 document.addEventListener('keydown',e=>{if(e.key==='Escape')cp();});
 </script>
 </body>
